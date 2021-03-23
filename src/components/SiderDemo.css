@@ -1,0 +1,25 @@
+/* .logo {
+    height: 32px;
+    margin: 16px;
+    background: rgba(255, 255, 255, 0.3);
+} */
+
+.site-layout .site-layout-background {
+    background: #fff;
+}
+
+.site-layout-background {
+    min-height: 8vh;
+    max-height: 8vh;
+}
+
+[data-theme="dark"] .site-layout .site-layout-background {
+    background: #141414;
+}
+
+.sidebar {
+    min-width: 50px;
+    max-width: 50px;
+    width: 50px;
+    border-top: 1px red solid;
+}
