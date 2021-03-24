@@ -23,3 +23,11 @@
     width: 50px;
     border-top: 1px red solid;
 }
+
+.textarea {
+    border: 10px solid #fff;
+    border: 1px solid grey;
+    margin-bottom: 15px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
