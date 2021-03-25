@@ -5,16 +5,17 @@ import {
     Layout, Menu,
     Row, Col, Divider,
     Input,
+    Affix
 } from 'antd';
 import {
     MessageOutlined,
     MoreOutlined,
-    FileOutlined,
-    TeamOutlined,
+    /* FileOutlined,
+    TeamOutlined, */
     CaretDownOutlined,
     NumberOutlined,
     PlusOutlined,
-    PlusCircleTwoTone,
+    // PlusCircleTwoTone,
     PlusSquareFilled,
 } from '@ant-design/icons';
 
@@ -46,6 +47,7 @@ class SiderDemo extends Component {
             <>
                 <Header className="site-layout-background" style={{ padding: 0 }} ></Header>
                 <Layout style={{ minHeight: '100vh' }}>
+
                     <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse} className="sidebar" collapsedWidth="0" width={175}
                         breakpoint="md"
                         // trigger={null}
@@ -88,6 +90,7 @@ class SiderDemo extends Component {
                             </SubMenu>
                         </Menu>
                     </Sider>
+
                     <Layout className="site-layout" style={{ border: '5px solid red', backgroundColor: '#fff' }}>
                         {/* <Header className="site-layout-background" style={{ padding: 0 }} /> */}
                         <Content style={{ margin: '0', height: '100%', border: '2.5px blue solid' }}>
@@ -100,7 +103,11 @@ class SiderDemo extends Component {
                             </div> */}
 
                             <Row style={{ height: '100%' }}>
-                                <Col flex={3} style={{ border: '2.5px solid orange' }}>
+                                <Col
+                                    flex={3}
+                                    style={{ border: '2.5px solid orange' }}
+                                // scroll={{ x: 'calc(700px + 50%)', y: 240 }}
+                                >
                                     <Row>3 / 5</Row>
                                     <Divider></Divider>
                                     <Row>3 / 5</Row>
@@ -118,6 +125,15 @@ class SiderDemo extends Component {
                                     <Row>3 / 5</Row>
                                     <Divider></Divider>
                                     <Row>3 / 5</Row>
+                                    <Divider></Divider>
+
+
+                                    <Row>3 / 5</Row>
+                                    <Divider></Divider><Row>3 / 5</Row>
+                                    <Divider></Divider><Row>3 / 5</Row>
+                                    <Divider></Divider><Row>3 / 5</Row>
+                                    <Divider></Divider><Row>3 / 5</Row>
+                                    <Divider></Divider><Row>3 / 5</Row>
                                     <Divider></Divider>
 
                                     <TextArea

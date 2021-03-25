@@ -25,9 +25,31 @@
 }
 
 .textarea {
-    border: 10px solid #fff;
+    /* border: 10px solid #fff; */
     border: 1px solid grey;
     margin-bottom: 15px;
+    margin-top: 10px;
     margin-left: 10px;
     margin-right: 10px;
+}
+
+.ant-col, .ant-layout-sider-children {
+    /* background-color: red; */
+    /* padding: 17px 0 17px 17px; */
+    /* width: 300px; */
+    height: 90vh;
+    overflow-y: scroll;
+    mask-image: linear-gradient(to top, transparent, black), linear-gradient(to left, transparent 17px, black 17px);
+    -webkit-mask-image: linear-gradient(to top, transparent, black), linear-gradient(to left, transparent 17px, black 17px);
+    mask-size: 100% 20000px;
+    -webkit-mask-size: 100% 20000px;
+    mask-position: left bottom;
+    -webkit-mask-position: left bottom;
+    transition: mask-position 0.3s, -webkit-mask-position 0.3s;
+}
+
+.ant-col:hover {
+    /* background-color: black; */
+    mask-position: left top;
+    -webkit-mask-position: left top;
 }
