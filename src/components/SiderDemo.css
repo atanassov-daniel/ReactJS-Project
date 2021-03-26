@@ -18,26 +18,28 @@
 }
 
 .sidebar {
-    min-width: 50px;
+    /* min-width: 50px;
     max-width: 50px;
-    width: 50px;
+    width: 50px; */
     border-top: 1px red solid;
 }
 
 .textarea {
     /* border: 10px solid #fff; */
     border: 1px solid grey;
-    margin-bottom: 15px;
-    margin-top: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
+    /* margin-bottom: 15px; */
+    /* margin-top: 10px; */
+    /* margin-left: 10px; */
+    /* margin-right: 10px; */
 }
 
-.ant-col, .ant-layout-sider-children {
+.ant-col,
+.ant-layout-sider-children {
+    /* #col, .ant-layout-sider-children { */
     /* background-color: red; */
     /* padding: 17px 0 17px 17px; */
     /* width: 300px; */
-    height: 90vh;
+    height: 100vh;
     overflow-y: scroll;
     mask-image: linear-gradient(to top, transparent, black), linear-gradient(to left, transparent 17px, black 17px);
     -webkit-mask-image: linear-gradient(to top, transparent, black), linear-gradient(to left, transparent 17px, black 17px);
@@ -48,8 +50,17 @@
     transition: mask-position 0.3s, -webkit-mask-position 0.3s;
 }
 
-.ant-col:hover {
+.ant-col:hover,
+.ant-layout-sider-children:hover {
+    /* #col:hover { */
     /* background-color: black; */
     mask-position: left top;
     -webkit-mask-position: left top;
+}
+
+#new-message-textarea {
+    /* margin-left: 15%; */
+    display: block;
+    width: 95%;
+    margin: auto;
 }
