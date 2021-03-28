@@ -24,16 +24,8 @@
     border-top: 1px red solid;
 }
 
-.textarea {
-    /* border: 10px solid #fff; */
-    border: 1px solid grey;
-    /* margin-bottom: 15px; */
-    /* margin-top: 10px; */
-    /* margin-left: 10px; */
-    /* margin-right: 10px; */
-}
-
-.ant-col,
+/* .ant-col, */
+.column-with-slider,
 .ant-layout-sider-children {
     /* #col, .ant-layout-sider-children { */
     /* background-color: red; */
@@ -50,7 +42,8 @@
     transition: mask-position 0.3s, -webkit-mask-position 0.3s;
 }
 
-.ant-col:hover,
+/* .ant-col, */
+.column-with-slider:hover,
 .ant-layout-sider-children:hover {
     /* #col:hover { */
     /* background-color: black; */
@@ -59,8 +52,56 @@
 }
 
 #new-message-textarea {
-    /* margin-left: 15%; */
-    display: block;
+    /* display: block; */
     width: 95%;
     margin: auto;
+    border: 1px solid grey;
+}
+
+/* 
+#new-message-textarea {
+    position: fixed;
+    bottom: 5%;
+    display: block;
+    width: 95%;
+    margin: 0 auto;
+    border: 1px solid grey;
+
+}
+
+.ant-card {
+    width: 99%;
+    margin: auto;
+}
+*/
+
+.loading {
+    background-color: red;
+}
+
+.message-card-avatar {
+    float: left;
+    display: inline;
+}
+
+.message-card-text {
+    display: inline;
+}
+
+.message-timestamp {
+    cursor: pointer;
+    font-size: 12px;
+    text-decoration: underline;
+}
+
+.message-author {
+    display: inline;
+    margin-right: .5em;
+}
+
+/*! this is the message textarea's Clear Button */
+span[role="button"].anticon.anticon-close-circle.ant-input-clear-icon {
+    font-size: 25px;
+    /* transform: translateY(-30%) translateX(-41%); */
+    transform: translate(-41%, -30%);
 }

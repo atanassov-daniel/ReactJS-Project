@@ -57,7 +57,7 @@ class SiderDemo extends Component {
         const { collapsed } = this.state;
         const { value } = this.state;
 
-        const { loading } = this.state
+        const { loading } = this.state;
 
         return (
             <>
@@ -122,10 +122,12 @@ class SiderDemo extends Component {
 
                             {/* here was the place for the cut code */}
 
-                            <Row style={{ height: '100%' }}>
+                            <Row style={{ height: '100%', width: '100%' }}>
                                 <Col
                                     flex={1}
+                                    //!! style={{ border: '2.5px solid orange', height: '100%' }} -> the height: '100%' broke the scrollbar's css and it wouldn't scroll
                                     style={{ border: '2.5px solid orange' }}
+                                    className="column-with-slider"
                                 // scroll={{ x: 'calc(700px + 50%)', y: 240 }}
                                 >
 
@@ -133,8 +135,8 @@ class SiderDemo extends Component {
                                     <Switch checked={!loading} onChange={this.onLoadingChange} />
 
                                     <Card
-                                        // style={{ width: '90%', marginTop: 16 }}
-                                        style={{ width: '98%', margin: 'auto' }}
+                                    // style={{ width: '90%', marginTop: 16 }}
+                                    // style={{ width: '98%', margin: 'auto' }}
                                     /* actions={[
                                         <SettingOutlined key="setting" />,
                                         <EditOutlined key="edit" />,
@@ -142,40 +144,51 @@ class SiderDemo extends Component {
                                     ]} */
                                     >
                                         <Skeleton loading={loading} avatar active>
-                                            <Meta
+                                            {/* <Meta
                                                 avatar={
-                                                    <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                                                    <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" shape="square" size={50} alt="user profile image" />
                                                 }
-                                                title="Card title"
+                                                title="Ajvar Shri Lanka"
                                                 description="This is the description"
-                                            />
-                                            <p>Hi Ma'am! This is a great series that you have started. Just wanted to know how will this proceed? As in every time the question topic and difficulty level will be varied?</p>
+                                            /> */}
+
+
+                                            <Row>
+                                                <Col span={2}>
+                                                    <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" shape="square" size={50} alt="user profile image" className="message-card-avatar" />
+                                                </Col>
+                                                <Col span={22}>
+                                                    {/* <span className="message-card-text"> */}
+                                                    <h3 className="message-author">Ajvar Shri Lanka</h3>
+                                                    <span className="message-timestamp">15:18</span>
+                                                    <p>Hi Ma'am! This is a great series that you have started. Just wanted to know how will this proceed? As in every time the question topic and difficulty level will be varied?Hi Ma'am! This is a great series that you have started. Just wanted to know how will this proceed? As in every time the question topic and difficulty level will be varied?Hi Ma'am! This is a great series that you have started. Just wanted to know how will this proceed? As in every time the question topic and difficulty level will be varied?Hi Ma'am! This is a great series that you have started. Just wanted to know how will this proceed? As in every time the question topic and difficulty level will be varied?Hi Ma'am! This is a great series that you have started. Just wanted to know how will this proceed? As in every time the question topic and difficulty level will be varied?</p>
+                                                    {/* </span> */}
+                                                </Col>
+                                            </Row>
+                                            {/* <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" shape="square" size={50} alt="user profile image" className="message-card-avatar" />
+                                            <span className="message-card-text">
+                                                <h4>Ajvar Shri Lanka</h4>
+                                                <p>Hi Ma'am! This is a great series that you have started. Just wanted to know how will this proceed? As in every time the question topic and difficulty level will be varied?</p>
+                                            </span> */}
+
                                         </Skeleton>
 
                                     </Card>
                                     <Card
-                                        style={{ width: '98%', margin: 'auto', marginBottom: 5 }}
+                                        style={{ marginBottom: 5, height: '10vh', overflow: 'hidden' }} className={loading ? 'loading' : ''}
                                     >
+                                        {/* !!! put a temporary class that makes it 30% height 
+                                        while loading and then when loading is done remove this
+                                        class so that it returns to its default height */}
                                         <Skeleton loading={loading} active>
-                                            <Meta
+                                            {/* <Meta
                                                 title="Card title"
                                                 description="This is the description"
-                                            />
+                                            /> */}
                                             <p>Hi Ma'am! This is a great series that you have started. Just wanted to know how will this proceed? As in every time the question topic and difficulty level will be varied?</p>
                                         </Skeleton>
                                     </Card>
                                     {/* /cards */}
-
-                                    <Row>3 / 5</Row>
-                                    <Divider></Divider>
-                                    <Row>3 / 5</Row>
-                                    <Divider></Divider>
-                                    <Row>3 / 5</Row>
-                                    <Divider></Divider>
-                                    <Row>3 / 5</Row>
-                                    <Divider></Divider>
-                                    <Row>3 / 5</Row>
-                                    <Divider></Divider>
                                     <Row>3 / 5</Row>
                                     <Divider></Divider>
                                     <Row>3 / 5</Row>
@@ -191,7 +204,7 @@ class SiderDemo extends Component {
                                     <Row>3 / 5</Row>
                                     <Divider></Divider>
 
-                                    <Affix offsetBottom={15}>
+                                    {/* <Affix offsetBottom={0} style={{ position: 'absolute', bottom: '10%', width: '100%' }}>
                                         <span>
                                             <TextArea
                                                 id="new-message-textarea"
@@ -199,11 +212,24 @@ class SiderDemo extends Component {
                                                 onChange={this.onChange}
                                                 autoSize={{ minRows: 3, maxRows: 10 }}
                                                 // allowClear
-                                                className="textarea"
                                                 placeholder={`Message #channelName`}
                                             />
                                         </span>
+                                    </Affix> */}
+                                    <Affix offsetBottom={10}>
+                                        <span>
+                                            <TextArea
+                                                id="new-message-textarea"
+                                                value={value}
+                                                onChange={this.onChange}
+                                                autoSize={{ minRows: 3, maxRows: 10 }}
+                                                placeholder={`Message #channelName`}
+                                                allowClear
+                                            />
+                                        </span>
                                     </Affix>
+
+
 
                                 </Col>
                             </Row>
