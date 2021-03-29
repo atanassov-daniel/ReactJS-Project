@@ -6,6 +6,8 @@ import {
     Row, Col, Divider,
     Input,
     Affix,
+    PageHeader, Tag, Button,
+    Tooltip
 } from 'antd';
 // antd/lib/style/index.css
 // antd/lib/componentName/style/index.css
@@ -19,6 +21,7 @@ import {
     PlusOutlined,
     // PlusCircleTwoTone,
     PlusSquareFilled,
+    UserOutlined, AntDesignOutlined,
 } from '@ant-design/icons';
 
 import { Skeleton, Switch, Card, Avatar } from 'antd';
@@ -108,7 +111,8 @@ class SiderDemo extends Component {
                     </Sider>
 
                     <Layout className="site-layout" style={{ border: '5px solid red', backgroundColor: '#fff' }}>
-
+                        {/* &nbsp;11
+                    <PushpinOutlined /> */}
 
                         {/* <Header className="site-layout-background" style={{ padding: 0 }} /> */}
                         <Content id="col" style={{ margin: '0', height: '100%', border: '2.5px blue solid' }}>
@@ -121,16 +125,63 @@ class SiderDemo extends Component {
                             </div> */}
 
                             {/* here was the place for the cut code */}
+                            <PageHeader
+                                title={"#channel-name"}
+                                className="site-page-header"
+                                // subTitle="This is a subtitle"
+                                subTitle={<>
+                                    <span className="pins">
+                                        <svg t="1616961502181" className="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1112" width="16" height="16"><path d="M445.696 113.578667a96 96 0 0 0-130.346667-0.853334l-5.333333 5.290667L106.709333 334.933333a96 96 0 0 0 16.597334 145.408l5.845333 3.584 208.896 119.381334a32 32 0 0 1 11.946667 12.032l1.92 3.882666 76.885333 192.597334a32 32 0 0 0 48.938667 13.738666l3.413333-2.986666 138.112-138.069334 211.242667 211.626667L875.946667 896l-0.085334-45.013333-211.328-211.712 136.746667-136.661334a32 32 0 0 0-6.698667-50.346666l-4.053333-1.962667-191.786667-76.672a32 32 0 0 1-13.952-10.837333l-2.389333-3.84-117.632-220.501334a96 96 0 0 0-19.072-24.874666z m-292.266667 265.173333L356.693333 161.749333a32 32 0 0 1 49.749334 3.84l1.834666 2.986667 117.589334 220.501333c9.472 17.792 24.277333 32.042667 42.24 40.917334l6.826666 3.072 146.730667 58.624-251.477333 251.349333-58.88-147.498667a96 96 0 0 0-34.688-43.434666l-6.826667-4.309334-208.938667-119.381333a32 32 0 0 1-11.946666-43.648l2.090666-3.157333 2.389334-2.858667L356.693333 161.749333 153.429333 378.752z" p-id="1113" fill="#515151"></path></svg>
+
+                                        <span className="subtitle-pins">&nbsp;11 </span>
+                                    </span>
+                                    |
+                                    <span className="subtitle-add-topic"> Add topic</span>
+                                </>}
+                            >
+
+                                <Tooltip trigger="hover" placement="bottom" title={<>
+                                    <h4>View all 2061 members</h4>
+                                    <i>Includes Rajvat Ashikur, Anubhav Ajmera, and John Doe</i>
+                                </>}>
+                                <span>
+                                <Avatar.Group
+                                    maxCount={3}
+                                    maxStyle={{
+                                        color: '#f56a00',
+                                        backgroundColor: '#fde3cf',
+                                    }}
+                                >
+                                    <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                                    <Avatar
+                                        style={{
+                                            backgroundColor: '#f56a00',
+                                        }}
+                                    >
+                                        K
+                                    </Avatar>
+                                    <Avatar
+                                        style={{
+                                            backgroundColor: '#1890ff',
+                                        }}
+                                        icon={<AntDesignOutlined />}
+                                    />
+                                </Avatar.Group>
+
+                                    <strong>2061</strong>
+                                </span>
+                                </Tooltip>
+                            </PageHeader>
+
 
                             <Row style={{ height: '100%', width: '100%' }}>
                                 <Col
                                     flex={1}
                                     //!! style={{ border: '2.5px solid orange', height: '100%' }} -> the height: '100%' broke the scrollbar's css and it wouldn't scroll
-                                    style={{ border: '2.5px solid orange' }}
+                                    style={{ border: '2.5px solid orange', height: '65vh' }}
                                     className="column-with-slider"
                                 // scroll={{ x: 'calc(700px + 50%)', y: 240 }}
                                 >
-
                                     {/* cards */}
                                     <Switch checked={!loading} onChange={this.onLoadingChange} />
 
@@ -188,21 +239,53 @@ class SiderDemo extends Component {
                                             <p>Hi Ma'am! This is a great series that you have started. Just wanted to know how will this proceed? As in every time the question topic and difficulty level will be varied?</p>
                                         </Skeleton>
                                     </Card>
+
+
+
+                                    <Card
+                                        style={{ marginBottom: 5, height: '10vh', overflow: 'hidden' }} className={loading ? 'loading' : ''}
+                                    >
+                                        {/* !!! put a temporary class that makes it 30% height 
+                                        while loading and then when loading is done remove this
+                                        class so that it returns to its default height */}
+                                        <Skeleton loading={loading} active>
+                                            {/* <Meta
+                                                title="Card title"
+                                                description="This is the description"
+                                            /> */}
+                                            <p>Hi Ma'am! This is a great series that you have started. Just wanted to know how will this proceed? As in every time the question topic and difficulty level will be varied?</p>
+                                        </Skeleton>
+                                    </Card>
+                                    <Card
+                                        style={{ marginBottom: 5, height: '10vh', overflow: 'hidden' }} className={loading ? 'loading' : ''}
+                                    >
+                                        {/* !!! put a temporary class that makes it 30% height 
+                                        while loading and then when loading is done remove this
+                                        class so that it returns to its default height */}
+                                        <Skeleton loading={loading} active>
+                                            {/* <Meta
+                                                title="Card title"
+                                                description="This is the description"
+                                            /> */}
+                                            <p>Hi Ma'am! This is a great series that you have started. Just wanted to know how will this proceed? As in every time the question topic and difficulty level will be varied?</p>
+                                        </Skeleton>
+                                    </Card><Card
+                                        style={{ marginBottom: 5, height: '10vh', overflow: 'hidden' }} className={loading ? 'loading' : ''}
+                                    >
+                                        {/* !!! put a temporary class that makes it 30% height 
+                                        while loading and then when loading is done remove this
+                                        class so that it returns to its default height */}
+                                        <Skeleton loading={loading} active>
+                                            {/* <Meta
+                                                title="Card title"
+                                                description="This is the description"
+                                            /> */}
+                                            <p>Hi Ma'am! This is a great series that you have started. Just wanted to know how will this proceed? As in every time the question topic and difficulty level will be varied?</p>
+                                        </Skeleton>
+                                    </Card>
+
                                     {/* /cards */}
-                                    <Row>3 / 5</Row>
-                                    <Divider></Divider>
-                                    <Row>3 / 5</Row>
-                                    <Divider></Divider>
-                                    <Row>3 / 5</Row>
-                                    <Divider></Divider>
-                                    <Row>3 / 5</Row>
-                                    <Divider></Divider>
-                                    <Row>3 / 5</Row>
-                                    <Divider></Divider>
-                                    <Row>3 / 5</Row>
-                                    <Divider></Divider>
-                                    <Row>3 / 5</Row>
-                                    <Divider></Divider>
+
 
                                     {/* <Affix offsetBottom={0} style={{ position: 'absolute', bottom: '10%', width: '100%' }}>
                                         <span>
@@ -216,28 +299,39 @@ class SiderDemo extends Component {
                                             />
                                         </span>
                                     </Affix> */}
-                                    <Affix offsetBottom={10}>
+
+                                    {/*TODO The message textarea styling breaks when filled with a lot of text, opening/closing the sidebar fixes the problem */}
+                                    {/* <Affix offsetBottom={10}>
                                         <span>
                                             <TextArea
                                                 id="new-message-textarea"
                                                 value={value}
                                                 onChange={this.onChange}
-                                                autoSize={{ minRows: 3, maxRows: 10 }}
+                                                autoSize={{ minRows: 3, maxRows: 6 }}
                                                 placeholder={`Message #channelName`}
                                                 allowClear
                                             />
                                         </span>
-                                    </Affix>
-
-
-
+                                    </Affix> */}
                                 </Col>
                             </Row>
+                            <Affix offsetBottom={5}>
+                                <span>
+                                    <TextArea
+                                        id="new-message-textarea"
+                                        value={value}
+                                        onChange={this.onChange}
+                                        autoSize={{ minRows: 3, maxRows: 3 }}
+                                        placeholder={`Message #channelName`}
+                                        allowClear
+                                    />
+                                </span>
+                            </Affix>
                         </Content>
-
 
                         {/* <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer> */}
                     </Layout>
+
                 </Layout>
             </>);
     }
