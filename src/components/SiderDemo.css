@@ -212,3 +212,11 @@ span.pins:hover {
     border-right: 3px solid rgb(0 0 0 / 45%);
     border-bottom: 3px solid rgb(0 0 0 / 45%);
 }
+
+
+
+
+.ant-tooltip-inner {
+    margin: auto;
+    text-align: center;
+}
