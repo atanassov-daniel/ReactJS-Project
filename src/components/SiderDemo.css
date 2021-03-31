@@ -60,6 +60,8 @@
     /* position: fixed;
     bottom: 0; */
     background-color: yellow;
+
+    z-index: 1;
 }
 
 /* 
@@ -123,8 +125,8 @@ span[role="button"].anticon.anticon-close-circle.ant-input-clear-icon {
 }
 
 /* .site-page-header { */
-    /* border-right: 3px solid rgb(235, 237, 240); */
-    /* border-bottom: 3px solid rgb(235, 237, 240); */
+/* border-right: 3px solid rgb(235, 237, 240); */
+/* border-bottom: 3px solid rgb(235, 237, 240); */
 /*     border-right: 3px solid rgb(0 0 0 / 45%);
     border-bottom: 3px solid rgb(0 0 0 / 45%);
 } */
@@ -200,11 +202,11 @@ span.pins:hover {
 }
 
 
-.ant-page-header-heading{
+.ant-page-header-heading {
     float: left;
 }
 
-.ant-page-header-content{
+.ant-page-header-content {
     float: right;
 }
 
@@ -219,4 +221,21 @@ span.pins:hover {
 .ant-tooltip-inner {
     margin: auto;
     text-align: center;
+}
+
+
+
+
+div.ant-card.ant-card-bordered.loading>div.ant-card-body {
+/* div:not(.loading).ant-card.ant-card-bordered>div.ant-card-body { */
+    padding: 0;
+}
+
+div.ant-card.ant-card-bordered {
+    margin-bottom: 5px;
+}
+
+.loading {
+    height: 30%;
+    padding: 0px;
 }

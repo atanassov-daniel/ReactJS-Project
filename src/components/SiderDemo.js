@@ -8,7 +8,10 @@ import {
     Affix,
     PageHeader, Tag, Button,
     Tooltip,
-    Typography
+    Typography,
+
+
+    Popover
 } from 'antd';
 // antd/lib/style/index.css
 // antd/lib/componentName/style/index.css
@@ -25,6 +28,12 @@ import {
     UserOutlined, AntDesignOutlined,
     InfoCircleOutlined, UserAddOutlined,
 } from '@ant-design/icons';
+
+
+
+import { Route } from "react-router-dom";
+
+
 
 import { Skeleton, Switch, Card, Avatar } from 'antd';
 // import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
@@ -157,8 +166,8 @@ class SiderDemo extends Component {
                                     placement="bottom"
                                     title={
                                         <>
-                                            <h4 style={{color: 'white', marginBottom: '0px'}}>View all 2061 members</h4>
-                                            <i style={{color: 'lightgrey'}}>Includes Rajvat Ashikur, Anubhav Ajmera, and John Doe</i>
+                                            <h4 style={{ color: 'white', marginBottom: '0px' }}>View all 2061 members</h4>
+                                            <i style={{ color: 'lightgrey' }}>Includes Rajvat Ashikur, Anubhav Ajmera, and John Doe</i>
                                         </>
                                     }
                                 >
@@ -169,7 +178,7 @@ class SiderDemo extends Component {
                                                 color: '#f56a00',
                                                 backgroundColor: '#fde3cf',
                                             }}
-                                            style={{float: 'left'}}
+                                            style={{ float: 'left' }}
                                         >
                                             <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
                                             <Avatar
@@ -196,8 +205,8 @@ class SiderDemo extends Component {
                                         </Text>
                                     </span>
                                 </Tooltip>
-                                
-                                <UserAddOutlined  style={{
+
+                                <UserAddOutlined style={{
                                     float: 'left',
                                     marginBlock: '-2%',
                                     marginLeft: "1em",
@@ -215,21 +224,31 @@ class SiderDemo extends Component {
                                     borderRadius: '3px',
                                     backgroundColor: 'lightgrey',
                                 }} />
-                                
+
                             </PageHeader>
+
+
 
                             <Row style={{ height: '100%', width: '100%' }}>
                                 <Col
-                                    flex={1}
+                                    // flex={3}
+                                    // flex={1}
+                                    // span={16}
+                                    span={24}
                                     //!! style={{ border: '2.5px solid orange', height: '100%' }} -> the height: '100%' broke the scrollbar's css and it wouldn't scroll
-                                    style={{ border: '2.5px solid orange', height: '65vh' }}
+                                    style={{ border: '2.5px solid orange', height: '60vh' }}
                                     className="column-with-slider"
+                                    id="messages-container"
                                 // scroll={{ x: 'calc(700px + 50%)', y: 240 }}
                                 >
+
+
                                     {/* cards */}
                                     <Switch checked={!loading} onChange={this.onLoadingChange} />
 
                                     <Card
+                                        // style={{ height: '30%', padding: '0px' }}
+                                        className={loading ? 'loading' : ''}
                                     // style={{ width: '90%', marginTop: 16 }}
                                     // style={{ width: '98%', margin: 'auto' }}
                                     /* actions={[
@@ -249,10 +268,12 @@ class SiderDemo extends Component {
 
 
                                             <Row>
-                                                <Col span={2}>
+                                                {/* <Col span={2}>   when addding the details, the style broke and the image would show under a part of the author's name */}
+                                                <Col span={3}>
                                                     <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" shape="square" size={50} alt="user profile image" className="message-card-avatar" />
                                                 </Col>
-                                                <Col span={22}>
+                                                {/* <Col span={22}>  when addding the details, the style broke and the image would show under a part of the author's name */}
+                                                <Col span={21}>
                                                     {/* <span className="message-card-text"> */}
                                                     <h3 className="message-author">Ajvar Shri Lanka</h3>
                                                     <span className="message-timestamp">15:18</span>
@@ -358,9 +379,82 @@ class SiderDemo extends Component {
                                         </span>
                                     </Affix> */}
                                 </Col>
+
+                                {/* <Route path="/details">
+                                    <Col
+                                        // flex={0.5}
+                                        // flex={2}
+                                        span={8}
+                                        style={{ border: '2.5px solid black', height: '60vh' }}
+                                        className="column-with-slider"
+                                        id="second-column"
+                                    >
+                                        <Card
+                                            style={{ marginBottom: 5, height: '10vh', overflow: 'hidden' }} className={loading ? 'loading' : ''}
+                                        >
+                                            <Skeleton loading={loading} active>
+                                                <p>Hi Ma'am! This is a great series that you have started. Just wanted to know how will this proceed? As in every time the question topic and difficulty level will be varied?</p>
+                                            </Skeleton>
+                                        </Card>
+                                    </Col>
+                                </Route> */}
+                                <Route
+                                    path="/details"
+                                    render={(props) => {
+                                        document.getElementById('messages-container')?.classList.remove('ant-col-24'); // on the initial load of /details the DOM with the messages-container hasn't yet loaded, hence why the nedd for the optional chaining
+                                        document.getElementById('messages-container')?.classList.add('ant-col-16');
+
+                                        return (
+                                            <Col
+                                                span={8}
+                                                style={{ border: '2.5px solid black', height: '60vh' }}
+                                                className="column-with-slider"
+                                                id="second-column"
+                                            >
+                                                <Card
+                                                    style={{ marginBottom: 5, height: '10vh', overflow: 'hidden' }} className={loading ? 'loading' : ''}
+                                                >
+                                                    <Skeleton loading={loading} active>
+                                                        <p>Hi Ma'am! This is a great series that you have started. Just wanted to know how will this proceed? As in every time the question topic and difficulty level will be varied?</p>
+                                                    </Skeleton>
+                                                </Card>
+                                            </Col>
+                                        );
+                                    }}
+                                />
+
                             </Row>
                             <Affix offsetBottom={5}>
+
                                 <span>
+                                    <Button
+                                        onClick={(e) => {
+                                            const textarea = document.getElementById('new-message-textarea');
+                                            const messagesContainer = document.getElementById('messages-container');
+                                            const clearTextareaButton = document.querySelector('span[role="button"][aria-label="close-circle"][tabindex="-1"].anticon.anticon-close-circle.ant-input-clear-icon');
+
+                                            if (textarea.style.display === 'none') {
+                                                textarea.style.display = 'block';
+                                                clearTextareaButton.style.display = 'block';
+
+                                                messagesContainer.style.height = '60vh';
+                                            } else {
+                                                textarea.style.display = 'none';
+                                                clearTextareaButton.style.display = 'none';
+
+                                                messagesContainer.style.height = '76vh';
+                                            }
+                                        }}
+                                        // style={{ transform: 'rotate(-90deg) translateX(-54px)translateY(-18px)', zIndex: 2 }}
+                                        style={{
+                                            transform: 'rotate(-90deg) translateX(-54px)translateY(-23px)', zIndex: 2, height: '24%',
+                                            padding: '0px 3px'
+                                        }} // for the smaller button, it has to go a little to the left
+                                    // z-index: 2 so that the button stays above the textarea(which has the z-index: 1)
+                                    >
+                                        {/* Messa */}
+                                        New <MessageOutlined />
+                                    </Button>
                                     <TextArea
                                         id="new-message-textarea"
                                         value={value}
