@@ -1,0 +1,241 @@
+/* .logo {
+    height: 32px;
+    margin: 16px;
+    background: rgba(255, 255, 255, 0.3);
+} */
+
+.site-layout .site-layout-background {
+    background: #fff;
+}
+
+.site-layout-background {
+    min-height: 8vh;
+    max-height: 8vh;
+}
+
+[data-theme="dark"] .site-layout .site-layout-background {
+    background: #141414;
+}
+
+.sidebar {
+    /* min-width: 50px;
+    max-width: 50px;
+    width: 50px; */
+    border-top: 1px red solid;
+}
+
+/* .ant-col, */
+.column-with-slider,
+.ant-layout-sider-children {
+    /* #col, .ant-layout-sider-children { */
+    /* background-color: red; */
+    /* padding: 17px 0 17px 17px; */
+    /* width: 300px; */
+    height: 100vh;
+    overflow-y: scroll;
+    mask-image: linear-gradient(to top, transparent, black), linear-gradient(to left, transparent 17px, black 17px);
+    -webkit-mask-image: linear-gradient(to top, transparent, black), linear-gradient(to left, transparent 17px, black 17px);
+    mask-size: 100% 20000px;
+    -webkit-mask-size: 100% 20000px;
+    mask-position: left bottom;
+    -webkit-mask-position: left bottom;
+    transition: mask-position 0.3s, -webkit-mask-position 0.3s;
+}
+
+/* .ant-col, */
+.column-with-slider:hover,
+.ant-layout-sider-children:hover {
+    /* #col:hover { */
+    /* background-color: black; */
+    mask-position: left top;
+    -webkit-mask-position: left top;
+}
+
+#new-message-textarea {
+    /* display: block; */
+    width: 95%;
+    margin: auto;
+    border: 1px solid grey;
+
+    /* position: fixed;
+    bottom: 0; */
+    background-color: yellow;
+
+    z-index: 1;
+}
+
+/* 
+#new-message-textarea {
+    position: fixed;
+    bottom: 5%;
+    display: block;
+    width: 95%;
+    margin: 0 auto;
+    border: 1px solid grey;
+
+}
+
+.ant-card {
+    width: 99%;
+    margin: auto;
+}
+*/
+
+.loading {
+    background-color: red;
+}
+
+.message-card-avatar {
+    float: left;
+    display: inline;
+}
+
+.message-card-text {
+    display: inline;
+}
+
+.message-timestamp {
+    cursor: pointer;
+    font-size: 12px;
+    text-decoration: underline;
+}
+
+.message-author {
+    display: inline;
+    margin-right: .5em;
+}
+
+/*! this is the message textarea's Clear Button */
+span[role="button"].anticon.anticon-close-circle.ant-input-clear-icon {
+    font-size: 25px;
+    /* transform: translateY(-30%) translateX(-41%); */
+    transform: translate(-41%, -30%);
+}
+
+.ant-input-affix-wrapper {
+    background: none;
+}
+
+
+/* start pageHeader demo */
+.image {
+    display: flex;
+    align-items: center;
+    margin: 0 0 0 60px;
+}
+
+/* .site-page-header { */
+/* border-right: 3px solid rgb(235, 237, 240); */
+/* border-bottom: 3px solid rgb(235, 237, 240); */
+/*     border-right: 3px solid rgb(0 0 0 / 45%);
+    border-bottom: 3px solid rgb(0 0 0 / 45%);
+} */
+
+.ant-page-header-rtl .image {
+    margin: 0 60px 0 0;
+}
+
+.example-link {
+    margin-right: 16px;
+    line-height: 24px;
+}
+
+[data-theme='compact'] .example-link {
+    line-height: 20px;
+}
+
+.example-link-icon {
+    margin-right: 8px;
+}
+
+[data-theme='compact'] .example-link-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.ant-page-header-rtl .example-link {
+    float: right;
+    margin-right: 0;
+    margin-left: 16px;
+}
+
+.ant-page-header-rtl .example-link-icon {
+    margin-right: 0;
+    margin-left: 8px;
+}
+
+@media (max-width: 768px) {
+    .image {
+        flex: 100%;
+        margin: 24px 0 0;
+    }
+}
+
+.ant-page-header-heading,
+.ant-page-header,
+.ant-page-header-heading,
+.ant-page-header-heading-left {
+    padding-top: 0px;
+    margin-top: 0px;
+    padding: 0.2%;
+    padding-left: 1%;
+    display: block;
+}
+
+/* .ant-page-header-heading-title {
+    margin-left: 3%;
+} */
+
+.ant-page-header-heading-sub-title {
+    display: block;
+    color: rgba(0, 0, 0, .45);
+}
+
+svg.icon path:hover {
+    fill: blue;
+    cursor: pointer;
+}
+
+span.pins:hover {
+    color: blue;
+    cursor: pointer;
+}
+
+
+.ant-page-header-heading {
+    float: left;
+}
+
+.ant-page-header-content {
+    float: right;
+}
+
+.ant-page-header {
+    border-right: 3px solid rgb(0 0 0 / 45%);
+    border-bottom: 3px solid rgb(0 0 0 / 45%);
+}
+
+
+
+
+.ant-tooltip-inner {
+    margin: auto;
+    text-align: center;
+}
+
+
+
+
+div.ant-card.ant-card-bordered.loading>div.ant-card-body {
+/* div:not(.loading).ant-card.ant-card-bordered>div.ant-card-body { */
+    padding: 0;
+}
+
+div.ant-card.ant-card-bordered {
+    margin-bottom: 5px;
+}
+
+.loading {
+    height: 30%;
+    padding: 0px;
+}
