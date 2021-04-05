@@ -1,9 +1,3 @@
-/* .logo {
-    height: 32px;
-    margin: 16px;
-    background: rgba(255, 255, 255, 0.3);
-} */
-
 .site-layout .site-layout-background {
     background: #fff;
 }
@@ -227,7 +221,7 @@ span.pins:hover {
 
 
 div.ant-card.ant-card-bordered.loading>div.ant-card-body {
-/* div:not(.loading).ant-card.ant-card-bordered>div.ant-card-body { */
+    /* div:not(.loading).ant-card.ant-card-bordered>div.ant-card-body { */
     padding: 0;
 }
 

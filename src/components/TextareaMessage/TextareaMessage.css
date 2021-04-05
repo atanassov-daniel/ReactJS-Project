@@ -1,0 +1,36 @@
+/* Controls styles */
+/* div.new-message-textarea-controls { */
+ul.ul-controls {
+    width: 95%;
+    margin: auto;
+    /* display: inline; */
+}
+
+ul.ul-controls {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul.ul-controls>li.action {
+    margin-right: 7px;
+    display: inline;
+    padding: 5px;
+}
+
+ul.ul-controls>li.action:hover {
+    color: blue;
+    background-color: lightgrey;
+}
+
+ul.ul-controls>li.action:first-child {
+    color: black;
+    margin-left: 5px;
+}
+
+ul.ul-controls>li.action:last-child {
+    color: red;
+    float: right;
+}
+
+/* end Controls styles */

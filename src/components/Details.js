@@ -2,7 +2,8 @@ import { Col } from 'antd';
 
 function Details(props) {
     if (document.getElementById('messages-container') === null) setTimeout(() => {
-        const messagesContainer = document.getElementById('messages-container');
+        // const messagesContainer = document.getElementById('messages-container');
+        const messagesContainer = document.getElementById('first-column');
 
         messagesContainer?.classList.remove('ant-col-24'); // on the initial load of /details the DOM with the messages-container hasn't yet loaded, hence why the nedd for the optional chaining
         messagesContainer?.classList.add('ant-col-16');

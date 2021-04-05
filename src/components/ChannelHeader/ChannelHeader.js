@@ -47,7 +47,7 @@ export default class ChannelHeader extends Component {
                                 color: '#f56a00',
                                 backgroundColor: '#fde3cf',
                             }}
-                            style={{ float: 'left' }}
+                            style={{ float: 'left', display: 'none' }}
                         >
                             <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
                             <Avatar
