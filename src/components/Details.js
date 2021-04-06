@@ -1,7 +1,8 @@
 import { Col } from 'antd';
 
 function Details(props) {
-    if (document.getElementById('messages-container') === null) setTimeout(() => {
+    // if (document.getElementById('messages-container') === null) setTimeout(() => {
+    if (document.getElementById('first-column') === null) setTimeout(() => {
         // const messagesContainer = document.getElementById('messages-container');
         const messagesContainer = document.getElementById('first-column');
 

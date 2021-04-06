@@ -1,8 +1,16 @@
+/* ! for the new Textarea button that actually isnot inside of the Affix, but outside of it, so that I can simply hide the whole textarea with all the buttons inside of it directly */
+.ant-affix {
+    z-index: auto;
+}
+
 /* Controls styles */
 /* div.new-message-textarea-controls { */
 ul.ul-controls {
-    width: 95%;
+    /* width: 95%; */
+    /* width: 75%; */
+    /* width: 80vw; */
     margin: auto;
+    margin-left: 1%;
     /* display: inline; */
 }
 
@@ -25,12 +33,21 @@ ul.ul-controls>li.action:hover {
 
 ul.ul-controls>li.action:first-child {
     color: black;
-    margin-left: 5px;
+    /* margin-left: 5px; */
+    margin-left: 15px;
 }
 
 ul.ul-controls>li.action:last-child {
-    color: red;
+    color: white;
+    background-color: green;
     float: right;
+    /* margin-left: 550px; */
+    /* transform: translateX(-110%) translateY(-17%); */
+}
+
+ul.ul-controls>li.action:last-child:hover {
+    opacity: 0.65;
+    
 }
 
 /* end Controls styles */
