@@ -75,9 +75,6 @@
 }
 */
 
-.loading {
-    background-color: red;
-}
 
 .message-card-avatar {
     float: left;
@@ -230,6 +227,8 @@ div.ant-card.ant-card-bordered {
 }
 
 .loading {
-    height: 30%;
+    height: 20%;
     padding: 0px;
+    background-color: red;
+    overflow: hidden; /* otherwise the two empty loading rows would show outside of their card container */
 }
