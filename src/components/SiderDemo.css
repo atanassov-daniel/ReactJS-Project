@@ -85,15 +85,17 @@
     display: inline;
 }
 
-.message-timestamp {
+/** .message-timestamp -> for the previous implementation with Row and Col */
+.ant-card-meta-description {
     cursor: pointer;
     font-size: 12px;
     text-decoration: underline;
 }
 
-.message-author {
+/** .message-author -> for the previous implementation with Row and Col */
+.ant-card-meta-title {
     display: inline;
-    margin-right: .5em;
+    margin-right: .2em;
 }
 
 /*! this is the message textarea's Clear Button */
@@ -230,5 +232,6 @@ div.ant-card.ant-card-bordered {
     height: 20%;
     padding: 0px;
     background-color: red;
-    overflow: hidden; /* otherwise the two empty loading rows would show outside of their card container */
+    overflow: hidden;
+    /* otherwise the two empty loading rows would show outside of their card container */
 }
