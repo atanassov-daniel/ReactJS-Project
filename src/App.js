@@ -8,6 +8,7 @@ import Channel from './components/Channel/Channel';
 import Messages from './components/Messages/Messages';
 import TextareaMessage from './components/TextareaMessage/TextareaMessage';
 import Details from './components/Details';
+import Scroll from './components/Scroll';
 const { Header, Content } = Layout;
 
 function App() {
@@ -42,6 +43,17 @@ function App() {
                                 path="/details"
                                 component={Details}
                             />
+                            <Route path="/" exact>
+                                <Col
+                                    span={24}
+                                    style={{ border: '2.5px solid orange', height: '60vh' }} //!! the height: '100%' broke the scrollbar's css and it wouldn't scroll
+                                    className="column-with-slider"
+                                    // id="messages-container"
+                                    id="first-column"
+                                >
+                                    <Scroll />
+                                </Col>
+                            </Route>
                         </Row>
 
 

@@ -9,9 +9,9 @@ class Channel extends Component {
         return (
             <>
                 <ChannelHeader />
-                <Link to="/messages"> messages </Link>
+                {/* <Link to="/messages"> messages </Link>
                 <Link to="/details"> details </Link>
-                <Link to="/"> homepage </Link>
+                <Link to="/"> homepage </Link> */}
             </>
         );
     }

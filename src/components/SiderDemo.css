@@ -76,14 +76,14 @@
 */
 
 
-.message-card-avatar {
+/* .message-card-avatar {
     float: left;
     display: inline;
 }
 
 .message-card-text {
     display: inline;
-}
+} */
 
 /** .message-timestamp -> for the previous implementation with Row and Col */
 .ant-card-meta-description {
@@ -231,7 +231,7 @@ div.ant-card.ant-card-bordered {
 .loading {
     height: 20%;
     padding: 0px;
-    background-color: red;
+    /* background-color: red; */
     overflow: hidden;
     /* otherwise the two empty loading rows would show outside of their card container */
 }
