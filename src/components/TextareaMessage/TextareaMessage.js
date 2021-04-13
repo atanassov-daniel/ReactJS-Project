@@ -6,14 +6,59 @@ import './TextareaMessage.css';
 
 const { TextArea } = Input;
 
+const countLinesOfText = (textareaEl) => {
+    const previousHeight = textareaEl.style.height;
+    textareaEl.style.height = 0; // without this
+    const lines = parseInt(textareaEl.scrollHeight / parseInt(getComputedStyle(textareaEl).lineHeight));
+    textareaEl.style.height = previousHeight; // and this line there were inaccuracies when deleting rows(the time the row gets deleted, the rows count wouldn't change, not until I type an interval would it change)
+
+    return lines;
+};
+
 class TextareaMessage extends Component {
     state = {
         value: ''
     }
 
+    /* //**  with the following implementation, the textarea would correctly expand up when the rows increased, but wouldn't get back down when the rows decrease
     onChange = ({ target: { value } }) => {
-        this.setState({ value });
-    };
+        const textareaEl = document.getElementById('new-message-textarea');
+
+        const oldRows = this.rows || 1;
+
+        this.setState({ value }); // console.log(value);
+
+        this.rows = countLinesOfText(textareaEl);
+        if (oldRows < this.rows && this.rows <= 4) {
+            // textareaEl.style.transform = 'translateY(-25px)'; // 'translateY(-25px)' textareaEl.style.transform.match(/\d+/g)
+            let oldTransform = textareaEl.style.transform;
+
+            const translateYMatch = oldTransform.match(/translateY\(-(?<yTranslateVal>\d+)px\)/);
+            if (translateYMatch === null) {
+                oldTransform = oldTransform.concat(' translateY(-0px)');
+            }
+
+            const newVal = Number(translateYMatch?.groups.yTranslateVal || 0) + 22; // it was ' + 25' before
+
+            textareaEl.style.transform = oldTransform.replace(/(?<=translateY\(-)(?<yTranslateVal>\d+)(?=px\))/, newVal);
+        }
+        console.log(oldRows + "///\///\///" + this.rows);
+    } */
+    onChange = ({ target: { value } }) => {
+        this.setState({ value }); // console.log(value);
+
+        const yValues = { 1: 0, 2: -22, 3: -44, 4: -66 };
+
+        const textareaEl = document.getElementById('new-message-textarea');
+        const rows = countLinesOfText(textareaEl); // console.log(rows);
+
+        textareaEl.style.transform = textareaEl.style.transform.replace(/(?<=translateY\()(?<yTranslateVal>[-]*\d+)(?=px\))/, yValues[rows]);
+        // translate(-41%) translateY(calc(-30% - `yValues[rows]`px))    -> so that the clear icon will always move to stay at the top of the textarea
+    }
+
+    componentDidMount() {
+        document.getElementById('new-message-textarea').style.transform = 'translateY(-0px)';
+    }
 
     render() {
         const { value } = this.state;
@@ -52,16 +97,17 @@ class TextareaMessage extends Component {
                 >
                     New <MessageOutlined />
                 </Button>
-                <Affix offsetBottom={5}>
+                <Affix offsetBottom={25}>
                     <span>
 
                         <TextArea
                             id="new-message-textarea"
                             value={value}
                             onChange={this.onChange}
-                            autoSize={{ minRows: 3, maxRows: 3 }}
+                            autoSize={{ minRows: 1, maxRows: 4 }}
                             placeholder={`Message #channelName`}
                             allowClear
+                            style={{ transform: 'translateY(-0px)', color: 'red' }}
                         />
 
                         {/* <Affix offsetBottom={30}>

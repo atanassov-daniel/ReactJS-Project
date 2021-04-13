@@ -1,9 +1,10 @@
-import { Component, createRef } from 'react';
+import { Component } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 //!!!! with the current implementation if I delete a message from the DB it will suddenly disappear from the page too
-
 import { Skeleton, Card, Avatar, Image } from 'antd';
+
+import './Messages.css'
 // import { SettingOutlined, EditOutlined, EllipsisOutlined } from '@ant-design/icons';
 const { Meta } = Card;
 
@@ -27,43 +28,14 @@ class Messages extends Component {
             loading: true,
             messages: [],
         };
-
-        this.firstElFromBatch = createRef();
     }
 
     componentDidMount() {
-        /* this.unsubscribe = db.collection(`teams/#codewithsimran/channels/#general/posts`)
+        this.unsubscribe = db
+            .collection(`teams/#codewithsimran/channels/#general/posts`)
             .orderBy('createdAt', 'desc')
             .onSnapshot((querySnapshot) => {
-                const messages = [];
-                querySnapshot.forEach(doc => {
-                    const id = doc.id;
-                    doc = doc.data();
-                    doc.key = id;
-                    const createdAt = doc.createdAt.toDate();
-                    const date = `${createdAt.getHours()}:${createdAt.getMinutes()}, ${createdAt.toGMTString().split(', ')[1].split(' ').splice(0, 3).join(' ')}`;
-                    doc.createdAt = date;
-
-                    messages.push(doc);
-                });
-
-                messages.reverse();
-
-                if (this.state.messages.length === 0) {
-                    this.setState((prevState) => ({ messages: messages }));
-                    document.getElementById('first-column').scrollTop = document.getElementById('first-column').scrollHeight; // so that only on the first fetch of the messages the messages container will get automatically scrolled to its very bottom
-                } else this.setState((prevState) => ({ messages: messages }));
-                this.setState({ loading: false });
-                console.log(this.state.messages);
-            }); */
-
-        this.unsubscribe = db.collection(`teams/#codewithsimran/channels/#general/posts`)
-            .orderBy('createdAt', 'desc')
-            .limit(3)
-            /* .get()
-            .then((querySnapshot) => { */
-            .onSnapshot((querySnapshot) => {
-                this.lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1].id;
+                console.log(querySnapshot.docs.length);
 
                 const messages = [];
                 querySnapshot.forEach(doc => {
@@ -74,59 +46,32 @@ class Messages extends Component {
                     const date = `${createdAt.getHours()}:${createdAt.getMinutes()}, ${createdAt.toGMTString().split(', ')[1].split(' ').splice(0, 3).join(' ')}`;
                     doc.createdAt = date;
 
-                    messages.push(doc);
+                    messages.unshift(doc);
                 });
 
-                messages.reverse();
+                this.isFirstLoad = this.state.messages.length === 0;
 
-                if (this.state.messages.length === 0) {
-                    this.setState((prevState) => ({ messages: messages }));
-                    document.getElementById('first-column').scrollTop = document.getElementById('first-column').scrollHeight; // so that only on the first fetch of the messages the messages container will get automatically scrolled to its very bottom
-                } else this.setState((prevState) => ({ messages: messages }));
-                this.setState({ loading: false });
-                console.log(this.state.messages);
+                this.setState(
+                    () => ({ messages: messages }),
+                    () => {
+                        this.setState({ loading: false });
+                        // if (this.isFirstLoad) document.getElementById('first-column').scrollTop = document.getElementById('first-column').scrollHeight; // so that only on the first fetch of the messages the messages container will get automatically scrolled to its very bottom
 
-                setTimeout(() => {
-                    console.log('after 10 000 seconds');
 
-                    db.collection(`teams/#codewithsimran/channels/#general/posts`)
-                        .orderBy('createdAt', 'desc')
-                        .startAfter(this.lastVisible)
-                        .limit(5)
-                        .get()
-                        .then((querySnapshot) => {
-                            // this.lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1].id;
-                            const messages = [];
-                            // let firstMessage;
-                            querySnapshot.forEach((doc, index) => {
-                                const id = doc.id;
-                                // if (index === 0) firstMessage = id;
-                                doc = doc.data();
-                                doc.key = id;
-                                const createdAt = doc.createdAt.toDate();
-                                const date = `${createdAt.getHours()}:${createdAt.getMinutes()}, ${createdAt.toGMTString().split(', ')[1].split(' ').splice(0, 3).join(' ')}`;
-                                doc.createdAt = date;
-
-                                messages.push(doc);
-                            });
-
-                            messages.reverse();
-
-                            if (this.state.messages.length === 0) {
-                                this.setState((prevState) => ({ messages: messages }));
-                                document.getElementById('first-column').scrollTop = document.getElementById('first-column').scrollHeight; // so that only on the first fetch of the messages the messages container will get automatically scrolled to its very bottom
-                            } else this.setState((prevState) => ({ messages: messages }));
-                            this.setState({ loading: false });
-                            console.log(messages);
-                        });
-                }, 10000);
+                        console.log(this.state.messages);
+                    });
             });
+    }
+
+    componentDidUpdate() {
+        if (this.isFirstLoad) document.getElementById('first-column').scrollTop = document.getElementById('first-column').scrollHeight;
+        // document.getElementById('first-column').scrollTop = 100000;
     }
 
     componentWillUnmount() {
         // !!!!!!!!!!!!!!!!!!! if I don't unsubscribe from the Firestore listener, after the unmounting of the component it keeps on working and giving me updates and leads to React giving me the following warning in the console: 
         //* index.js:1 Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in the componentWillUnmount method.
-        // this.unsubscribe();
+        this.unsubscribe();
     }
 
     render() {

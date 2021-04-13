@@ -102,7 +102,7 @@
 span[role="button"].anticon.anticon-close-circle.ant-input-clear-icon {
     font-size: 25px;
     /* transform: translateY(-30%) translateX(-41%); */
-    transform: translate(-41%, -30%);
+    /* transform: translate(-41%, -30%); */
 }
 
 .ant-input-affix-wrapper {

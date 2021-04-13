@@ -40,7 +40,7 @@ ul.ul-controls>li.action:first-child {
 ul.ul-controls>li.action:last-child {
     color: white;
     background-color: green;
-    float: right;
+    /* float: right; */
     /* margin-left: 550px; */
     /* transform: translateX(-110%) translateY(-17%); */
 }
