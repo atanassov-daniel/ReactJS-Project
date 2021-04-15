@@ -47,17 +47,23 @@ class TextareaMessage extends Component {
     onChange = ({ target: { value } }) => {
         this.setState({ value }); // console.log(value);
 
-        const yValues = { 1: 0, 2: -22, 3: -44, 4: -66 };
+        const yValues = { 1: 0, 2: -22, 3: -44, 4: -66, 5: -88, 6: -110, 7: -132, 8: -154 };
+        const lastCardMarginBottom = { 1: 0, 2: 0, 3: 3, 4: 6, 5: 10, 6: 14, 7: 17, 8: 21 }
 
         const textareaEl = document.getElementById('new-message-textarea');
         const rows = countLinesOfText(textareaEl); // console.log(rows);
 
         textareaEl.style.transform = textareaEl.style.transform.replace(/(?<=translateY\()(?<yTranslateVal>[-]*\d+)(?=px\))/, yValues[rows]);
         // translate(-41%) translateY(calc(-30% - `yValues[rows]`px))    -> so that the clear icon will always move to stay at the top of the textarea
+        document.querySelector('div.ant-card.ant-card-bordered:last-child').style.marginBottom = lastCardMarginBottom[rows] + "%";
     }
 
     componentDidMount() {
         document.getElementById('new-message-textarea').style.transform = 'translateY(-0px)';
+
+        document.querySelector('span[role="button"].anticon.anticon-close-circle.ant-input-clear-icon').addEventListener('click', (e) => {
+            document.getElementById('new-message-textarea').focus();
+        });
     }
 
     render() {
@@ -104,7 +110,7 @@ class TextareaMessage extends Component {
                             id="new-message-textarea"
                             value={value}
                             onChange={this.onChange}
-                            autoSize={{ minRows: 1, maxRows: 4 }}
+                            autoSize={{ minRows: 1, maxRows: 8 }}
                             placeholder={`Message #channelName`}
                             allowClear
                             style={{ transform: 'translateY(-0px)', color: 'red' }}

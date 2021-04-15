@@ -1,3 +1,8 @@
-div.ant-card-body:last-of-type {
-    margin-bottom: 5%;
+/** so that there is enough space for the whole last card to be seen when the textarea expands to 4 rows */
+div.ant-card.ant-card-bordered:last-child {
+    margin-bottom: 0%;
+}
+
+div.ant-card-body {
+    padding-bottom: initial;
 }

@@ -3,6 +3,8 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 //!!!! with the current implementation if I delete a message from the DB it will suddenly disappear from the page too
 import { Skeleton, Card, Avatar, Image } from 'antd';
+import { SettingOutlined, EllipsisOutlined, EditOutlined } from '@ant-design/icons';
+
 
 import './Messages.css'
 // import { SettingOutlined, EditOutlined, EllipsisOutlined } from '@ant-design/icons';
@@ -54,11 +56,7 @@ class Messages extends Component {
                 this.setState(
                     () => ({ messages: messages }),
                     () => {
-                        this.setState({ loading: false });
-                        // if (this.isFirstLoad) document.getElementById('first-column').scrollTop = document.getElementById('first-column').scrollHeight; // so that only on the first fetch of the messages the messages container will get automatically scrolled to its very bottom
-
-
-                        console.log(this.state.messages);
+                        this.setState({ loading: false }); // if (this.isFirstLoad) document.getElementById('first-column').scrollTop = document.getElementById('first-column').scrollHeight; // so that only on the first fetch of the messages the messages container will get automatically scrolled to its very bottom     // console.log(this.state.messages);
                     });
             });
     }
@@ -89,11 +87,11 @@ class Messages extends Component {
                     <Card
                         key={message.key}
                         className={loading ? 'loading' : ''}
-                    /* actions={[
-                        <SettingOutlined key="setting" />,
-                        <EditOutlined key="edit" />,
-                        <EllipsisOutlined key="ellipsis" />,
-                    ]} */
+                        actions={[
+                            <SettingOutlined key="setting" />,
+                            <EditOutlined key="edit" />,
+                            <EllipsisOutlined key="ellipsis" />,
+                        ]}
                     >
                         <Skeleton loading={loading} avatar active>
                             <Meta
