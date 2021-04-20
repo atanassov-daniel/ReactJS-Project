@@ -1,16 +1,18 @@
 import { Component } from 'react';
-import firebase from 'firebase/app';
-import 'firebase/firestore';
+/* import firebase from 'firebase/app';
+import 'firebase/firestore'; */
+//* 
+import { db } from '../../utils/firebase';
+//* 
 //!!!! with the current implementation if I delete a message from the DB it will suddenly disappear from the page too
 import { Skeleton, Card, Avatar, Image } from 'antd';
 import { SettingOutlined, EllipsisOutlined, EditOutlined } from '@ant-design/icons';
-
 
 import './Messages.css'
 // import { SettingOutlined, EditOutlined, EllipsisOutlined } from '@ant-design/icons';
 const { Meta } = Card;
 
-// Initialize Cloud Firestore through Firebase
+/* // Initialize Cloud Firestore through Firebase
 firebase.initializeApp({
     apiKey: "AIzaSyBg39vkJc3CaI-J6bnevQPMPILG8PWmzyI",
     authDomain: "slack-app-1d097.firebaseapp.com",
@@ -20,7 +22,7 @@ firebase.initializeApp({
     appId: "1:222925739959:web:afcdf3e05cf61fa02e7a32"
 });
 
-let db = firebase.firestore();
+let db = firebase.firestore(); */
 
 class Messages extends Component {
     constructor(props) {
@@ -73,6 +75,9 @@ class Messages extends Component {
     }
 
     render() {
+        console.log('messages props');
+        console.log(this.props);
+
         const skeletonInitialLoad = (
             // <Card className="loading">
             <Skeleton loading={true} avatar active className="loading" />

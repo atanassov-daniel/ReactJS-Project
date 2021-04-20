@@ -11,10 +11,12 @@
     composes: marginBottom5;
     height: fit-content;
     width: 100%;
+    border-color: darkgray;
     /* margin: auto; */
 }
 
-.emailInput:focus {
+/*!! otherwise when it was just :focus the style wouldn't apply to the password input, just to the email one */
+.emailInput:focus-within {
     border-color: #096dd9;
     border-width: 1.5px;
     /* border-right-width: 1px!important; */
@@ -64,6 +66,44 @@
     color: #4285f4;
 }
 
-.foc:focus {
-    background-color: rgb(78, 0, 78, 0.5);
+.signInEmailButton {
+    background-color: #4e004e;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 10%;
+    border-color: #4e004e;
+}
+
+/*!! using :focus  it didn't work, because my value got substituted by the 
+default value that comes with the component's CSS  */
+.signInEmailButton:hover {
+    background-color: rgb(78, 0, 78, 0.85);
+    /* border: 3px solid red; */
+    box-shadow: 0px 0px 5px 5px teal;
+    /* box-shadow: inset 0px 0px 5px 0px; */
+}
+
+.createAccountBlock {
+    display: none;
+}
+
+@media only screen and (max-width: 450px) {
+    .contentWrapper {
+        width: 99%;
+    }
+
+    .imageColumn {
+        /* float: none; */
+        margin: auto;
+        max-width: fit-content;
+    }
+
+    .createAccountColumn {
+        display: none;
+    }
+
+    .createAccountBlock {
+        display: block;
+        margin-top: 10%;
+    }
 }

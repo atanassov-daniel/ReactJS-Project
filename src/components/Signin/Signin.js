@@ -16,9 +16,30 @@ class Signin extends Component {
                     <Col span={24} className={styles.mainContainer}>
 
                         <div className={styles.contentWrapper}>
-                            <Image style={{ width: 'auto', marginTop: '20%' }} src="https://a.slack-edge.com/bv1-9/slack_logo-ebd02d1.svg" preview={false} height={34} className="fuck" />
+                            {/* <Link href="/">
+                                <Image style={{ width: 'auto', marginTop: '20%' }} src="https://a.slack-edge.com/bv1-9/slack_logo-ebd02d1.svg" preview={false} height={34} className="fuck" />
+                            </Link> */}
+                            <Row>
+                                <Col span={14} className={styles.imageColumn} >
+                                    <Link href="/" style={{ float: 'right' }}>
+                                        <Image style={{ width: 'auto', marginTop: '20%' }} src="https://a.slack-edge.com/bv1-9/slack_logo-ebd02d1.svg" preview={false} height={34} className="fuck" />
+                                    </Link>
+                                </Col>
+                                <Col span={10} className={styles.createAccountColumn} >
+                                    <div style={{ marginTop: '5%' }}>
+                                        <Paragraph style={{ marginBottom: '0.3em' }}>New to Slack?</Paragraph>
+                                        <Link className={styles.createLink} href="register">Create an account</Link>
+                                    </div>
+                                </Col>
+                            </Row>
+
+                            <div className={styles.createAccountBlock}>
+                                <Paragraph style={{ marginBottom: '0.3em' }}>New to Slack?</Paragraph>
+                                <Link className={styles.createLink} href="register">Create an account</Link>
+                            </div>
 
                             <Title style={{ marginTop: '7.5%' }}>Sign in to Slack</Title>
+
                             <p style={{ color: '#505050', fontSize: '1.2em', marginBottom: '7.5%' }}>
                                 We suggest using the
                             <span style={{ fontWeight: 'bold', display: 'inline' }}> email address you use at work.</span>
@@ -57,8 +78,9 @@ class Signin extends Component {
                                 id="password-input"
                             />
 
-                            <Button type="primary" size="large" block style={{ backgroundColor: '#4e004e', fontWeight: 'bold', color: 'white', marginBottom: '10%' }}
-                                className={styles.foc}
+                            <Button type="primary" size="large" block
+                                // style={{ backgroundColor: '#4e004e', fontWeight: 'bold', color: 'white', marginBottom: '10%' }}
+                                className={styles.signInEmailButton}
                             >
                                 Sign In with Email
                         </Button>
