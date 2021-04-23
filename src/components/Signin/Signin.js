@@ -4,11 +4,40 @@ import { Input, Image, Typography, Row, Col, Button } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import Icon from '@ant-design/icons';
 
+import { auth } from '../../utils/firebase';
+
 import styles from './Signin.module.css';
 
-const { Paragraph, Link, Title } = Typography
+const { Paragraph, Link, Title } = Typography;
 
 class Signin extends Component {
+    onLogin(e) {
+        const [email, password] = [...document.querySelectorAll('input')].map(el => el.value);
+
+        // let isValid = validateInputFields(email, password);
+        // if (isValid === false) return;
+
+        if (email.match(/\S+@\S+\.\S+/) === null) {
+            alert('The email address is invalid!');
+            return;
+        }
+
+        if (password.length < 6) {
+            alert('The password should be at least 6 characters long!');
+            return;
+        }
+
+        auth.signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                console.log('logged in');
+                console.log(this.props); // without binding 'this' further down, 'this' was undefined
+                this.props.history.push('/messages');
+            })
+            .catch((error) => {
+                alert(`Couldn't log in - ${error.message}`);
+            });
+    }
+
     render() {
         return (
             <>
@@ -22,7 +51,7 @@ class Signin extends Component {
                             <Row>
                                 <Col span={14} className={styles.imageColumn} >
                                     <Link href="/" style={{ float: 'right' }}>
-                                        <Image style={{ width: 'auto', marginTop: '20%' }} src="https://a.slack-edge.com/bv1-9/slack_logo-ebd02d1.svg" preview={false} height={34} className="fuck" />
+                                        <Image style={{ width: 'auto', marginTop: '20%' }} src="https://a.slack-edge.com/bv1-9/slack_logo-ebd02d1.svg" preview={false} height={34} />
                                     </Link>
                                 </Col>
                                 <Col span={10} className={styles.createAccountColumn} >
@@ -81,6 +110,8 @@ class Signin extends Component {
                             <Button type="primary" size="large" block
                                 // style={{ backgroundColor: '#4e004e', fontWeight: 'bold', color: 'white', marginBottom: '10%' }}
                                 className={styles.signInEmailButton}
+                                id="login-button"
+                                onClick={this.onLogin.bind(this)}
                             >
                                 Sign In with Email
                         </Button>

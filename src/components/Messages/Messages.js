@@ -78,6 +78,10 @@ class Messages extends Component {
         console.log('messages props');
         console.log(this.props);
 
+        /* if (this.props.authInfo.isAuthenticated === false) {
+            this.props.history.push('/');
+        } */
+
         const skeletonInitialLoad = (
             // <Card className="loading">
             <Skeleton loading={true} avatar active className="loading" />
@@ -127,6 +131,9 @@ class Messages extends Component {
                         </Skeleton>
                     </Card>
                 ))}
+
+                {this.props.authInfo.isAuthenticated === false ? <strong style={{ fontSize: '5em', color: 'red' }}>UNAUTHORISED</strong> : ''}
+
             </>
         );
     }

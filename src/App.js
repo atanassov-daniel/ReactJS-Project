@@ -13,6 +13,7 @@ import TextareaMessage from './components/TextareaMessage/TextareaMessage';
 import Details from './components/Details';
 import Scroll from './components/Scroll';
 import Signin from './components/Signin/Signin';
+import MyTeamsLogin from './components/MyTeamsLogin/MyTeamsLogin';
 
 import Moda from './components/Moda';
 
@@ -23,32 +24,49 @@ class App extends Component {
         super(props);
 
         this.state = {
-            authInfo: null,
+            // authInfo: null,
+            authInfo: { isAuthenticated: false },
         };
 
-        /* auth.onAuthStateChanged(
+    }
+
+    componentDidMount() {
+        // probably put it here
+
+        auth.onAuthStateChanged(
             (user) =>
                 this.setState((prevState) => (
                     {
                         authInfo: {
                             isAuthenticated: Boolean(user),
-                            username: user?.email,
+                            email: user?.email,
                             uid: user?.uid
                         }
                     }))
-        ); */
-    }
+        );
 
-    componentDidMount() {
-        // probably put it here
+        /* setTimeout(() => {
+            console.log('15 000');
+            auth.signOut();
+        }, 15000) */
     }
 
     render() {
         return (
             <>
-                <Header className="site-layout-background" style={{ padding: 0 }} >
-                    <Moda></Moda>
-                </Header>
+                <Route
+                    path="/:team/:channel"
+                    render={(props) => (
+                        <Header className="site-layout-background" style={{ padding: 0 }} >
+                            {/* {this.state.authInfo.isAuthenticated === true ? <Moda /> : ''} */}
+                            {this.state.authInfo.isAuthenticated === true ? <Route render={(props) => (
+                                <Moda {...props} />
+                            )} /> : ''}
+
+                        </Header>
+                    )}
+                />
+
 
                 <Layout style={{ minHeight: '100vh' }}>
                     <Sidebar />
@@ -81,7 +99,10 @@ class App extends Component {
                                             // id="messages-container"
                                             id="first-column"
                                         >
-                                            <Messages {...props} />
+                                            <Messages
+                                                {...props}
+                                                authInfo={this.state.authInfo}
+                                            />
                                         </Col>
                                     )}
                                 >
@@ -103,16 +124,38 @@ class App extends Component {
                                         <Scroll />
                                     </Col>
                                 </Route>
-                                <Route path="/login">
-                                    <Col
-                                        span={24}
-                                        style={{ border: '2.5px solid orange', height: '90vh' }} //!! the height: '100%' broke the scrollbar's css and it wouldn't scroll
-                                        className="column-with-slider"
-                                        id="signin-column"
-                                    >
-                                        <Signin />
-                                    </Col>
-                                </Route>
+                                <Route path="/login" exact
+                                    render={(props) => (
+                                        <Col
+                                            span={24}
+                                            style={{ border: '2.5px solid orange', height: '90vh' }} //!! the height: '100%' broke the scrollbar's css and it wouldn't scroll
+                                            className="column-with-slider"
+                                            id="signin-column"
+                                        >
+                                            <Signin
+                                                {...props}
+                                                authInfo={this.state.authInfo}
+                                            />
+                                        </Col>
+                                    )}
+                                />
+                                <Route
+                                    path="/login/workspaces" exact
+                                    render={(props) => (
+                                        <Col
+                                            span={24}
+                                            style={{ border: '2.5px solid orange', height: '90vh' }} //!! the height: '100%' broke the scrollbar's css and it wouldn't scroll
+                                            className="column-with-slider"
+                                            id="login-workspaces-column"
+                                        >
+                                            <MyTeamsLogin
+                                                {...props}
+                                                authInfo={this.state.authInfo}
+                                            />
+                                        </Col>
+                                    )}
+                                />
+
                             </Row>
 
 

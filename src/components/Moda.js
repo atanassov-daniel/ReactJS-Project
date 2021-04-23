@@ -1,5 +1,7 @@
 import { Component } from 'react';
 import { Modal, Button, Card, Avatar } from 'antd';
+
+import { auth } from '../utils/firebase';
 const { Meta } = Card;
 
 class Moda extends Component {
@@ -30,12 +32,22 @@ class Moda extends Component {
     handleCancel = () => {
         console.log('Clicked cancel button');
         this.setState(() => ({ visible: false }));
-    };
+    }
+
+    onLogout = (e) => {
+        auth.signOut().then(() => {
+            // Sign-out successful.
+            console.log('logged out');
+            this.props.history.push('/login');
+        }).catch((error) => {
+            // An error happened.
+            alert(`Couldn't log out - ${error.message}`);
+        });
+    }
 
     render() {
         return (
             <>
-
                 <img src="https://ca.slack-edge.com/T01C79M7CDS-U01HFQUHTRV-g53fcecfb076-48" alt="" height="33px" style={{ float: 'right', marginRight: '2.5%', borderRadius: '15%', marginTop: '0.5vh', cursor: 'pointer' }} onClick={this.showModal} />
                 {/* <Button type="primary" onClick={this.showModal}>
                     Open Modal with async logic
@@ -58,7 +70,7 @@ class Moda extends Component {
                         />
                         <div>
                             <hr />
-                            <Button block type="primary" size="small">Sign out of TEAM</Button>
+                            <Button block type="primary" size="small" onClick={this.onLogout.bind(this)}>Sign out of TEAM</Button>
                         </div>
                     </Card>
 
