@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { Input, Image, Typography, Row, Col, Button, Card, Avatar } from 'antd';
-import {ArrowRightOutlined} from '@ant-design/icons'
+import { ArrowRightOutlined } from '@ant-design/icons'
 
 import getMyTeams from '../../services/getMyTeams';
 import styles from './MyTeamsLogin.module.css';
@@ -16,13 +16,17 @@ class MyTeamsLogin extends Component {
         };
     }
 
-    componentDidUpdate() {
+    componentDidUpdate() { //!!! what if it's really quick and is already logged in on DidMount, wiil this be a problem
         console.log(this.state.myTeams);
         if (this.state.myTeams === null) {
             getMyTeams(this.props.authInfo.email)
                 // .then(teams => this.setState(() => ({ myTeams: teams })));
                 .then(teams => this.setState(() => ({ myTeams: teams })));
         }
+    }
+
+    openTeam(e) {
+        this.props.history.push(`/${e.currentTarget.id}`);
     }
 
     render() {
@@ -67,6 +71,8 @@ class MyTeamsLogin extends Component {
                                 </p>
                             }
                             bodyStyle={{ padding: '0.15em 0 0 1.5em' }}
+                            style={{ border: '2px solid lightgray' }}
+                            headStyle={{ borderBottom: '2px solid lightgray' }}
                         >
                             {this.state.myTeams.map(team => (
                                 <Card
@@ -82,9 +88,12 @@ class MyTeamsLogin extends Component {
                                         }
                                         title={team?.name}
                                         //TODO   responsive title ->     https://css-tricks.com/forums/topic/show-truncated-text-by-hovering-only-on-ellipsis/
-                                    // description={message.createdAt}
+                                        description="{message.createdAt}"
+
+                                        style={{ width: 'max-content', float: 'left' }} //! so that the button can go on the same row
                                     />
-                                    <Button style={{float: 'right'}}><ArrowRightOutlined /></Button>
+                                    
+                                    <Button style={{ float: 'right' }} onClick={this.openTeam.bind(this)} id={team?.name} ><ArrowRightOutlined /></Button>
                                 </Card>
                             ))}
                         </Card>

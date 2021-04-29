@@ -29,6 +29,7 @@
     overflow-y: scroll;
     mask-image: linear-gradient(to top, transparent, black), linear-gradient(to left, transparent 17px, black 17px);
     -webkit-mask-image: linear-gradient(to top, transparent, black), linear-gradient(to left, transparent 17px, black 17px);
+    /*! -webkit-mask-image: linear-gradient(to bottom, transparent, black), linear-gradient(to left, transparent 17px, black 17px); -> changing to this broke the showing of the slider */
     mask-size: 100% 20000px;
     -webkit-mask-size: 100% 20000px;
     mask-position: left bottom;
@@ -235,3 +236,13 @@ div.ant-card.ant-card-bordered {
     overflow: hidden;
     /* otherwise the two empty loading rows would show outside of their card container */
 }
+
+
+
+/* additions to the slider */
+.ant-layout-sider-children:hover {
+    -webkit-mask-size: auto;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black), linear-gradient(to left, transparent 17px, black 17px);
+}
+
+/* /end */

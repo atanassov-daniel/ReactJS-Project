@@ -55,21 +55,26 @@ class App extends Component {
         return (
             <>
                 <Route
-                    path="/:team/:channel"
+                    //!!! path="/:team/:channel"
+                    path="/:team"
                     render={(props) => (
                         <Header className="site-layout-background" style={{ padding: 0 }} >
                             {/* {this.state.authInfo.isAuthenticated === true ? <Moda /> : ''} */}
                             {this.state.authInfo.isAuthenticated === true ? <Route render={(props) => (
                                 <Moda {...props} />
                             )} /> : ''}
-
                         </Header>
                     )}
                 />
 
 
                 <Layout style={{ minHeight: '100vh' }}>
-                    <Sidebar />
+                    <Route
+                        path="/:team"
+                        render={(props) => (
+                            <Sidebar {...props} />
+                        )}
+                    />
 
                     <Layout className="site-layout" style={{ border: '5px solid red', backgroundColor: '#fff' }}>
                         <Content id="col" style={{ margin: '0', height: '100%', border: '2.5px blue solid' }}>

@@ -6,8 +6,11 @@
 .innerCard {
     border-style: none;
     border-radius: 0;
-    border-bottom: 1.5px solid lightgrey;
     margin-bottom: 0;
+}
+
+.innerCard:not(:last-child) {
+    border-bottom: 1.5px solid lightgrey;
 }
 
 .innerCard:hover {

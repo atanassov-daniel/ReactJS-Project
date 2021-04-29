@@ -24,6 +24,8 @@ export default class Sidebar extends Component {
             // collapsed: true,
             collapsed: false,
         };
+
+        console.log(props);
     }
 
     onCollapse = (collapsed) => {
@@ -38,17 +40,26 @@ export default class Sidebar extends Component {
             <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse} className="sidebar" collapsedWidth="0" width={175}
                 breakpoint="md"
                 // trigger={null}
-                zeroWidthTriggerStyle={{ position: 'absolute', top: 0, left: 0 }}
+                // zeroWidthTriggerStyle={{ position: 'absolute', top: 0, left: '80%' }} // left: 0 -> when it was like this, the whole name of the team couldn't be seen
+                zeroWidthTriggerStyle={{ position: 'absolute', top: 0, left: '90%', width: 'max-content' }}
                 onBreakpoint={(broken) => {
                     console.log(broken);
                     console.log(this);
                 }}
             >
                 <div className="logo" />
-                <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" className="children" >
-                    <Menu.Item key="1" icon={<MessageOutlined />}>
-                        My Threads
-                </Menu.Item>
+                <Menu theme="dark" mode="inline" className="children" >{/* defaultSelectedKeys={['1']} */}
+                    {this.props.match.params.team ?
+                        <SubMenu key="sub0" title={this.props.match.params.team}>
+                            <Menu.Item key="1">
+                                <span>{this.props.match.params.team}</span>
+                            </Menu.Item>
+                        </SubMenu>
+                        : ''
+                    }
+                    <Menu.Item key="2" icon={<MessageOutlined />}>
+                        Threads
+                    </Menu.Item>
                     <SubMenu key="sub1" icon={<MoreOutlined />} title="More">
                         <Menu.Item key="3">All unreads</Menu.Item>
                         <Menu.Item key="4">All DMs</Menu.Item>

@@ -31,7 +31,8 @@ class Signin extends Component {
             .then((userCredential) => {
                 console.log('logged in');
                 console.log(this.props); // without binding 'this' further down, 'this' was undefined
-                this.props.history.push('/messages');
+                // this.props.history.push('/messages');
+                this.props.history.push('/login/workspaces');
             })
             .catch((error) => {
                 alert(`Couldn't log in - ${error.message}`);
