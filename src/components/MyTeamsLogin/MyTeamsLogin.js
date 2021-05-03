@@ -29,8 +29,9 @@ class MyTeamsLogin extends Component {
         const team = e.currentTarget.id;
 
         // this.props.history.push(`/${e.currentTarget.id}`);
-        this.props.history.push(`/${e.currentTarget.id.replace('#', '')}`);
-        this.props.onTeamChange(team);
+        this.props.history.push(`/${e.currentTarget.id.replace('#', '')}/general`);
+        this.props.onTeamChange({ name: team });
+        this.props.onChannelChange({ name: 'general' });
     }
 
     render() {

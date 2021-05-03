@@ -46,8 +46,12 @@ class Messages extends Component {
                     const id = doc.id;
                     doc = doc.data();
                     doc.key = id;
-                    const createdAt = doc.createdAt.toDate();
+                    /* const createdAt = doc.createdAt.toDate();
                     const date = `${createdAt.getHours()}:${createdAt.getMinutes()}, ${createdAt.toGMTString().split(', ')[1].split(' ').splice(0, 3).join(' ')}`;
+                    doc.createdAt = date; */
+                    const createdAt = doc.createdAt.toDate();
+                    const hours = createdAt.getHours().toString();
+                    const date = `${hours.length === 1 ? 0 + hours : hours}:${createdAt.getMinutes()}, ${createdAt.toDateString().split(' ').splice(1, 2).reverse().join(' ')} ${createdAt.getFullYear()}`;
                     doc.createdAt = date;
 
                     messages.unshift(doc);
