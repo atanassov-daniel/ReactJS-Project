@@ -18,7 +18,7 @@ class MyTeamsLogin extends Component {
 
     componentDidUpdate() { //!!! what if it's really quick and is already logged in on DidMount, wiil this be a problem
         console.log(this.state.myTeams);
-        if (this.state.myTeams === null) {
+        if (this.state.myTeams === null && this.props.authInfo.email) {
             getMyTeams(this.props.authInfo.email)
                 // .then(teams => this.setState(() => ({ myTeams: teams })));
                 .then(teams => this.setState(() => ({ myTeams: teams })));
@@ -26,7 +26,11 @@ class MyTeamsLogin extends Component {
     }
 
     openTeam(e) {
-        this.props.history.push(`/${e.currentTarget.id}`);
+        const team = e.currentTarget.id;
+
+        // this.props.history.push(`/${e.currentTarget.id}`);
+        this.props.history.push(`/${e.currentTarget.id.replace('#', '')}`);
+        this.props.onTeamChange(team);
     }
 
     render() {
@@ -92,7 +96,7 @@ class MyTeamsLogin extends Component {
 
                                         style={{ width: 'max-content', float: 'left' }} //! so that the button can go on the same row
                                     />
-                                    
+
                                     <Button style={{ float: 'right' }} onClick={this.openTeam.bind(this)} id={team?.name} ><ArrowRightOutlined /></Button>
                                 </Card>
                             ))}

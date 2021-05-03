@@ -11,8 +11,8 @@ import {
     PlusSquareFilled,
 } from '@ant-design/icons';
 
+import getTeam from '../../services/getTeam';
 // const { Link } = Typography;
-
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
@@ -24,8 +24,33 @@ export default class Sidebar extends Component {
             // collapsed: true,
             collapsed: false,
         };
+    }
 
-        console.log(props);
+    componentDidMount() { //!!! what if it's really quick and is already logged in on DidMount, wiil this be a problem
+        /* console.log(this.state.myTeams);
+        if (this.state.myTeam === null) {
+            getMyTeams(this.props.authInfo.email)
+                // .then(teams => this.setState(() => ({ myTeams: teams })));
+                .then(teams => this.setState(() => ({ myTeams: teams })));
+        } */
+
+        //!! only check if the team is valid if it comes from the URL, if it comes directly from logging in into the workspace, then there's no way the team will be non-existent or the user won't be a member of it
+        if (this.props.team === null) {
+            const team = this.props.match.params.team;
+            /* this.props.authInfo.isAuthenticated === true && */
+            if (team) {
+                getTeam(team)
+                    .then(teamInfo => {
+                        if (teamInfo === null) {
+                            this.props.invalidTeam();
+                        } else {
+                            this.props.onTeamChange(team);
+                        }
+                    });
+            }
+            //TODO do something similar for the channel too
+        }
+
     }
 
     onCollapse = (collapsed) => {
@@ -50,10 +75,11 @@ export default class Sidebar extends Component {
                 <div className="logo" />
                 <Menu theme="dark" mode="inline" className="children" >{/* defaultSelectedKeys={['1']} */}
                     {this.props.match.params.team ?
-                        <SubMenu key="sub0" title={this.props.match.params.team}>
-                            <Menu.Item key="1">
+                        // <SubMenu key="sub0" title={this.props.match.params.team}>
+                        <SubMenu key="sub0" title={this.props.team}>
+                            {/* <Menu.Item key="1">
                                 <span>{this.props.match.params.team}</span>
-                            </Menu.Item>
+                            </Menu.Item> */}
                         </SubMenu>
                         : ''
                     }

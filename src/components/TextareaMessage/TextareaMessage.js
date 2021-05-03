@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { Affix, Button, Input } from 'antd';
 import { MessageOutlined, SendOutlined } from '@ant-design/icons';
+//! when putting a timestamp, use the server's time, because local times of different users may differ in a few minutes, hence why there may be inaccuracies, for ex. a newer message may get added on 2nd or 3rd place instead of at the very bottom where it actually belongs
 
 import './TextareaMessage.css';
 

@@ -38,6 +38,7 @@ class Moda extends Component {
         auth.signOut().then(() => {
             // Sign-out successful.
             console.log('logged out');
+            this.props.onTeamChange(null);
             this.props.history.push('/login');
         }).catch((error) => {
             // An error happened.
