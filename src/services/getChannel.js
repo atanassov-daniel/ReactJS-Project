@@ -1,6 +1,6 @@
 import { db } from '../utils/firebase';
 
-export default function getTeam(teamName, channelName) {
+export default function getChannel(teamName, channelName) {
     return db
         .collection('teams').doc(teamName).collection('channels').doc(channelName)
         .get()

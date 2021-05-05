@@ -45,7 +45,7 @@ export default class Sidebar extends Component {
                             this.props.invalidTeam();
                         } else {
                             console.log(teamInfo);
-                            this.props.onTeamChange({ name: team, ...teamInfo });
+                            this.props.onTeamChange({ ...teamInfo });
                         }
                     });
             }
@@ -78,7 +78,7 @@ export default class Sidebar extends Component {
                     {this.props.match.params.team ?
                         // <SubMenu key="sub0" title={this.props.match.params.team}>
                         <SubMenu key="sub0" title={this.props.team?.name}>
-                        {/* <SubMenu key="sub0" title={this.props.team}> */}
+                            {/* <SubMenu key="sub0" title={this.props.team}> */}
                             {/* <Menu.Item key="1">
                                 <span>{this.props.match.params.team}</span>
                             </Menu.Item> */}

@@ -230,7 +230,14 @@ class App extends Component {
                                         <TextareaMessage />
                                     </Route> */}
                                     <Route path="/:team/:channel" render={(props) => {
-                                        if (!props.location.pathname.includes('/login')) return (<TextareaMessage />);
+                                        if (!props.location.pathname.includes('/login')) return (
+                                            <TextareaMessage
+                                                {...props}
+                                                team={this.state.team}
+                                                channel={this.state.channel}
+                                                authInfo={this.state.authInfo}
+                                            />
+                                        );
                                     }} />
 
                                 </Content>

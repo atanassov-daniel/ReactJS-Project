@@ -8,7 +8,9 @@ import { db } from '../../utils/firebase';
 import { Skeleton, Card, Avatar, Image } from 'antd';
 import { SettingOutlined, EllipsisOutlined, EditOutlined } from '@ant-design/icons';
 
-import './Messages.css'
+import getChannel from '../../services/getChannel';
+
+import './Messages.css';
 // import { SettingOutlined, EditOutlined, EllipsisOutlined } from '@ant-design/icons';
 const { Meta } = Card;
 
@@ -35,39 +37,85 @@ class Messages extends Component {
     }
 
     componentDidMount() {
-        this.unsubscribe = db
-            .collection(`teams/#codewithsimran/channels/#general/posts`)
-            .orderBy('createdAt', 'desc')
-            .onSnapshot((querySnapshot) => {
-                console.log(querySnapshot.docs.length);
-
-                const messages = [];
-                querySnapshot.forEach(doc => {
-                    const id = doc.id;
-                    doc = doc.data();
-                    doc.key = id;
-                    /* const createdAt = doc.createdAt.toDate();
-                    const date = `${createdAt.getHours()}:${createdAt.getMinutes()}, ${createdAt.toGMTString().split(', ')[1].split(' ').splice(0, 3).join(' ')}`;
-                    doc.createdAt = date; */
-                    const createdAt = doc.createdAt.toDate();
-                    const hours = createdAt.getHours().toString();
-                    const date = `${hours.length === 1 ? 0 + hours : hours}:${createdAt.getMinutes()}, ${createdAt.toDateString().split(' ').splice(1, 2).reverse().join(' ')} ${createdAt.getFullYear()}`;
-                    doc.createdAt = date;
-
-                    messages.unshift(doc);
-                });
-
-                this.isFirstLoad = this.state.messages.length === 0;
-
-                this.setState(
-                    () => ({ messages: messages }),
-                    () => {
-                        this.setState({ loading: false }); // if (this.isFirstLoad) document.getElementById('first-column').scrollTop = document.getElementById('first-column').scrollHeight; // so that only on the first fetch of the messages the messages container will get automatically scrolled to its very bottom     // console.log(this.state.messages);
+        /* if (this.props.channel === null && this.props.team !== null) {
+            const channel = this.props.match.params.channel;
+            console.log(channel);
+            if (channel) {
+                getChannel(this.props.team, channel)
+                    .then(channelInfo => {
+                        if (channelInfo === null) {
+                            this.props.invalidChannel();
+                        } else {
+                            console.log(channelInfo);
+                            this.props.onChannelChange({ ...channelInfo });
+                        }
                     });
-            });
+            }
+        } */
     }
 
     componentDidUpdate() {
+        if (this.props.channel === null && this.props.team !== null) {
+            const channel = this.props.match.params.channel;
+
+            if (channel) {
+                getChannel(this.props.team.name, channel)
+                    .then(channelInfo => {
+                        if (channelInfo === null) {
+                            this.props.invalidChannel();
+                        } else {
+                            console.log(channelInfo);
+                            this.props.onChannelChange({ ...channelInfo });
+                        }
+                    });
+            }
+        }
+
+        console.log('this.isFirstLoad');
+        console.log(this.isFirstLoad);
+        console.log('this.props.channel');
+        console.log(this.props.channel);
+
+        // the content from the file on the right was here
+        if (this.isFirstLoad === undefined && this.props.channel) {
+            this.unsubscribe = db
+                .collection(`teams/${this.props.team.name}/channels/${this.props.channel.name}/posts`)
+                .orderBy('createdAt', 'desc')
+                .onSnapshot((querySnapshot) => {
+                    console.log(querySnapshot.docs.length);
+                    console.log(querySnapshot.metadata.fromCache);
+
+                    console.log('%c channel', 'color: red;');
+                    console.log(this.props.channel);
+
+                    const messages = [];
+                    querySnapshot.forEach(doc => {
+                        console.log(doc.metadata.fromCache);
+                        const id = doc.id;
+                        doc = doc.data();
+                        doc.key = id;
+                        /* const createdAt = doc.createdAt.toDate();
+                        const date = `${createdAt.getHours()}:${createdAt.getMinutes()}, ${createdAt.toGMTString().split(', ')[1].split(' ').splice(0, 3).join(' ')}`;
+                        doc.createdAt = date; */
+                        const createdAt = doc.createdAt.toDate();
+                        const hours = createdAt.getHours().toString();
+                        const date = `${hours.length === 1 ? 0 + hours : hours}:${createdAt.getMinutes()}, ${createdAt.toDateString().split(' ').splice(1, 2).reverse().join(' ')} ${createdAt.getFullYear()}`;
+                        doc.createdAt = date;
+
+                        messages.unshift(doc);
+                    });
+
+                    this.isFirstLoad = this.state.messages.length === 0;
+
+                    this.setState(
+                        () => ({ messages: messages }),
+                        () => {
+                            this.setState({ loading: false }); // if (this.isFirstLoad) document.getElementById('first-column').scrollTop = document.getElementById('first-column').scrollHeight; // so that only on the first fetch of the messages the messages container will get automatically scrolled to its very bottom     // console.log(this.state.messages);
+                        });
+                });
+        }
+        // end
+
         if (this.isFirstLoad) document.getElementById('first-column').scrollTop = document.getElementById('first-column').scrollHeight;
         // document.getElementById('first-column').scrollTop = 100000;
     }
@@ -75,7 +123,7 @@ class Messages extends Component {
     componentWillUnmount() {
         // !!!!!!!!!!!!!!!!!!! if I don't unsubscribe from the Firestore listener, after the unmounting of the component it keeps on working and giving me updates and leads to React giving me the following warning in the console: 
         //* index.js:1 Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in the componentWillUnmount method.
-        this.unsubscribe();
+        this.unsubscribe?.();
     }
 
     render() {

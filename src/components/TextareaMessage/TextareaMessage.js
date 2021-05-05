@@ -3,6 +3,8 @@ import { Affix, Button, Input } from 'antd';
 import { MessageOutlined, SendOutlined } from '@ant-design/icons';
 //! when putting a timestamp, use the server's time, because local times of different users may differ in a few minutes, hence why there may be inaccuracies, for ex. a newer message may get added on 2nd or 3rd place instead of at the very bottom where it actually belongs
 
+import { db, firestore } from '../../utils/firebase';
+
 import './TextareaMessage.css';
 
 const { TextArea } = Input;
@@ -48,6 +50,8 @@ class TextareaMessage extends Component {
     onChange = ({ target: { value } }) => {
         this.setState({ value }); // console.log(value);
 
+        value.trim() === '' ? document.getElementById('send-message-button').disabled = true : document.getElementById('send-message-button').disabled = false;
+
         const yValues = { 1: 0, 2: -22, 3: -44, 4: -66, 5: -88, 6: -110, 7: -132, 8: -154 };
         const lastCardMarginBottom = { 1: 0, 2: 0, 3: 3, 4: 6, 5: 10, 6: 14, 7: 17, 8: 21 }
 
@@ -65,6 +69,51 @@ class TextareaMessage extends Component {
         document.querySelector('span[role="button"].anticon.anticon-close-circle.ant-input-clear-icon').addEventListener('click', (e) => {
             document.getElementById('new-message-textarea').focus();
         });
+
+        if (document.getElementById('new-message-textarea')?.value.trim() === '') document.getElementById('send-message-button').disabled = true;
+    }
+
+    toggleTextarea(e) {
+        const affixTextarea = document.querySelector('.ant-affix');
+
+        const firstColumn = document.getElementById('first-column');
+        const secondColumn = document.getElementById('second-column');
+
+        if (affixTextarea.style.display === 'none') {
+            affixTextarea.style.display = 'block';
+
+            firstColumn.style.height = '60vh';
+            if (secondColumn !== null) secondColumn.style.height = '60vh';
+        } else {
+            affixTextarea.style.display = 'none';
+
+            firstColumn.style.height = '76vh';
+            if (secondColumn !== null) secondColumn.style.height = '76vh';
+        }
+    }
+
+    onSendMessage(e) {
+        const message = document.getElementById('new-message-textarea').value;
+
+        //* check if the message is empty, because the disabled attribute of the button culd easily be removed by inspecting the element
+        if (message.trim() === '') {
+            document.getElementById('send-message-button').disabled = true;
+            alert("The message can't be empty");
+            return;
+        }
+
+        // // the path in the URl should've already been checked for validity of the team and channel, so I should be fine using the pathname directly
+        const { isAuthenticated, ...authInfo } = this.props.authInfo;
+
+        db
+            .collection(`teams/${this.props.team.name}/channels/${this.props.channel.name}/posts`)
+            .add({ createdAt: firestore.FieldValue.serverTimestamp(), text: message, createdBy: authInfo })
+            .then((docRef) => {
+                console.log("Document written with ID: ", docRef.id);
+            })
+            .catch((error) => {
+                console.error("Error adding document: ", error);
+            });
     }
 
     render() {
@@ -73,24 +122,7 @@ class TextareaMessage extends Component {
         return (
             <>
                 <Button
-                    onClick={(e) => {
-                        const affixTextarea = document.querySelector('.ant-affix');
-
-                        const firstColumn = document.getElementById('first-column');
-                        const secondColumn = document.getElementById('second-column');
-
-                        if (affixTextarea.style.display === 'none') {
-                            affixTextarea.style.display = 'block';
-
-                            firstColumn.style.height = '60vh';
-                            if (secondColumn !== null) secondColumn.style.height = '60vh';
-                        } else {
-                            affixTextarea.style.display = 'none';
-
-                            firstColumn.style.height = '76vh';
-                            if (secondColumn !== null) secondColumn.style.height = '76vh';
-                        }
-                    }}
+                    onClick={this.toggleTextarea}
                     // style={{ transform: 'rotate(-90deg) translateX(-54px)translateY(-18px)', zIndex: 2 }}
                     style={{
                         transform: 'rotate(-90deg) translateX(-54px)translateY(-23px)',
@@ -138,7 +170,10 @@ class TextareaMessage extends Component {
                             <li className="action"><MessageOutlined /></li>
                             <li className="action"><MessageOutlined /></li>
                             <li className="action"><MessageOutlined /></li>
-                            <li className="action"><SendOutlined /></li>
+                            {/* <li className="action"><SendOutlined /></li> */}
+                            <li className="action">
+                                <Button id="send-message-button" type="text" size="small" style={{ color: 'white' }} icon={<SendOutlined />} onClick={this.onSendMessage.bind(this)} />
+                            </li>
                         </ul>
                         {/* </div> */}
 

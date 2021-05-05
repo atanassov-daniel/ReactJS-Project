@@ -40,6 +40,7 @@ ul.ul-controls>li.action:first-child {
 ul.ul-controls>li.action:last-child {
     color: white;
     background-color: green;
+    padding: 3px; /* so that there is almost no clickable 'li' area around the unclickable 'send message' button */
     /* float: right; */
     /* margin-left: 550px; */
     /* transform: translateX(-110%) translateY(-17%); */
