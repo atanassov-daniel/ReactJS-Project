@@ -90,17 +90,21 @@ class Messages extends Component {
 
                     const messages = [];
                     querySnapshot.forEach(doc => {
-                        console.log(doc.metadata.fromCache);
+                        // console.log(doc.metadata.fromCache); //! for some reason it always says false, even when the new data(with createdAt: null) should be from local cache and not a result from the server
                         const id = doc.id;
                         doc = doc.data();
                         doc.key = id;
                         /* const createdAt = doc.createdAt.toDate();
                         const date = `${createdAt.getHours()}:${createdAt.getMinutes()}, ${createdAt.toGMTString().split(', ')[1].split(' ').splice(0, 3).join(' ')}`;
                         doc.createdAt = date; */
-                        const createdAt = doc.createdAt.toDate();
-                        const hours = createdAt.getHours().toString();
-                        const date = `${hours.length === 1 ? 0 + hours : hours}:${createdAt.getMinutes()}, ${createdAt.toDateString().split(' ').splice(1, 2).reverse().join(' ')} ${createdAt.getFullYear()}`;
-                        doc.createdAt = date;
+
+                        //!!! after sending a new message -> on the first snapshot with the local data all values are already there, but the date is null, because it uses the server's time of posting the new document => this led to a nasty error => I should check if the date is null
+                        if (doc.createdAt !== null) {
+                            const createdAt = doc.createdAt?.toDate();
+                            const hours = createdAt.getHours().toString();
+                            const date = `${hours.length === 1 ? 0 + hours : hours}:${createdAt.getMinutes()}, ${createdAt.toDateString().split(' ').splice(1, 2).reverse().join(' ')} ${createdAt.getFullYear()}`;
+                            doc.createdAt = date;
+                        }
 
                         messages.unshift(doc);
                     });

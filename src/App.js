@@ -126,7 +126,9 @@ class App extends Component {
                                     {/* <Route path="/:teamId/:channelId" component={ Channel } /> */}
                                     {/* <Route path="/messages" component={Channel} /> */}
                                     <Route path="/:team/:channel" render={(props) => {
-                                        if (!props.location.pathname.includes('/login')) return (<Channel {...props} channel={this.state.channel} />);
+                                        if (!props.location.pathname.includes('/login') && this.state.channel !== null) return (
+                                            <Channel {...props} channel={this.state.channel} />
+                                        );
                                     }} />
                                     {/* //!!!!!! actually it should be path="/:channel" */}
 

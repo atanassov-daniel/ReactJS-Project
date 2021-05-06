@@ -109,7 +109,8 @@ class TextareaMessage extends Component {
             .collection(`teams/${this.props.team.name}/channels/${this.props.channel.name}/posts`)
             .add({ createdAt: firestore.FieldValue.serverTimestamp(), text: message, createdBy: authInfo })
             .then((docRef) => {
-                console.log("Document written with ID: ", docRef.id);
+                // console.log("Document written with ID: ", docRef.id);
+                this.setState(() => ({ value: '' }));
             })
             .catch((error) => {
                 console.error("Error adding document: ", error);

@@ -8,7 +8,7 @@ class Channel extends Component {
     render() {
         return (
             <>
-                <ChannelHeader />
+                <ChannelHeader channel={this.props.channel} />
                 {/* <Link to="/messages"> messages </Link>
                 <Link to="/details"> details </Link>
                 <Link to="/"> homepage </Link> */}

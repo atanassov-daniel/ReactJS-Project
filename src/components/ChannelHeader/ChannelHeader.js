@@ -14,7 +14,7 @@ export default class ChannelHeader extends Component {
                     borderRight: '1.5px solid grey',
                     display: 'flow-root'
                 }}
-                title={"#channel-name"}
+                title={`#${this.props.channel?.name || ''}`}
                 className="site-page-header"
                 // subTitle="This is a subtitle"
                 subTitle={
