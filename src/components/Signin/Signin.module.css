@@ -9,7 +9,8 @@
 
 .emailInput {
     composes: marginBottom5;
-    height: fit-content;
+    /* height: fit-content; */
+    /** -> with this the email input on my mobile phone looked really small in height */
     width: 100%;
     border-color: darkgray;
     /* margin: auto; */

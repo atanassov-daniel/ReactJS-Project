@@ -16,3 +16,15 @@
 .innerCard:hover {
     background: lightcoral;
 }
+
+
+.createWorkspace {
+    border: 1px solid grey;
+    background: white;
+    font-weight: bold;
+}
+
+.createWorkspace:hover {
+    border: 1px solid grey;
+    background: #d3d3d36b;
+}

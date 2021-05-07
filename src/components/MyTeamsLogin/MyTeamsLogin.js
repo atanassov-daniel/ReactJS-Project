@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { Input, Image, Typography, Row, Col, Button, Card, Avatar } from 'antd';
-import { ArrowRightOutlined } from '@ant-design/icons'
+import { ArrowRightOutlined, UserAddOutlined } from '@ant-design/icons'
 
 import getMyTeams from '../../services/getMyTeams';
 import styles from './MyTeamsLogin.module.css';
@@ -54,7 +54,8 @@ class MyTeamsLogin extends Component {
 
         return (
             <>
-                {this.state.myTeams === null ?
+                {this.state.myTeams === null
+                    ?
                     <div style={{ textAlign: 'center', fontSize: '10em', fontWeight: 'bold', fontWeight: 'bold' }}>STILL LOADING</div>
                     :
                     <div className={styles.contentWrapper}>
@@ -65,18 +66,18 @@ class MyTeamsLogin extends Component {
                         </Row>
 
                         <Title level={2} style={{ textAlign: 'center', marginTop: '5%', fontWeight: 'bold', marginBottom: 'auto' }}><span style={{ color: '#480048' }}>Welcome back! </span>You look nice today.</Title>
-                        <p style={{ textAlign: 'center', color: 'dimgray', marginBottom: '3%' }}>Choose a workspace below to get back to working with your team.</p>
+                        <p style={{ textAlign: 'center', color: 'dimgray', marginBottom: '7%' }}>Choose a workspace below to get back to working with your team.</p>
 
 
                         <Card
                             // title="Workspaces for atanassov.daniel@gmail.com"
                             title={
                                 <p style={{ fontWeight: 'normal', fontSize: '14.5px', margin: 0 }}>Workspaces for
-                                <span style={{ fontWeight: 'bold' }}> atanassov.daniel@gmail.com</span>
+                                    <span style={{ fontWeight: '500' }}> atanassov.daniel@gmail.com</span>
                                 </p>
                             }
                             bodyStyle={{ padding: '0.15em 0 0 1.5em' }}
-                            style={{ border: '2px solid lightgray' }}
+                            style={{ border: '2px solid lightgray', marginBottom: '5%' }}
                             headStyle={{ borderBottom: '2px solid lightgray' }}
                         >
                             {this.state.myTeams.map(team => (
@@ -103,6 +104,80 @@ class MyTeamsLogin extends Component {
                             ))}
                         </Card>
 
+                        <Card
+                            /* title={
+                                <p style={{ fontWeight: 'normal', fontSize: '14.5px', margin: 0 }}>Want to use Slack with a different team? </p>
+                            } */
+                            bodyStyle={{ padding: '0.8em 0.15em 0.8em 0.15em' }}
+                            style={{ background: 'rgba(244, 237, 228, .5)', borderRadius: '10px', marginBottom: '5%' }}
+                        // headStyle={{ borderBottom: '2px solid lightgray' }}
+                        >
+                            <Row style={{ height: '100%', width: '100%' }}>
+                                <Col span={3} style={{ alignSelf: 'center' }}>
+                                    <Image src="https://a.slack-edge.com/bv1-9/get-started-workspaces-icon-88e0cb1.svg" preview={false} height={38} style={{ alignSelf: 'center' }} />
+                                </Col>
+                                <Col span={10} style={{ alignSelf: 'center', textAlign: 'center' }}>
+                                    <span style={{ fontWeight: 'normal', fontSize: '14.5px', margin: 0 }}>Want to use Slack with a different team? </span>
+                                </Col>
+                                <Col span={3} style={{ alignSelf: 'center' }}>
+
+                                </Col>
+                                <Col span={8} style={{ alignSelf: 'center' }}>
+                                    <Button type="text" className={styles.createWorkspace} style={{ alignSelf: 'center', maxWidth: '-webkit-fill-available' }}>Create Another Workspace</Button>
+                                </Col>
+                            </Row>
+                            {/* <Image src="https://a.slack-edge.com/bv1-9/get-started-workspaces-icon-88e0cb1.svg" preview={false} height={38} />
+
+                            <p style={{ fontWeight: 'normal', fontSize: '14.5px', margin: 0 }}>Want to use Slack with a different team? </p>
+
+                            <Button style={{ float: 'right' }} onClick={this.openTeam.bind(this)} >Create Another Workspace</Button> */}
+                        </Card>
+
+                        {!this.state.invitedTeams
+                            ? ''
+                            :
+                            <>
+                                <Title level={4} style={{ marginBottom: '1.5%', fontWeight: 'bold' }}>Pending invitations</Title>
+                                <Card
+                                    // title="Workspaces for atanassov.daniel@gmail.com"
+                                    title={
+                                        <p style={{ fontWeight: 'normal', fontSize: '14.5px', margin: 0 }}>Invitations for
+                                            <span style={{ fontWeight: '500' }}> atanassov.daniel@gmail.com</span>
+                                        </p>
+                                    }
+                                    bodyStyle={{ padding: '0.15em 0 0 1.5em' }}
+                                    style={{ border: '2px solid lightgray', marginBottom: '5%' }}
+                                    headStyle={{ borderBottom: '2px solid lightgray' }}
+                                >
+                                    {/* {this.state?.invitedTeams.map(team => ( */}
+                                    {this.state.myTeams.map(team => (
+                                        <Card
+                                            key={team?.name}
+                                            type="inner"
+                                            className={styles.innerCard}
+                                        // title="Inner Card title"
+                                        // extra={<a href="#">More</a>}
+                                        >
+                                            <p style={{ color: 'dimgray', fontWeight: '500', fontSize: 'small', marginBottom: '1%' }}>
+                                                <UserAddOutlined /> Invited by {"Bootcamp Admin"} ({"postman@frontendmasters.com"})
+                                            </p>
+                                            <Card.Meta
+                                                avatar={
+                                                    <Avatar src={team?.teamPicture || 'https://t4.ftcdn.net/jpg/02/51/95/53/240_F_251955356_FAQH0U1y1TZw3ZcdPGybwUkH90a3VAhb.jpg'} shape="square" size={50} alt="team profile image" />
+                                                }
+                                                title={team?.name}
+                                                //TODO   responsive title ->     https://css-tricks.com/forums/topic/show-truncated-text-by-hovering-only-on-ellipsis/
+                                                description="{message.createdAt}"
+
+                                                style={{ width: 'max-content', float: 'left' }} //! so that the button can go on the same row
+                                            />
+
+                                            <Button style={{ float: 'right', border: '1px solid darkgreen', color: 'darkgreen', fontWeight: 'bold' }} onClick={this?.joinInvitedTeam?.bind(this)} id={team?.name}>Join</Button>
+                                        </Card>
+                                    ))}
+                                </Card>
+                            </>
+                        }
                     </div>
                 }
             </>
