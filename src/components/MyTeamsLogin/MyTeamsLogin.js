@@ -34,6 +34,10 @@ class MyTeamsLogin extends Component {
         this.props.onChannelChange({ name: 'general' });
     }
 
+    onCreateWorkspaceClick(e) {
+        this.props.history.push('/get-started');
+    }
+
     render() {
         /* console.log(this.props.authInfo.email);
         const myTeams = getMyTeams(this.props.authInfo.email);
@@ -123,7 +127,14 @@ class MyTeamsLogin extends Component {
 
                                 </Col>
                                 <Col span={8} style={{ alignSelf: 'center' }}>
-                                    <Button type="text" className={styles.createWorkspace} style={{ alignSelf: 'center', maxWidth: '-webkit-fill-available' }}>Create Another Workspace</Button>
+                                    <Button
+                                        type="text" className={styles.createWorkspace}
+                                        // style={{ alignSelf: 'center', maxWidth: '-webkit-fill-available' }}
+                                        style={{ alignSelf: 'center' }} //TODO fix the width
+                                        onClick={this.onCreateWorkspaceClick.bind(this)}
+                                    >
+                                        Create Another Workspace
+                                    </Button>
                                 </Col>
                             </Row>
                             {/* <Image src="https://a.slack-edge.com/bv1-9/get-started-workspaces-icon-88e0cb1.svg" preview={false} height={38} />

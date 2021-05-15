@@ -22,6 +22,14 @@
     border: 1px solid grey;
     background: white;
     font-weight: bold;
+    height: max-content;
+    /* so that the text of the button doesn't continue into the unknown on a smaller screen */
+    margin-right: 1em;
+}
+
+.createWorkspace>span {
+    white-space: pre-line;
+    /* so that the text of the button doesn't continue into the unknown on a smaller screen */
 }
 
 .createWorkspace:hover {

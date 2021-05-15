@@ -1,0 +1,7 @@
+.createButton {
+    /* ! when I put the now inline styles here, the button gets back to its default white color ONHOVER */
+}
+
+.createButton:hover {
+    opacity: 0.85;
+}

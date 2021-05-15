@@ -20,6 +20,9 @@ import Signin from './components/Signin/Signin';
 import MyTeamsLogin from './components/MyTeamsLogin/MyTeamsLogin';
 
 import Moda from './components/Moda';
+import GetStarted from './components/GetStarted/GetStarted';
+import TeamName from './components/SetupNewTeam/Pages/TeamName';
+import SetupNewTeam from './components/SetupNewTeam/SetupNewTeam';
 
 const { Header, Content } = Layout;
 
@@ -92,32 +95,50 @@ class App extends Component {
                 {this.state.isInvalidTeam === true
                     ? <Route render={() => (<div>Invalid Team 404</div>)} />
                     : <>
-                        {this.state.authInfo.isAuthenticated === true && !this.props.location.pathname.includes('login')
+                        {/* {this.state.authInfo.isAuthenticated === true && !this.props.location.pathname.includes('login') */}
+                        {this.state.authInfo.isAuthenticated === true && !this.props.location.pathname.includes('/login') && !this.props.location.pathname.includes('/get-started')
                             ?
-                            <Route
-                                //TODO path="/:team/:channel"
-                                path="/:team"
-                                render={(props) => (
-                                    <Header className="site-layout-background" style={{ padding: 0 }} >
-                                        {/* {this.state.authInfo.isAuthenticated === true ? <Moda /> : ''} */}
-                                        <Moda {...props} onTeamChange={this.onTeamChange} />
-                                    </Header>
-                                )}
-                            />
+                            <Switch>
+                                <Route
+                                    path="/setupTeam/name" exact
+                                    render={(props) => (
+                                        <Header className="site-layout-background" style={{ padding: 0 }} />
+                                    )}
+                                />
+
+                                <Route
+                                    //TODO path="/:team/:channel"
+                                    path="/:team"
+                                    render={(props) => (
+                                        <Header className="site-layout-background" style={{ padding: 0 }} >
+                                            {/* {this.state.authInfo.isAuthenticated === true ? <Moda /> : ''} */}
+                                            <Moda {...props} onTeamChange={this.onTeamChange} />
+                                        </Header>
+                                    )}
+                                />
+                            </Switch>
                             : ''
                         }
 
                         <Layout style={{ minHeight: '100vh' }}>
                             {this.state.authInfo.isAuthenticated === true
                                 ?
-                                <Route
-                                    path="/:team"
-                                    render={(props) => {
-                                        if (!props.location.pathname.includes('/login')) return (
-                                            <Sidebar {...props} onTeamChange={this.onTeamChange} invalidTeam={this.invalidTeam} team={this.state.team} />
-                                        );
-                                    }}
-                                />
+                                <Switch>
+                                    <Route
+                                        path="/setupTeam/name" exact
+                                        render={(props) => (
+                                            <Sidebar {...props} />
+                                        )}
+                                    />
+                                    <Route
+                                        path="/:team"
+                                        render={(props) => {
+                                            if (!props.location.pathname.includes('/login') && !props.location.pathname.includes('/get-started')) return (
+                                                <Sidebar {...props} onTeamChange={this.onTeamChange} invalidTeam={this.invalidTeam} team={this.state.team} />
+                                            );
+                                        }}
+                                    />
+                                </Switch>
                                 : ''
                             }
 
@@ -126,7 +147,8 @@ class App extends Component {
                                     {/* <Route path="/:teamId/:channelId" component={ Channel } /> */}
                                     {/* <Route path="/messages" component={Channel} /> */}
                                     <Route path="/:team/:channel" render={(props) => {
-                                        if (!props.location.pathname.includes('/login') && this.state.channel !== null) return (
+                                        // if (!props.location.pathname.includes('/login') && this.state.channel !== null) return (
+                                        if (!props.location.pathname.includes('/login') && !props.location.pathname.includes('/get-started') && this.state.channel !== null) return (
                                             <Channel {...props} channel={this.state.channel} />
                                         );
                                     }} />
@@ -180,6 +202,31 @@ class App extends Component {
                                                     </Col>
                                                 )}
                                             />
+                                            <Route
+                                                path="/get-started" exact
+                                                render={(props) => (
+                                                    <Col
+                                                        span={24}
+                                                        // height: '90vh' -> earlier it was so and worked, after the Swtch something changed
+                                                        style={{ border: '2.5px solid orange', height: '98vh' }} //!! the height: '100%' broke the scrollbar's css and it wouldn't scroll
+                                                        className="column-with-slider"
+                                                    >
+                                                        <GetStarted
+                                                            {...props}
+                                                        />
+                                                    </Col>
+                                                )}
+                                            />
+                                            {/* <Route path="/setupTeam/name" exact
+                                                render={(props) => (
+                                                    <TeamName />
+                                                )}
+                                            /> */}
+                                            <Route path="/setupTeam/name" exact
+                                                render={(props) => (
+                                                    <SetupNewTeam />
+                                                )}
+                                            />
 
                                             <Route
                                                 // path="/messages"
@@ -231,16 +278,21 @@ class App extends Component {
                                     {/* <Route path="/:team/:channel">
                                         <TextareaMessage />
                                     </Route> */}
-                                    <Route path="/:team/:channel" render={(props) => {
-                                        if (!props.location.pathname.includes('/login')) return (
-                                            <TextareaMessage
-                                                {...props}
-                                                team={this.state.team}
-                                                channel={this.state.channel}
-                                                authInfo={this.state.authInfo}
-                                            />
-                                        );
-                                    }} />
+                                    {/*//!!!!!!!! on the GetStarted page I had to add the Url, otherwise I got a Invalid team warning */}
+                                    <Switch>
+                                        <Route path="/setupTeam/name" exact />
+                                        <Route path="/:team/:channel" render={(props) => {
+                                            // if (!props.location.pathname.includes('/login') || !props.location.pathname.includes('/get-started')) return (
+                                            if (!props.location.pathname.includes('/login') && !props.location.pathname.includes('/get-started')) return (
+                                                <TextareaMessage
+                                                    {...props}
+                                                    team={this.state.team}
+                                                    channel={this.state.channel}
+                                                    authInfo={this.state.authInfo}
+                                                />
+                                            );
+                                        }} />
+                                    </Switch>
 
                                 </Content>
 
