@@ -56,7 +56,10 @@ class App extends Component {
                         authInfo: {
                             isAuthenticated: Boolean(user),
                             email: user?.email,
-                            uid: user?.uid
+                            uid: user?.uid,
+                            displayName: user?.displayName,
+                            photoURL: user?.photoURL,
+                            // name: user?.name
                         }
                     }))
         );
@@ -224,7 +227,7 @@ class App extends Component {
                                             /> */}
                                             <Route path="/setupTeam/name" exact
                                                 render={(props) => (
-                                                    <SetupNewTeam />
+                                                    <SetupNewTeam authInfo={this.state.authInfo} />
                                                 )}
                                             />
 

@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { Typography, Row, Col, Button, Input } from 'antd';
 
 import styles from './TeamName.module.css';
+import ReactDOM from 'react-dom';
 
 const { Title, Paragraph } = Typography;
 const { TextArea } = Input;
@@ -12,36 +13,42 @@ class TeamInvites extends Component {
 
         this.state = {
             channel: '',
-            disabled: true,
+            disabled: false,
         }
 
         console.log(this.props.step);
     }
 
-    onChannelChange = ({ target: { value } }) => {
+    /* onChannelChange = ({ target: { value } }) => {
         this.setState({ channel: value });
 
         if (value.trim() === '') this.setState({ disabled: true });
         else this.setState({ disabled: false });
+    } */
+
+    finalizeSetup() {
+        ReactDOM.render(<Input type="email" placeholder="Ex. 4th el!?" style={{ marginBottom: '3.5%' }} />, document.getElementById('email-inputs'));
     }
 
     render() {
         return (
             <div className={styles.wrapper}>
-                <Paragraph style={{ marginTop: '4%' }}>Step 2 of 3</Paragraph>
-                <Title level={1} style={{ marginTop: '4%', fontWeight: 'bold' }}>What’s your team working on right now?</Title>
-                <Paragraph style={{ marginTop: '-1%' }}>This could be anything: a project, campaign, event, or the deal you’re trying to close.</Paragraph>
+                <Paragraph style={{ marginTop: '4%' }}>Step 3 of 3</Paragraph>
+                <Title level={1} style={{ marginTop: '4%', fontWeight: 'bold' }}>Who do you email most at work?</Title>
+                <Paragraph style={{ marginTop: '-1%' }}>To give Slack a spin, add a few coworkers you talk with regularly.</Paragraph>
 
-                <TextArea
-                    placeholder="Ex: Q4 budget, autumn campaign"
-                    showCount={true}
-                    maxLength={80}
-                    autoSize={{ maxRows: 1 }}
-                    value={this.state.channel}
-                    onChange={this.onChannelChange}
-                    style={{ marginBottom: '10%', marginTop: '4%' }}
-                />
+                <div id="email-inputs">
+                    <Input type="email" placeholder="Ex. ellis@gmail.com" style={{ marginBottom: '3.5%' }} />
+                    <Input type="email" placeholder="Ex. ellis@gmail.com" value={this.state.channel}
+                        onChange={this.onChannelChange} style={{ marginBottom: '3.5%' }} />
+                    <Input type="email" placeholder="Ex. ellis@gmail.com" value={this.state.channel}
+                        onChange={this.onChannelChange} style={{ marginBottom: '3.5%' }} />
+                </div>
+
+
+
                 <Button disabled={this.state.disabled}
+                    onClick={this.finalizeSetup.bind(this)}
                     style={
                         this.state.disabled === false
                             ? {
@@ -52,7 +59,7 @@ class TeamInvites extends Component {
                                 height: 'fit-content',
                                 width: 'fit-content',
                                 borderRadius: '0.25em',
-                                padding: '1.5% 12%',
+                                padding: '1.5% 5%',
                             } : {
                                 backgroundColor: 'lightgray',
                                 color: '#0000009c',
@@ -61,10 +68,11 @@ class TeamInvites extends Component {
                                 height: 'fit-content',
                                 width: 'fit-content',
                                 borderRadius: '0.25em',
-                                padding: '1.5% 12%',
+                                padding: '1.5% 5%',
                             }
                     }
-                >Next</Button>
+                >Add Teammates</Button>
+                <span className={styles.skipStep}>Skip this step</span>
             </div>
         )
     }

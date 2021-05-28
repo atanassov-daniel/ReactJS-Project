@@ -14,22 +14,40 @@ class SetupNewTeam extends Component {
         super(props);
 
         this.state = {
-            step: 1,
+            step: 0,
+            team: null
         }
 
         this.pages = [TeamName, TeamChannels, TeamInvites];
 
-        this.changePage.bind(this);
+        // this.changePage.bind(this); // with this it dodn't work, I had to do it below when passing the function in the component itself
     }
 
     changePage() {
-        this.setState((prevState) => ({ step: prevState.step + 1 }))
+        console.log(this);
+        this.setState((prevState) => ({ step: prevState.step + 1 }));
+        console.log('change??');
+        console.log(this.state.step);
+    }
+
+    setTeam(teamId) {
+        console.log('teamId');
+        this.setState(() => ({ team: teamId }))
     }
 
     render() {
         return (
             <>
-                {this.pages.map((Comp, index) => { if (index === this.state.step) return (<Comp step={this.state.step} changePage={this.changePage} />) })}
+                {this.pages.map((Comp, index) => {
+                    if (index === this.state.step) return (
+                        <Comp step={this.state.step}
+                            changePage={this.changePage.bind(this)}
+                            setTeam={this.setTeam.bind(this)}
+                            authInfo={this.props.authInfo}
+                            team={this.state.team}
+                        />
+                    )
+                })}
             </>
         )
     }

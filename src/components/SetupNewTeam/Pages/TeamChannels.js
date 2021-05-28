@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { Typography, Row, Col, Button, Input } from 'antd';
+import { db, firestore } from '../../../utils/firebase';
 
 import styles from './TeamName.module.css';
 
@@ -22,8 +23,36 @@ class TeamChannels extends Component {
         this.setState({ channel: value });
         console.log(value);
 
-        if (value.trim() === '') this.setState({ disabled: true });
+        if (value.trim() === '' || value.length > 80) this.setState({ disabled: true });
         else this.setState({ disabled: false });
+    }
+
+    finalizeChannel() {
+        if (this.state.channel.trim() === '' || this.state.channel.length > 80) {
+            this.setState({ disabled: true });
+            alert('Please insert a valid channel name and try again!');
+            return;
+        }
+
+        db
+            // teams/${this.props.team.name}/channels/${this.props.channel.name}/posts
+            .collection(`teams/${this.props.team}/channels`)
+            .add({
+                createdAt: firestore.FieldValue.serverTimestamp(), name: this.state.channel,
+                createdBy: {
+                    email: this.props.authInfo.email,
+                    uid: this.props.authInfo.uid,
+                    name: this.props.authInfo.displayName,
+                    photoURL: this.props.authInfo.photoURL
+                }
+            }) //name: this.props.authInfo.name
+            .then((docRef) => {
+                console.log("Channel written with ID: ", docRef.id);
+                this.props.changePage();
+            })
+            .catch((error) => {
+                alert(`This action couldn't be performed: ${error}. Please try again!`);
+            });
     }
 
     render() {
@@ -43,6 +72,8 @@ class TeamChannels extends Component {
                     style={{ marginBottom: '10%', marginTop: '4%' }}
                 />
                 <Button disabled={this.state.disabled}
+                    // onClick={(e) => { this.props.changePage(); this.finalizeChannel(); }}
+                    onClick={(e) => { this.finalizeChannel(); }}
                     style={
                         this.state.disabled === false
                             ? {

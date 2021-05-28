@@ -1,3 +1,14 @@
 .wrapper {
     margin: 0% 10%;
 }
+
+.skipStep {
+    margin-left: 4%;
+    color: #777777;
+    font-size: medium;
+}
+
+.skipStep:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}

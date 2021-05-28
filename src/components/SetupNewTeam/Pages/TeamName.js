@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { Typography, Row, Col, Button, Input } from 'antd';
+import { db, firestore } from '../../../utils/firebase';
 
 import styles from './TeamName.module.css';
 
@@ -19,9 +20,36 @@ export default class TeamName extends Component {
     onNameChange = ({ target: { value } }) => {
         this.setState({ name: value });
 
-        if (value.trim() === '') this.setState({ disabled: true });
+        if (value.trim() === '' || value.length > 50) this.setState({ disabled: true });
         else this.setState({ disabled: false });
-        console.log(this.pages);
+    }
+
+    finalizeTeam() {
+        if (this.state.name.trim() === '' || this.state.name.length > 50) {
+            this.setState({ disabled: true });
+            alert('Please insert a valid name and try again!');
+            return;
+        }
+
+        db
+            // teams/${this.props.team.name}/channels/${this.props.channel.name}/posts
+            .collection(`teams`)
+            .add({
+                createdAt: firestore.FieldValue.serverTimestamp(), name: this.state.name, createdBy: {
+                    email: this.props.authInfo.email,
+                    uid: this.props.authInfo.uid,
+                    name: this.props.authInfo.displayName,
+                    photoURL: this.props.authInfo.photoURL
+                }
+            }) //name: this.props.authInfo.name
+            .then((docRef) => {
+                console.log("Document written with ID: ", docRef.id);
+                this.props.setTeam(docRef.id);
+                this.props.changePage();
+            })
+            .catch((error) => {
+                alert(`This action couldn't be performed: ${error}. Please try again!`);
+            });
     }
 
     render() {
@@ -42,6 +70,8 @@ export default class TeamName extends Component {
                         style={{ marginBottom: '10%', marginTop: '4%' }}
                     />
                     <Button disabled={this.state.disabled}
+                        onClick={(e) => { this.finalizeTeam(); }}
+                        // onClick={(e) => { this.props.changePage(); this.finalizeTeam(); }}
                         style={
                             this.state.disabled === false
                                 ? {
