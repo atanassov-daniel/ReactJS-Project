@@ -48,6 +48,7 @@ class TeamChannels extends Component {
             }) //name: this.props.authInfo.name
             .then((docRef) => {
                 console.log("Channel written with ID: ", docRef.id);
+                this.props.setChannel({ name: this.state.channel, id: docRef.id });
                 this.props.changePage();
             })
             .catch((error) => {

@@ -1,7 +1,8 @@
 import { db } from '../utils/firebase';
 
 export default function getTeam(teamName) {
-    return db.collection('teams').doc(teamName)
+    return db.collection('teams')
+        .where("name", "==", teamName)
         .get()
         .then((doc) => {
             if (doc.exists) {

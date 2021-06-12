@@ -30,6 +30,11 @@ class TeamInvites extends Component {
         ReactDOM.render(<Input type="email" placeholder="Ex. 4th el!?" style={{ marginBottom: '3.5%' }} />, document.getElementById('email-inputs'));
     }
 
+    skipStep(e) {
+        //!! if some of the inputs has been filled, warn the user they'll lose the data if the proceed
+        this.props.history.push(`/${this.props.team}/${this.props.channel.id}`);
+    }
+
     render() {
         return (
             <div className={styles.wrapper}>
@@ -72,7 +77,7 @@ class TeamInvites extends Component {
                             }
                     }
                 >Add Teammates</Button>
-                <span className={styles.skipStep}>Skip this step</span>
+                <span className={styles.skipStep} onClick={this.skipStep.bind(this)}>Skip this step</span>
             </div>
         )
     }

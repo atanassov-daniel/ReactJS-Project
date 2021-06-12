@@ -44,8 +44,72 @@ export default class TeamName extends Component {
             }) //name: this.props.authInfo.name
             .then((docRef) => {
                 console.log("Document written with ID: ", docRef.id);
-                this.props.setTeam(docRef.id);
-                this.props.changePage();
+
+                /* db
+                    .collection(`users`)
+                    .doc('arrayUpdate')
+                    .update({
+                        joinedAt: firestore.FieldValue.serverTimestamp(), name: this.state.name,
+                        key: docRef.id, role: 'creator'
+                    }) //name: this.props.authInfo.name
+                    .then((docRef) => {
+                        console.log("Document written with ID: ", docRef.id);
+                    })
+                    .catch((error) => {
+                        alert(`This action couldn't be performed: ${error}. Please try again!`);
+                    }); */
+                docRef.get().then(doc => {
+                    const { createdAt, name } = doc.data();
+                    const id = docRef.id;
+
+                    db
+                        .collection(`users`)
+                        .where('email', '==', 'arrUpdate@gmail.com')
+                        .get()
+                        .then(querySnapshot => {
+                            querySnapshot.forEach(doc => {
+                                if (doc.exists) doc.ref.update(
+                                    {
+                                        teams: firestore.FieldValue.arrayUnion(
+                                            {
+                                                joinedAt: createdAt, name: name,
+                                                key: id, role: 'creator'
+                                            }
+                                            // "val"
+                                        )
+                                    }
+                                ) //name: this.props.authInfo.name
+                            })
+                        });
+
+
+                    /* db
+                        .collection(`users`)
+                        // .where('email', '==', 'arr@gmail.com')
+                        // .where('email', '==', 'arr@abv.bg')
+                        .doc('zjI0UyMBuqBlr5CIMxDW')
+                        .update({
+                            teams: firestore.FieldValue.arrayUnion(
+                                {
+                                    joinedAt: createdAt, name: name,
+                                    key: id, role: 'creator'
+                                }
+                                // "val"
+                            )
+                        }) //name: this.props.authInfo.name */
+
+                    /* 
+                    .update({
+                            teams: firestore.FieldValue.arrayUnion("value")
+                    })
+                    */
+
+                    this.props.setTeam(docRef.id);
+                    this.props.changePage();
+                })
+
+                /* this.props.setTeam(docRef.id);
+                this.props.changePage(); */
             })
             .catch((error) => {
                 alert(`This action couldn't be performed: ${error}. Please try again!`);
@@ -68,9 +132,11 @@ export default class TeamName extends Component {
                         value={this.state.name}
                         onChange={this.onNameChange}
                         style={{ marginBottom: '10%', marginTop: '4%' }}
+                        onPressEnter={(e) => document.getElementById("next-button").focus()}
                     />
                     <Button disabled={this.state.disabled}
                         onClick={(e) => { this.finalizeTeam(); }}
+                        id="next-button"
                         // onClick={(e) => { this.props.changePage(); this.finalizeTeam(); }}
                         style={
                             this.state.disabled === false

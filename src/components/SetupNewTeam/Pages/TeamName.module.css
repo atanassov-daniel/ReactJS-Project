@@ -11,4 +11,5 @@
 .skipStep:hover {
     text-decoration: underline;
     text-underline-offset: 0.2em;
+    cursor: pointer;
 }
