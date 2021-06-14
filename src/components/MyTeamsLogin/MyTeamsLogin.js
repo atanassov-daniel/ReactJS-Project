@@ -25,12 +25,10 @@ class MyTeamsLogin extends Component {
         }
     }
 
-    openTeam(e) {
-        const team = e.currentTarget.id;
-
+    openTeam(key, name, e) {
         // this.props.history.push(`/${e.currentTarget.id}`);
-        this.props.history.push(`/${e.currentTarget.id.replace('#', '')}/general`);
-        this.props.onTeamChange({ name: team });
+        this.props.history.push(`/${key}/general`);
+        this.props.onTeamChange({ name: name, key: key });
         this.props.onChannelChange({ name: 'general' });
     }
 
@@ -86,7 +84,7 @@ class MyTeamsLogin extends Component {
                         >
                             {this.state.myTeams.map(team => (
                                 <Card
-                                    key={team?.name}
+                                    key={team?.key}
                                     type="inner"
                                     className={styles.innerCard}
                                 // title="Inner Card title"
@@ -103,7 +101,7 @@ class MyTeamsLogin extends Component {
                                         style={{ width: 'max-content', float: 'left' }} //! so that the button can go on the same row
                                     />
 
-                                    <Button style={{ float: 'right' }} onClick={this.openTeam.bind(this)} id={team?.name} ><ArrowRightOutlined /></Button>
+                                    <Button style={{ float: 'right' }} onClick={this.openTeam.bind(this, team?.key, team?.name)}><ArrowRightOutlined /></Button>
                                 </Card>
                             ))}
                         </Card>

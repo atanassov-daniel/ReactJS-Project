@@ -35,12 +35,15 @@ export default class TeamName extends Component {
             // teams/${this.props.team.name}/channels/${this.props.channel.name}/posts
             .collection(`teams`)
             .add({
-                createdAt: firestore.FieldValue.serverTimestamp(), name: this.state.name, createdBy: {
+                createdAt: firestore.FieldValue.serverTimestamp(),
+                name: this.state.name,
+                createdBy: {
                     email: this.props.authInfo.email,
                     uid: this.props.authInfo.uid,
                     name: this.props.authInfo.displayName,
                     photoURL: this.props.authInfo.photoURL
-                }
+                },
+                members: [this.props.authInfo.email]
             }) //name: this.props.authInfo.name
             .then((docRef) => {
                 console.log("Document written with ID: ", docRef.id);
@@ -64,22 +67,37 @@ export default class TeamName extends Component {
 
                     db
                         .collection(`users`)
-                        .where('email', '==', 'arrUpdate@gmail.com')
+                        // .where('email', '==', 'arrUpdate@gmail.com')
+                        .where('email', '==', this.props.authInfo.email)
                         .get()
                         .then(querySnapshot => {
-                            querySnapshot.forEach(doc => {
-                                if (doc.exists) doc.ref.update(
-                                    {
-                                        teams: firestore.FieldValue.arrayUnion(
-                                            {
-                                                joinedAt: createdAt, name: name,
-                                                key: id, role: 'creator'
-                                            }
-                                            // "val"
-                                        )
-                                    }
-                                ) //name: this.props.authInfo.name
-                            })
+                            const obj = {
+                                joinedAt: createdAt, name: name,
+                                key: id, role: 'creator'
+                            };
+
+                            if (querySnapshot.empty === false) {
+                                querySnapshot.forEach(doc => {
+                                    if (doc.exists) doc.ref.update(
+                                        {
+                                            teams: firestore.FieldValue.arrayUnion(obj/* "val"*/)
+                                        }
+                                    )
+                                })
+                            } /*//* this would be completely unnecessary, because when registering a user, he'll undoubtedly be added to the USERS COLLECTION
+                            else {
+                                db
+                                    // teams/${this.props.team.name}/channels/${this.props.channel.name}/posts
+                                    .collection(`users`)
+                                    .add({
+                                        createdAt: firestore.FieldValue.serverTimestamp(),
+                                        email: this.props.authInfo.email,
+                                        uid: this.props.authInfo.email,
+                                        name: this.props.authInfo.displayName,
+                                        photoURL: this.props.authInfo.photoURL,
+                                        teams: [obj]
+                                    });
+                            } */
                         });
 
 

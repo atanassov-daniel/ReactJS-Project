@@ -44,12 +44,32 @@ class TeamChannels extends Component {
                     uid: this.props.authInfo.uid,
                     name: this.props.authInfo.displayName,
                     photoURL: this.props.authInfo.photoURL
-                }
+                },
+                members: [this.props.authInfo.email]
             }) //name: this.props.authInfo.name
             .then((docRef) => {
                 console.log("Channel written with ID: ", docRef.id);
                 this.props.setChannel({ name: this.state.channel, id: docRef.id });
-                this.props.changePage();
+
+                if (this.state.channel !== 'general') db
+                    .collection(`teams/${this.props.team}/channels`)
+                    .add({
+                        createdAt: firestore.FieldValue.serverTimestamp(), name: 'general',
+                        createdBy: {
+                            email: this.props.authInfo.email,
+                            uid: this.props.authInfo.uid,
+                            name: this.props.authInfo.displayName,
+                            photoURL: this.props.authInfo.photoURL
+                        },
+                        members: [this.props.authInfo.email]
+                    }) //name: this.props.authInfo.name
+                    .then((docRef) => {
+                        console.log("'GENERAL' channel written with ID: ", docRef.id);
+                        this.props.changePage();
+                    })
+                    .catch((error) => {
+                        alert(`This action couldn't be performed: ${error}. Please try again!`);
+                    });
             })
             .catch((error) => {
                 alert(`This action couldn't be performed: ${error}. Please try again!`);
