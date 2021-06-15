@@ -32,7 +32,7 @@ class TeamInvites extends Component {
 
     skipStep(e) {
         //!! if some of the inputs has been filled, warn the user they'll lose the data if the proceed
-        this.props.history.push(`/${this.props.team}/${this.props.channel.id}`);
+        this.props.history.push(`/${this.props.team.key}/${this.props.channel.key}`);
     }
 
     render() {

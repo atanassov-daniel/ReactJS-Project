@@ -5,6 +5,7 @@ import { Layout, Row, Col } from 'antd';
 !! Warning: Deleting a document does not delete its subcollections!
 When you delete a document that has subcollections, those subcollections are not deleted. For example, there may be a document located at coll/doc/subcoll/subdoc even though the document coll/doc no longer exists. If you want to delete documents in subcollections when deleting a parent document, you must do so manually, as shown in Delete Collections.
 */
+//* the Check for an Invalid Team is done in the Sidebar Component, the Check for an Invalid Channel is done in the Messages Component
 
 import { auth } from './utils/firebase';
 
@@ -15,7 +16,7 @@ import Channel from './components/Channel/Channel';
 import Messages from './components/Messages/Messages';
 import TextareaMessage from './components/TextareaMessage/TextareaMessage';
 import Details from './components/Details';
-import Scroll from './components/Scroll';
+import Scroll from './components/Scroll'; // for reverse Infinite Scrolling for the messages
 import Signin from './components/Signin/Signin';
 import MyTeamsLogin from './components/MyTeamsLogin/MyTeamsLogin';
 
@@ -157,9 +158,13 @@ class App extends Component {
                                     }} />
                                     {/* //!!!!!! actually it should be path="/:channel" */}
 
-                                    <Row style={{ height: '100%', width: '100%' }}>
-                                        <Switch>
-                                            {/* <Route path="/messages">
+                                    {this.state.isInvalidChannel === true ?
+                                        <Route render={() => (<div style={{ justify: 'center', textAlign: 'center', fontWeight: 'bolder', fontSize: '5em' }}>Invalid Channel 404</div>)} />
+                                        :
+                                        <>
+                                            <Row style={{ height: '100%', width: '100%' }}>
+                                                <Switch>
+                                                    {/* <Route path="/messages">
                                             <Col
                                                 span={24}
                                                 style={{ border: '2.5px solid orange', height: '60vh' }} //!! the height: '100%' broke the scrollbar's css and it wouldn't scroll
@@ -170,97 +175,97 @@ class App extends Component {
                                                 <Messages />
                                             </Col>
                                         </Route> */}
-                                            <Route path="/login" exact
-                                                render={(props) => (
-                                                    <Col
-                                                        span={24}
-                                                        style={{ border: '2.5px solid orange', height: '90vh' }} //!! the height: '100%' broke the scrollbar's css and it wouldn't scroll
-                                                        className="column-with-slider"
-                                                        id="signin-column"
-                                                    >
-                                                        <Signin
-                                                            {...props}
-                                                            authInfo={this.state.authInfo}
-                                                        />
-                                                    </Col>
-                                                )}
-                                            />
-                                            <Route
-                                                path="/login/workspaces" exact
-                                                render={(props) => (
-                                                    <Col
-                                                        span={24}
-                                                        // height: '90vh' -> earlier it was so and worked, after the Swtch something changed
-                                                        style={{ border: '2.5px solid orange', height: '98vh' }} //!! the height: '100%' broke the scrollbar's css and it wouldn't scroll
-                                                        className="column-with-slider"
-                                                        id="login-workspaces-column"
-                                                    >
-                                                        <MyTeamsLogin
-                                                            {...props}
-                                                            authInfo={this.state.authInfo}
-                                                            onTeamChange={this.onTeamChange}
-                                                            onChannelChange={this.onChannelChange}
-                                                        //* when the team gets updated from here, a check for its validity would be unnecessary, because the component loads all the user's teams from the database, so they will all be existent and he will be a member of the teams
-                                                        />
-                                                    </Col>
-                                                )}
-                                            />
-                                            <Route
-                                                path="/get-started" exact
-                                                render={(props) => (
-                                                    <Col
-                                                        span={24}
-                                                        // height: '90vh' -> earlier it was so and worked, after the Swtch something changed
-                                                        style={{ border: '2.5px solid orange', height: '98vh' }} //!! the height: '100%' broke the scrollbar's css and it wouldn't scroll
-                                                        className="column-with-slider"
-                                                    >
-                                                        <GetStarted
-                                                            {...props}
-                                                        />
-                                                    </Col>
-                                                )}
-                                            />
-                                            {/* <Route path="/setupTeam/name" exact
+                                                    <Route path="/login" exact
+                                                        render={(props) => (
+                                                            <Col
+                                                                span={24}
+                                                                style={{ border: '2.5px solid orange', height: '90vh' }} //!! the height: '100%' broke the scrollbar's css and it wouldn't scroll
+                                                                className="column-with-slider"
+                                                                id="signin-column"
+                                                            >
+                                                                <Signin
+                                                                    {...props}
+                                                                    authInfo={this.state.authInfo}
+                                                                />
+                                                            </Col>
+                                                        )}
+                                                    />
+                                                    <Route
+                                                        path="/login/workspaces" exact
+                                                        render={(props) => (
+                                                            <Col
+                                                                span={24}
+                                                                // height: '90vh' -> earlier it was so and worked, after the Swtch something changed
+                                                                style={{ border: '2.5px solid orange', height: '98vh' }} //!! the height: '100%' broke the scrollbar's css and it wouldn't scroll
+                                                                className="column-with-slider"
+                                                                id="login-workspaces-column"
+                                                            >
+                                                                <MyTeamsLogin
+                                                                    {...props}
+                                                                    authInfo={this.state.authInfo}
+                                                                    onTeamChange={this.onTeamChange}
+                                                                    onChannelChange={this.onChannelChange}
+                                                                //* when the team gets updated from here, a check for its validity would be unnecessary, because the component loads all the user's teams from the database, so they will all be existent and he will be a member of the teams
+                                                                />
+                                                            </Col>
+                                                        )}
+                                                    />
+                                                    <Route
+                                                        path="/get-started" exact
+                                                        render={(props) => (
+                                                            <Col
+                                                                span={24}
+                                                                // height: '90vh' -> earlier it was so and worked, after the Swtch something changed
+                                                                style={{ border: '2.5px solid orange', height: '98vh' }} //!! the height: '100%' broke the scrollbar's css and it wouldn't scroll
+                                                                className="column-with-slider"
+                                                            >
+                                                                <GetStarted
+                                                                    {...props}
+                                                                />
+                                                            </Col>
+                                                        )}
+                                                    />
+                                                    {/* <Route path="/setupTeam/name" exact
                                                 render={(props) => (
                                                     <TeamName />
                                                 )}
                                             /> */}
-                                            <Route path="/setupTeam/name" exact
-                                                render={(props) => (
-                                                    <SetupNewTeam authInfo={this.state.authInfo} />
-                                                )}
-                                            />
+                                                    <Route path="/setupTeam/name" exact
+                                                        render={(props) => (
+                                                            <SetupNewTeam authInfo={this.state.authInfo} />
+                                                        )}
+                                                    />
 
-                                            <Route
-                                                // path="/messages"
-                                                path="/:team/:channel"
-                                                render={(props) => (
-                                                    <Col
-                                                        span={24}
-                                                        style={{ border: '2.5px solid orange', height: '60vh' }} //!! the height: '100%' broke the scrollbar's css and it wouldn't scroll
-                                                        className="column-with-slider"
-                                                        // id="messages-container"
-                                                        id="first-column"
+                                                    <Route
+                                                        // path="/messages"
+                                                        path="/:team/:channel"
+                                                        render={(props) => (
+                                                            <Col
+                                                                span={24}
+                                                                style={{ border: '2.5px solid orange', height: '60vh' }} //!! the height: '100%' broke the scrollbar's css and it wouldn't scroll
+                                                                className="column-with-slider"
+                                                                // id="messages-container"
+                                                                id="first-column"
+                                                            >
+                                                                <Messages
+                                                                    {...props}
+                                                                    authInfo={this.state.authInfo}
+                                                                    team={this.state.team}
+                                                                    channel={this.state.channel}
+                                                                    onChannelChange={this.onChannelChange}
+                                                                    invalidChannel={this.invalidChannel}
+                                                                />
+                                                            </Col>
+                                                        )}
                                                     >
-                                                        <Messages
-                                                            {...props}
-                                                            authInfo={this.state.authInfo}
-                                                            team={this.state.team}
-                                                            channel={this.state.channel}
-                                                            onChannelChange={this.onChannelChange}
-                                                            invalidChannel={this.invalidChannel}
-                                                        />
-                                                    </Col>
-                                                )}
-                                            >
-                                            </Route>
-                                            {/* <SiderDemo /> */}
+                                                    </Route>
+                                                    {/* <SiderDemo /> */}
 
-                                            <Route
-                                                path="/details"
-                                                component={Details}
-                                            />
-                                            {/* <Route path="/infinite" exact>
+                                                    <Route
+                                                        path="/details"
+                                                        component={Details}
+                                                    />
+                                                    {/* <Route path="/infinite" exact>
                                             <Col
                                                 span={24}
                                                 style={{ border: '2.5px solid orange', height: '60vh' }} //!! the height: '100%' broke the scrollbar's css and it wouldn't scroll
@@ -272,30 +277,32 @@ class App extends Component {
                                             </Col>
                                         </Route> */}
 
-                                        </Switch>
+                                                </Switch>
 
-                                    </Row>
+                                            </Row>
+                                            {/* }  close this.state.invalidChannel */}
 
-
-                                    {/* <Route path="/messages"> */}
-                                    {/* <Route path="/:team/:channel">
+                                            {/* <Route path="/messages"> */}
+                                            {/* <Route path="/:team/:channel">
                                         <TextareaMessage />
                                     </Route> */}
-                                    {/*//!!!!!!!! on the GetStarted page I had to add the Url, otherwise I got a Invalid team warning */}
-                                    <Switch>
-                                        <Route path="/setupTeam/name" exact />
-                                        <Route path="/:team/:channel" render={(props) => {
-                                            // if (!props.location.pathname.includes('/login') || !props.location.pathname.includes('/get-started')) return (
-                                            if (!props.location.pathname.includes('/login') && !props.location.pathname.includes('/get-started')) return (
-                                                <TextareaMessage
-                                                    {...props}
-                                                    team={this.state.team}
-                                                    channel={this.state.channel}
-                                                    authInfo={this.state.authInfo}
-                                                />
-                                            );
-                                        }} />
-                                    </Switch>
+                                            {/*//!!!!!!!! on the GetStarted page I had to add the Url, otherwise I got a Invalid team warning */}
+                                            <Switch>
+                                                <Route path="/setupTeam/name" exact />
+                                                <Route path="/:team/:channel" render={(props) => {
+                                                    // if (!props.location.pathname.includes('/login') || !props.location.pathname.includes('/get-started')) return (
+                                                    if (!props.location.pathname.includes('/login') && !props.location.pathname.includes('/get-started')) return (
+                                                        <TextareaMessage
+                                                            {...props}
+                                                            team={this.state.team}
+                                                            channel={this.state.channel}
+                                                            authInfo={this.state.authInfo}
+                                                        />
+                                                    );
+                                                }} />
+                                            </Switch>
+                                        </>
+                                    }
 
                                 </Content>
 

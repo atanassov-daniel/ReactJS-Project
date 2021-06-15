@@ -1,6 +1,8 @@
 import { Component } from 'react';
 import { Input, Image, Typography, Row, Col, Button, Card, Avatar } from 'antd';
-import { ArrowRightOutlined, UserAddOutlined } from '@ant-design/icons'
+import { ArrowRightOutlined, UserAddOutlined } from '@ant-design/icons';
+
+import { db } from '../../utils/firebase';
 
 import getMyTeams from '../../services/getMyTeams';
 import styles from './MyTeamsLogin.module.css';
@@ -26,10 +28,25 @@ class MyTeamsLogin extends Component {
     }
 
     openTeam(key, name, e) {
+        db
+            .collection('teams').doc(key).collection('channels')
+            .where('name', '==', 'general')
+            .get()
+            .then((querySnapshot) => {
+                if (querySnapshot.empty === false) {
+                    querySnapshot.forEach(doc => {
+                        if (doc.exists) {
+                            const channelKey = doc.id;
+                            const channelDoc = doc.data();
+
+                            this.props.history.push(`/${key}/${channelKey}`); // general
+                            this.props.onTeamChange({ name: name, key: key });
+                            this.props.onChannelChange({ name: 'general', key: channelKey, ...channelDoc });
+                        }
+                    });
+                }
+            });
         // this.props.history.push(`/${e.currentTarget.id}`);
-        this.props.history.push(`/${key}/general`);
-        this.props.onTeamChange({ name: name, key: key });
-        this.props.onChannelChange({ name: 'general' });
     }
 
     onCreateWorkspaceClick(e) {

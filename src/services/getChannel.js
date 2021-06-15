@@ -1,7 +1,21 @@
 import { db } from '../utils/firebase';
 
-export default function getChannel(teamKey, channelName) {
+export default function getChannel(teamKey, channelKey) { // channelName
     return db
+        .collection('teams').doc(teamKey).collection('channels').doc(channelKey)
+        .get()
+        .then((doc) => {
+            if (doc.exists) {
+                doc = doc.data();
+                doc.key = channelKey;
+                // if (!doc.name) doc.name = channelName;
+                console.log(doc);
+                return doc;
+            }
+
+            return null;
+        });
+    /* return db
         .collection('teams').doc(teamKey).collection('channels')
         .where('name', '==', channelName)
         .get()
@@ -17,7 +31,7 @@ export default function getChannel(teamKey, channelName) {
             }
 
             return channelDoc;
-        });
+        }); */
 };
 /* export default function getChannel(teamName, channelName) {
     return db

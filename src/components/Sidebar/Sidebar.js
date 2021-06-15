@@ -36,13 +36,14 @@ export default class Sidebar extends Component {
 
         //!! only check if the team is valid if it comes from the URL, if it comes directly from logging in into the workspace, then there's no way the team will be non-existent or the user won't be a member of it
         if (this.props.team === null) {
-            const team = this.props.match.params.team;
+            const teamKey = this.props.match.params.team;
             /* this.props.authInfo.isAuthenticated === true && */
-            if (team) {
-                getTeam(team)
+            if (teamKey) {
+                getTeam(teamKey)
                     .then(teamInfo => {
                         if (teamInfo === null) {
                             this.props.invalidTeam();
+                            console.log('%c invalid team', 'font-size: 3em; font-weight: bolder;');
                         } else {
                             console.log(teamInfo);
                             this.props.onTeamChange({ ...teamInfo });

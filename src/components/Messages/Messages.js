@@ -34,7 +34,10 @@ class Messages extends Component {
             loading: true,
             messages: [],
         };
+
+        this.noPosts = false;
     }
+
 
     componentDidMount() {
         /* if (this.props.channel === null && this.props.team !== null) {
@@ -56,12 +59,15 @@ class Messages extends Component {
 
     componentDidUpdate() {
         if (this.props.channel === null && this.props.team !== null) {
-            const channel = this.props.match.params.channel;
+            const channelKey = this.props.match.params.channel;
 
-            if (channel) {
-                getChannel(this.props.team.name, channel)
+            if (channelKey) {
+                getChannel(this.props.team.key, channelKey)
                     .then(channelInfo => {
+                        console.log(this.isFirstLoad);
+
                         if (channelInfo === null) {
+                            console.log('%c invalid channel', 'font-size: 3em; font-weight: bolder');
                             this.props.invalidChannel();
                         } else {
                             console.log(channelInfo);
@@ -79,7 +85,7 @@ class Messages extends Component {
         // the content from the file on the right was here
         if (this.isFirstLoad === undefined && this.props.channel) {
             this.unsubscribe = db
-                .collection(`teams/${this.props.team.name}/channels/${this.props.channel.name}/posts`)
+                .collection(`teams/${this.props.team.key}/channels/${this.props.channel.key}/posts`)
                 .orderBy('createdAt', 'desc')
                 .onSnapshot((querySnapshot) => {
                     console.log(querySnapshot.docs.length);
@@ -114,6 +120,7 @@ class Messages extends Component {
                     this.setState(
                         () => ({ messages: messages }),
                         () => {
+                            if (this.state.messages.length === 0) this.noPosts = true;
                             this.setState({ loading: false }); // if (this.isFirstLoad) document.getElementById('first-column').scrollTop = document.getElementById('first-column').scrollHeight; // so that only on the first fetch of the messages the messages container will get automatically scrolled to its very bottom     // console.log(this.state.messages);
                         });
                 });
@@ -148,45 +155,49 @@ class Messages extends Component {
 
         return (
             <>
-                {this.state.messages.length === 0 ? Array(5).fill(skeletonInitialLoad) : this.state.messages.map(message => (
-                    <Card
-                        key={message.key}
-                        className={loading ? 'loading' : ''}
-                        actions={[
-                            <SettingOutlined key="setting" />,
-                            <EditOutlined key="edit" />,
-                            <EllipsisOutlined key="ellipsis" />,
-                        ]}
-                    >
-                        <Skeleton loading={loading} avatar active>
-                            <Meta
-                                avatar={
-                                    <Avatar src={message.createdBy?.profilePicture || 'https://t4.ftcdn.net/jpg/02/51/95/53/240_F_251955356_FAQH0U1y1TZw3ZcdPGybwUkH90a3VAhb.jpg'} shape="square" size={45} alt="user profile image" />
-                                }
-                                title={message?.createdBy?.name}
-                                description={message.createdAt}
-                            />
+                {this.state.messages.length === 0 && this.noPosts === false
+                    ? Array(5).fill(skeletonInitialLoad)
+                    : this.noPosts === true
+                        ? <div>WOW!!! Such empty :( :( :(</div>
+                        : this.state.messages.map(message => (
+                            <Card
+                                key={message.key}
+                                className={loading ? 'loading' : ''}
+                                actions={[
+                                    <SettingOutlined key="setting" />,
+                                    <EditOutlined key="edit" />,
+                                    <EllipsisOutlined key="ellipsis" />,
+                                ]}
+                            >
+                                <Skeleton loading={loading} avatar active>
+                                    <Meta
+                                        avatar={
+                                            <Avatar src={message.createdBy?.profilePicture || 'https://t4.ftcdn.net/jpg/02/51/95/53/240_F_251955356_FAQH0U1y1TZw3ZcdPGybwUkH90a3VAhb.jpg'} shape="square" size={45} alt="user profile image" />
+                                        }
+                                        title={message?.createdBy?.name}
+                                        description={message.createdAt}
+                                    />
 
-                            <p>{message.text}</p>
+                                    <p>{message.text}</p>
 
-                            {
-                                message.images ?
-                                    <Image.PreviewGroup>
-                                        {message.images.map((img, index) => (
-                                            <Image
-                                                key={`${message.key}//${index}`}
-                                                // width={200}
-                                                src={img}
-                                                alt="message image"
-                                            // maxInlineSize: '-webkit-fill-available'
-                                            />
-                                        ))}
-                                    </Image.PreviewGroup>
-                                    : ''
-                            }
-                        </Skeleton>
-                    </Card>
-                ))}
+                                    {
+                                        message.images ?
+                                            <Image.PreviewGroup>
+                                                {message.images.map((img, index) => (
+                                                    <Image
+                                                        key={`${message.key}//${index}`}
+                                                        // width={200}
+                                                        src={img}
+                                                        alt="message image"
+                                                    // maxInlineSize: '-webkit-fill-available'
+                                                    />
+                                                ))}
+                                            </Image.PreviewGroup>
+                                            : ''
+                                    }
+                                </Skeleton>
+                            </Card>
+                        ))}
 
                 {this.props.authInfo.isAuthenticated === false ? <strong style={{ fontSize: '5em', color: 'red' }}>UNAUTHORISED</strong> : ''}
 

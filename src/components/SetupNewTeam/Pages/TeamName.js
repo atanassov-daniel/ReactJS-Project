@@ -100,6 +100,8 @@ export default class TeamName extends Component {
                             } */
                         });
 
+                    this.props.setTeam({ key: docRef.id, name: this.state.name });
+                    this.props.changePage();
 
                     /* db
                         .collection(`users`)
@@ -121,9 +123,6 @@ export default class TeamName extends Component {
                             teams: firestore.FieldValue.arrayUnion("value")
                     })
                     */
-
-                    this.props.setTeam(docRef.id);
-                    this.props.changePage();
                 })
 
                 /* this.props.setTeam(docRef.id);

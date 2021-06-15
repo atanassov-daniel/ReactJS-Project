@@ -36,7 +36,7 @@ class TeamChannels extends Component {
 
         db
             // teams/${this.props.team.name}/channels/${this.props.channel.name}/posts
-            .collection(`teams/${this.props.team}/channels`)
+            .collection(`teams/${this.props.team.key}/channels`)
             .add({
                 createdAt: firestore.FieldValue.serverTimestamp(), name: this.state.channel,
                 createdBy: {
@@ -49,10 +49,10 @@ class TeamChannels extends Component {
             }) //name: this.props.authInfo.name
             .then((docRef) => {
                 console.log("Channel written with ID: ", docRef.id);
-                this.props.setChannel({ name: this.state.channel, id: docRef.id });
+                this.props.setChannel({ name: this.state.channel, key: docRef.id });
 
                 if (this.state.channel !== 'general') db
-                    .collection(`teams/${this.props.team}/channels`)
+                    .collection(`teams/${this.props.team.key}/channels`)
                     .add({
                         createdAt: firestore.FieldValue.serverTimestamp(), name: 'general',
                         createdBy: {
@@ -91,8 +91,10 @@ class TeamChannels extends Component {
                     value={this.state.channel}
                     onChange={this.onChannelChange}
                     style={{ marginBottom: '10%', marginTop: '4%' }}
+                    onPressEnter={(e) => document.getElementById("next-button").focus()}
                 />
-                <Button disabled={this.state.disabled}
+                <Button id="next-button"
+                    disabled={this.state.disabled}
                     // onClick={(e) => { this.props.changePage(); this.finalizeChannel(); }}
                     onClick={(e) => { this.finalizeChannel(); }}
                     style={
