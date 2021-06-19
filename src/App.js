@@ -24,6 +24,7 @@ import Moda from './components/Moda';
 import GetStarted from './components/GetStarted/GetStarted';
 import TeamName from './components/SetupNewTeam/Pages/TeamName';
 import SetupNewTeam from './components/SetupNewTeam/SetupNewTeam';
+import Registration from './components/Registration/Registration';
 
 const { Header, Content } = Layout;
 
@@ -100,7 +101,7 @@ class App extends Component {
                     ? <Route render={() => (<div>Invalid Team 404</div>)} />
                     : <>
                         {/* {this.state.authInfo.isAuthenticated === true && !this.props.location.pathname.includes('login') */}
-                        {this.state.authInfo.isAuthenticated === true && !this.props.location.pathname.includes('/login') && !this.props.location.pathname.includes('/get-started')
+                        {this.state.authInfo.isAuthenticated === true && !this.props.location.pathname.includes('/login') && !this.props.location.pathname.includes('/get-started') && !this.props.location.pathname.includes('/register')
                             ?
                             <Switch>
                                 <Route
@@ -137,7 +138,7 @@ class App extends Component {
                                     <Route
                                         path="/:team"
                                         render={(props) => {
-                                            if (!props.location.pathname.includes('/login') && !props.location.pathname.includes('/get-started')) return (
+                                            if (!props.location.pathname.includes('/login') && !props.location.pathname.includes('/get-started') && !this.props.location.pathname.includes('/register')) return (
                                                 <Sidebar {...props} onTeamChange={this.onTeamChange} invalidTeam={this.invalidTeam} team={this.state.team} />
                                             );
                                         }}
@@ -152,7 +153,7 @@ class App extends Component {
                                     {/* <Route path="/messages" component={Channel} /> */}
                                     <Route path="/:team/:channel" render={(props) => {
                                         // if (!props.location.pathname.includes('/login') && this.state.channel !== null) return (
-                                        if (!props.location.pathname.includes('/login') && !props.location.pathname.includes('/get-started') && this.state.channel !== null) return (
+                                        if (!props.location.pathname.includes('/login') && !props.location.pathname.includes('/get-started') && !this.props.location.pathname.includes('/register') && this.state.channel !== null) return (
                                             <Channel {...props} channel={this.state.channel} />
                                         );
                                     }} />
@@ -235,6 +236,11 @@ class App extends Component {
                                                             <SetupNewTeam authInfo={this.state.authInfo} />
                                                         )}
                                                     />
+                                                    <Route path="/register" exact
+                                                        render={(props) => (
+                                                            <Registration authInfo={this.state.authInfo} />
+                                                        )}
+                                                    />
 
                                                     <Route
                                                         // path="/messages"
@@ -291,7 +297,7 @@ class App extends Component {
                                                 <Route path="/setupTeam/name" exact />
                                                 <Route path="/:team/:channel" render={(props) => {
                                                     // if (!props.location.pathname.includes('/login') || !props.location.pathname.includes('/get-started')) return (
-                                                    if (!props.location.pathname.includes('/login') && !props.location.pathname.includes('/get-started')) return (
+                                                    if (!props.location.pathname.includes('/login') && !props.location.pathname.includes('/get-started')  && !this.props.location.pathname.includes('/register')) return (
                                                         <TextareaMessage
                                                             {...props}
                                                             team={this.state.team}

@@ -7,9 +7,6 @@ import TeamChannels from './Pages/TeamChannels';
 import TeamInvites from './Pages/TeamInvites';
 // import styles from './TeamName.module.css';
 
-const { Title, Paragraph } = Typography;
-const { TextArea } = Input;
-
 class SetupNewTeam extends Component {
     constructor(props) {
         super(props);

@@ -10,32 +10,36 @@ import styles from './Signin.module.css';
 
 const { Paragraph, Link, Title } = Typography;
 
-class Signin extends Component {
-    onLogin(e) {
-        const [email, password] = [...document.querySelectorAll('input')].map(el => el.value);
-
+class Register extends Component {
+    onRegister(e) {
+        const [firstName, lastName, email, password, repeatPass] = [...document.querySelectorAll('input')].map(el => el.value);
         // let isValid = validateInputFields(email, password);
         // if (isValid === false) return;
-
         if (email.match(/\S+@\S+\.\S+/) === null) {
             alert('The email address is invalid!');
             return;
         }
-
         if (password.length < 6) {
             alert('The password should be at least 6 characters long!');
             return;
         }
+        if(password.includes(' ')){
+            alert('The password cannot include intervals!');
+            return;
+        }
+        if (password !== repeatPass) {
+            alert('Passwords don\'t match!');
+            return;
+        }
 
-        auth.signInWithEmailAndPassword(email, password)
+        auth.createUserWithEmailAndPassword(email, password)
             .then((userCredential) => {
-                console.log('logged in');
-                console.log(this.props); // without binding 'this' further down, 'this' was undefined
-                // this.props.history.push('/messages');
+                console.log('successfully registered');
+                console.log(this.props);
                 this.props.history.push('/login/workspaces');
             })
             .catch((error) => {
-                alert(`Couldn't log in - ${error.message}`);
+                alert(`Couldn't be registered - ${error.message}`);
             });
     }
 
@@ -84,7 +88,7 @@ class Signin extends Component {
                             >
                                 <Icon component={() => <img src="https://iconape.com/wp-content/files/uy/64779/svg/google-icon.svg" height="25px" style={{ marginBottom: '30%' }} alt="Google logo" />} />
                             Sign in with Google
-                            </Button>
+                        </Button>
                             <Button type="primary" size="large" block
                                 // style={{ backgroundColor: 'white', fontWeight: 'bold', color: 'black' }}
                                 className={styles.github}
@@ -113,7 +117,7 @@ class Signin extends Component {
                                 // style={{ backgroundColor: '#4e004e', fontWeight: 'bold', color: 'white', marginBottom: '10%' }}
                                 className={styles.signInEmailButton}
                                 id="login-button"
-                                onClick={this.onLogin.bind(this)}
+                                onClick={this.onRegister.bind(this)}
                             >
                                 Sign In with Email
                         </Button>
@@ -131,4 +135,4 @@ class Signin extends Component {
     }
 }
 
-export default Signin;
+export default Register;
