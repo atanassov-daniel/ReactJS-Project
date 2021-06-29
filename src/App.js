@@ -236,9 +236,29 @@ class App extends Component {
                                                             <SetupNewTeam authInfo={this.state.authInfo} />
                                                         )}
                                                     />
+                                                    {/* <Route path="/register" exact
+                                                        render={(props) => (
+                                                            <Registration
+                                                                authInfo={this.state.authInfo}
+                                                                className="column-with-slider"
+                                                                id="signin-column"
+                                                            />
+                                                        )}
+                                                    /> 
+                                                        //!this way the page wouldn't scroll and not all content would be shown */}
                                                     <Route path="/register" exact
                                                         render={(props) => (
-                                                            <Registration authInfo={this.state.authInfo} />
+                                                            <Col
+                                                                span={24}
+                                                                style={{ border: '2.5px solid orange', height: '90vh' }} //!! the height: '100%' broke the scrollbar's css and it wouldn't scroll
+                                                                className="column-with-slider"
+                                                            // id="signin-column"
+                                                            >
+                                                                <Registration
+                                                                    authInfo={this.state.authInfo}
+                                                                    {...props}
+                                                                />
+                                                            </Col>
                                                         )}
                                                     />
 
@@ -297,7 +317,7 @@ class App extends Component {
                                                 <Route path="/setupTeam/name" exact />
                                                 <Route path="/:team/:channel" render={(props) => {
                                                     // if (!props.location.pathname.includes('/login') || !props.location.pathname.includes('/get-started')) return (
-                                                    if (!props.location.pathname.includes('/login') && !props.location.pathname.includes('/get-started')  && !this.props.location.pathname.includes('/register')) return (
+                                                    if (!props.location.pathname.includes('/login') && !props.location.pathname.includes('/get-started') && !this.props.location.pathname.includes('/register')) return (
                                                         <TextareaMessage
                                                             {...props}
                                                             team={this.state.team}

@@ -3,9 +3,10 @@ import { Component } from 'react';
 import { Input, Image, Typography, Row, Col, Button } from 'antd';
 import { Route } from 'react-router-dom';
 
-import { db, firestore, auth } from '../../utils/firebase';
+// import { db, firestore, auth } from '../../utils/firebase';
 
 import Email from './Pages/Email';
+import Password from './Pages/Password';
 
 const { Paragraph, Link, Title } = Typography;
 
@@ -14,11 +15,13 @@ class Registration extends Component {
         super(props);
 
         this.state = {
-            step: 0,
+            step: 1,
             email: null,
+            password: null,
+
         }
 
-        this.pages = [Email];
+        this.pages = [Email, Password];
         //!!! or I could use hash routing for the subpages for the different sterps of the process
     }
 

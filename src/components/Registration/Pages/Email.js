@@ -1,4 +1,5 @@
 import { Component } from 'react';
+//TODO add a check icon at the right of the box when the email is valid (that's how it is in Slack)
 
 import { Input, Image, Typography, Row, Col, Button } from 'antd';
 
@@ -23,7 +24,17 @@ export default class Email extends Component {
     onEmailChange = ({ target: { value } }) => {
         this.setState({ email: value });
 
-        if (value.trim() === '' || value.match(/\S+@\S+\.\S+/) === null) this.setState({ disabled: true });
+        /* //* had to change it because of the following:
+            style={{ height: '100%', width: '100%' }}@abv.bg 
+        would lead to a match; even though the whole string is invalid, a certain substring of it 
+        does indeed match the regex(}}@abv.bg)
+        */
+        console.log(value);
+        // const match = value.match(/\S+@\S+\.\S+/);
+        const match = value.match(/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/);
+        console.log(match);
+
+        if (value.trim() === '' || (match === null || match[0] !== value)) this.setState({ disabled: true });
         else this.setState({ disabled: false });
     }
 
@@ -38,12 +49,12 @@ export default class Email extends Component {
 
         // ! if the user already exists, then don't let the person go to the enxt step
 
-        auth.fetchSignInMethodsForEmail(email)
+        /* auth.fetchSignInMethodsForEmail(email)
             .then(resp => {
                 // this means that an account with this email address already existsand => //TODO using the methods returned offer the user to sign in using the possible providers connected to his profile
                 console.log(resp);
                 alert('An account with this email address already exists. Please sign in!');
-                this.setState(() => ({ showLoginButton: true })); //* showing the user their providers probably isn't much of a good thing to do security-wise
+                this.setState(() => ({ showLoginButton: true, disabled: true })); //* showing the user their providers probably isn't much of a good thing to do security-wise
             })
             .catch(err => {
                 console.log(`${err.code} - ${err.message}`)
@@ -52,7 +63,22 @@ export default class Email extends Component {
                     this.props.setEmail({});
                     this.props.changePage();
                 }
+            }) */
+        auth.fetchSignInMethodsForEmail(email)
+            .then(resp => {
+                console.log(resp);
+
+                if (resp.length > 0) { // this means that an account with this email address already existsand => //TODO using the methods returned offer the user to sign in using the possible providers connected to his profile
+                    alert('An account with this email address already exists. Please sign in!');
+                    this.setState(() => ({ showLoginButton: true, disabled: true })); //* showing the user their providers probably isn't much of a good thing to do security-wise
+                } else {
+                    this.props.setEmail(email);
+                    this.props.changePage();
+                }
             })
+            .catch(err => {
+                alert(`${err.code} - ${err.message}`)
+            });
 
     }
 
