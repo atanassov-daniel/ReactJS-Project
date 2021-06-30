@@ -18,6 +18,8 @@ export default class Password extends Component {
             password: '',
             repeatPass: '',
             disabled: true,
+            passMessage: '',
+            repeatPassMessage: '',
             // showLoginButton: false,
         }
     }
@@ -25,19 +27,39 @@ export default class Password extends Component {
     onPasswordChange = ({ target: { value: pass } }) => {
         this.setState({ password: pass });
 
-        const repeatPass = this.state.repeatPass;
+        if (pass.trim().length < 6 || pass.includes(' ')) { this.setState({ passMessage: 'Invalid Password! Password should be at least 6 characters long and can\'t contain whitespaces', disabled: true }); return; }
+        else this.setState({ disabled: false, passMessage: '' });
 
-        if (pass.trim() === '' || pass.includes(' ') || repeatPass.trim() === '' || repeatPass.includes(' ') || pass !== repeatPass) this.setState({ disabled: true });
-        else this.setState({ disabled: false });
+        // /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-+_!@#$%^&*.,?]).+$/
+        if (/^(?=.*[-+_!@#$%^&*.,?]).+$/.test(pass) === false) { this.setState({ passMessage: 'Password must include at least one special character', disabled: true }); return; }
+        else this.setState({ disabled: false, passMessage: '' });
+
+        if (/(?=.*\d)/.test(pass) === false) { this.setState({ passMessage: 'Password must include at least one number', disabled: true }); return; }
+        else this.setState({ disabled: false, passMessage: '' });
+
+        let includesLower = pass.split('').some(letter => /[\u00BF-\u1FFF\u2C00-\uD7FF\w]+/.test(letter) && /^(?=.*[-+_!@#$%^&*.,?]).+$/.test(letter) === false && isNaN(letter) === true && letter.toLocaleLowerCase() === letter); // without the regex special characters would also count as true, without the NaN numbers would too // without this /[\u00BF-\u1FFF\u2C00-\uD7FF\w]+/ only on the first try `/` would be counted as a lowercase, which is incorrect
+        if (includesLower === false) { this.setState({ passMessage: 'Password must include a lowercase letter', disabled: true }); return; }
+        else this.setState({ disabled: false, passMessage: '' });
+
+        let includesUpper = pass.split('').some(letter => /[\u00BF-\u1FFF\u2C00-\uD7FF\w]+/.test(letter) && /^(?=.*[-+_!@#$%^&*.,?]).+$/.test(letter) === false && isNaN(letter) === true && letter.toLocaleUpperCase() === letter);
+        if (includesUpper === false) { this.setState({ passMessage: 'Password must include an uppercase letter', disabled: true }); return; }
+        else this.setState({ disabled: false, passMessage: '' });
+
+        // 'здр12'.match(/[\u00BF-\u1FFF\u2C00-\uD7FF\w]+/) -> this includes international letters too
+        // /[\u00BF-\u1FFF\u2C00-\uD7FF\w]+/
+
+        if (pass !== this.state.repeatPass) this.setState({ repeatPassMessage: 'Passwords don\'t match', disabled: true });
+        else this.setState({ disabled: false, repeatPassMessage: '' });
     }
 
     onRepeatPassChange = ({ target: { value: repeatPass } }) => {
         this.setState({ repeatPass: repeatPass });
 
-        const pass = this.state.password;
+        if (repeatPass.trim().length < 6 || repeatPass.includes(' ')) this.setState({ repeatPassMessage: 'Invalid Password! Password should be at least 6 characters long and can\'t contain whitespaces', disabled: true });
+        else this.setState({ disabled: false, repeatPassMessage: '' });
 
-        if (repeatPass.trim() === '' || repeatPass.includes(' ') || pass.trim() === '' || pass.includes(' ') || pass !== repeatPass) this.setState({ disabled: true });
-        else this.setState({ disabled: false });
+        if (repeatPass !== this.state.password) this.setState({ repeatPassMessage: 'Passwords don\'t match', disabled: true });
+        else this.setState({ disabled: false, repeatPassMessage: '' });
     }
 
     registerUser(email, password) {
@@ -119,7 +141,7 @@ export default class Password extends Component {
                                     <span style={{ fontWeight: 'bold', display: 'inline' }}> following tips:</span>
                                 </p>
 
-                                <ol>
+                                <ol style={{ textAlign: '-webkit-left' }}>
                                     <li>Don't use trivial easily guessable things like qwerty, 123456, passw0rd, abc123, etc.</li>
                                     <li>Make sure it is at least 12 characters long</li>
                                     <li>Use a mix of uppercase and lowercase letters</li>
@@ -137,7 +159,9 @@ export default class Password extends Component {
                                 id="password-input"
                                 // onPressEnter={(e) => document.getElementById('login-button').focus()}
                                 onChange={this.onPasswordChange}
+                                style={{ marginBottom: '1%' }}
                             />
+                            <div style={{ marginBottom: '1%', textAlign: 'left' }}>{this.state.passMessage}</div>
                             <Input.Password
                                 placeholder="Repeat password"
                                 size="large"
@@ -147,6 +171,8 @@ export default class Password extends Component {
                                 // onPressEnter={(e) => document.getElementById('login-button').focus()}
                                 onChange={this.onRepeatPassChange}
                             />
+                            <div style={{ marginBottom: '1%', textAlign: 'left' }}>{this.state.repeatPassMessage}</div>
+
 
                             <Button
                                 disabled={this.state.disabled}
