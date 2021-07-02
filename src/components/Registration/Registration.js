@@ -15,10 +15,9 @@ class Registration extends Component {
         super(props);
 
         this.state = {
-            step: 1,
+            step: 0,
             email: null,
             password: null,
-
         }
 
         this.pages = [Email, Password];
@@ -37,8 +36,8 @@ class Registration extends Component {
         this.setState(() => ({ email }));
     }
 
-    onRegister(e) {
-                /* auth.createUserWithEmailAndPassword(email, password)
+    /* onRegister(e) {
+                auth.createUserWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 console.log('successfully registered');
                 console.log(this.props);
@@ -46,8 +45,8 @@ class Registration extends Component {
             })
             .catch((error) => {
                 alert(`Couldn't be registered - ${error.message}`);
-            }); */
-    }
+            });
+    } */
 
     render() {
         return (

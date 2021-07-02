@@ -1,0 +1,20 @@
+.profileImg {
+    /* height: 33px; */
+    height: 28px;
+    /* float: right; */
+    /* margin-right: 2.5%; */
+    border-radius: 15%;
+    /* margin-top: 0.5vh; */
+    margin-top: 1vh;
+    cursor: pointer;
+}
+
+.profileImg:hover {
+    opacity: 0.8;
+}
+
+.flR {
+    float: right;
+    margin-right: 2.5%;
+
+}

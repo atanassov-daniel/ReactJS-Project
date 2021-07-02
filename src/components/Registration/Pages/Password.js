@@ -24,20 +24,39 @@ export default class Password extends Component {
         }
     }
 
-    onPasswordChange = ({ target: { value: pass } }) => {
-        this.setState({ password: pass });
+    validatePassword(pass) {
+        let includesLower = pass.split('').some(letter => /[\u00BF-\u1FFF\u2C00-\uD7FF\w]+/.test(letter) && /^(?=.*[-+_!@#$%^&*.,?]).+$/.test(letter) === false && isNaN(letter) === true && letter.toLocaleLowerCase() === letter); // without the regex special characters would also count as true, without the NaN numbers would too // without this /[\u00BF-\u1FFF\u2C00-\uD7FF\w]+/ only on the first try `/` would be counted as a lowercase, which is incorrect
+        if (includesLower === false) { this.setState({ passMessage: 'Password must include a lowercase letter', disabled: true }); return false; }
+        else this.setState({ disabled: false, passMessage: '' });
 
-        if (pass.trim().length < 6 || pass.includes(' ')) { this.setState({ passMessage: 'Invalid Password! Password should be at least 6 characters long and can\'t contain whitespaces', disabled: true }); return; }
+        let includesUpper = pass.split('').some(letter => /[\u00BF-\u1FFF\u2C00-\uD7FF\w]+/.test(letter) && /^(?=.*[-+_!@#$%^&*.,?]).+$/.test(letter) === false && isNaN(letter) === true && letter.toLocaleUpperCase() === letter);
+        if (includesUpper === false) { this.setState({ passMessage: 'Password must include an uppercase letter', disabled: true }); return false; }
+        else this.setState({ disabled: false, passMessage: '' });
+
+        if (/(?=.*\d)/.test(pass) === false) { this.setState({ passMessage: 'Password must include at least one number', disabled: true }); return false; }
+        else this.setState({ disabled: false, passMessage: '' });
+
+        if (pass.trim().length < 6 || pass.includes(' ')) { this.setState({ passMessage: 'Invalid Password! Password should be at least 6 characters long and can\'t contain whitespaces', disabled: true }); return false; }
         else this.setState({ disabled: false, passMessage: '' });
 
         // /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-+_!@#$%^&*.,?]).+$/
-        if (/^(?=.*[-+_!@#$%^&*.,?]).+$/.test(pass) === false) { this.setState({ passMessage: 'Password must include at least one special character', disabled: true }); return; }
+        if (/^(?=.*[-+_!@#$%^&*.,?]).+$/.test(pass) === false) { this.setState({ passMessage: 'Password must include at least one special character', disabled: true }); return false; }
         else this.setState({ disabled: false, passMessage: '' });
+        // 'здр12'.match(/[\u00BF-\u1FFF\u2C00-\uD7FF\w]+/) -> this includes international letters too
+        // /[\u00BF-\u1FFF\u2C00-\uD7FF\w]+/
 
-        if (/(?=.*\d)/.test(pass) === false) { this.setState({ passMessage: 'Password must include at least one number', disabled: true }); return; }
-        else this.setState({ disabled: false, passMessage: '' });
+        if (pass !== this.state.repeatPass) { this.setState({ repeatPassMessage: 'Passwords don\'t match', disabled: true }); return false; }
+        else this.setState({ disabled: false, repeatPassMessage: '' });
 
-        let includesLower = pass.split('').some(letter => /[\u00BF-\u1FFF\u2C00-\uD7FF\w]+/.test(letter) && /^(?=.*[-+_!@#$%^&*.,?]).+$/.test(letter) === false && isNaN(letter) === true && letter.toLocaleLowerCase() === letter); // without the regex special characters would also count as true, without the NaN numbers would too // without this /[\u00BF-\u1FFF\u2C00-\uD7FF\w]+/ only on the first try `/` would be counted as a lowercase, which is incorrect
+        return true;
+    }
+
+    onPasswordChange = ({ target: { value: pass } }) => {
+        this.setState({ password: pass });
+
+        this.validatePassword(pass);
+
+        /* let includesLower = pass.split('').some(letter => /[\u00BF-\u1FFF\u2C00-\uD7FF\w]+/.test(letter) && /^(?=.*[-+_!@#$%^&*.,?]).+$/.test(letter) === false && isNaN(letter) === true && letter.toLocaleLowerCase() === letter); // without the regex special characters would also count as true, without the NaN numbers would too // without this /[\u00BF-\u1FFF\u2C00-\uD7FF\w]+/ only on the first try `/` would be counted as a lowercase, which is incorrect
         if (includesLower === false) { this.setState({ passMessage: 'Password must include a lowercase letter', disabled: true }); return; }
         else this.setState({ disabled: false, passMessage: '' });
 
@@ -45,20 +64,29 @@ export default class Password extends Component {
         if (includesUpper === false) { this.setState({ passMessage: 'Password must include an uppercase letter', disabled: true }); return; }
         else this.setState({ disabled: false, passMessage: '' });
 
+        if (/(?=.*\d)/.test(pass) === false) { this.setState({ passMessage: 'Password must include at least one number', disabled: true }); return; }
+        else this.setState({ disabled: false, passMessage: '' });
+
+        if (pass.trim().length < 6 || pass.includes(' ')) { this.setState({ passMessage: 'Invalid Password! Password should be at least 6 characters long and can\'t contain whitespaces', disabled: true }); return; }
+        else this.setState({ disabled: false, passMessage: '' });
+
+        // /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-+_!@#$%^&*.,?]).+$/
+        if (/^(?=.*[-+_!@#$%^&*.,?]).+$/.test(pass) === false) { this.setState({ passMessage: 'Password must include at least one special character', disabled: true }); return; }
+        else this.setState({ disabled: false, passMessage: '' });
         // 'здр12'.match(/[\u00BF-\u1FFF\u2C00-\uD7FF\w]+/) -> this includes international letters too
         // /[\u00BF-\u1FFF\u2C00-\uD7FF\w]+/
 
         if (pass !== this.state.repeatPass) this.setState({ repeatPassMessage: 'Passwords don\'t match', disabled: true });
-        else this.setState({ disabled: false, repeatPassMessage: '' });
+        else this.setState({ disabled: false, repeatPassMessage: '' }); */
     }
 
     onRepeatPassChange = ({ target: { value: repeatPass } }) => {
         this.setState({ repeatPass: repeatPass });
 
-        if (repeatPass.trim().length < 6 || repeatPass.includes(' ')) this.setState({ repeatPassMessage: 'Invalid Password! Password should be at least 6 characters long and can\'t contain whitespaces', disabled: true });
+        if (repeatPass !== this.state.password) this.setState({ repeatPassMessage: 'Passwords don\'t match', disabled: true });
         else this.setState({ disabled: false, repeatPassMessage: '' });
 
-        if (repeatPass !== this.state.password) this.setState({ repeatPassMessage: 'Passwords don\'t match', disabled: true });
+        if (repeatPass.trim().length < 6 || repeatPass.includes(' ')) this.setState({ repeatPassMessage: 'Invalid Password! Password should be at least 6 characters long and can\'t contain whitespaces', disabled: true });
         else this.setState({ disabled: false, repeatPassMessage: '' });
     }
 
@@ -68,16 +96,20 @@ export default class Password extends Component {
                 console.log('successfully registered');
                 console.log(userCredential);
                 console.log(this.props);
-                this.props.history.push('/setupTeam/name');
 
                 db
                     .collection(`users`)
                     .add({
                         createdAt: firestore.FieldValue.serverTimestamp(),
-                        email: this.state.email,
-                        uid: userCredential?.uid,
+                        email: this.props.email,
+                        uid: userCredential.user.uid,
+                        teams: []
                         // name: this.state.name,
                         // photoURL: this.props.authInfo.photoURL,
+                    })
+                    .then(() => {
+                        console.log('added .THEN');
+                        this.props.history.push('/setupTeam/name');
                     })
             })
             .catch((error) => {
@@ -87,7 +119,7 @@ export default class Password extends Component {
 
     onSubmitPassword() {
         const pass = this.state.password;
-        const repeatPass = this.state.repeatPass;
+        /* const repeatPass = this.state.repeatPass;
 
         if (pass !== repeatPass) {
             this.setState({ disabled: true });
@@ -103,10 +135,10 @@ export default class Password extends Component {
             this.setState({ disabled: true });
             alert('Please insert a valid repeat password and try again!');
             return;
-        }
+        } */
 
-        this.registerUser(this.props.email, pass);
-
+        if (this.validatePassword(pass)) this.registerUser(this.props.email, pass);
+        else alert('Please try again!');
     }
 
     render() {

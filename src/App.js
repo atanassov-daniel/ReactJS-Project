@@ -20,7 +20,7 @@ import Scroll from './components/Scroll'; // for reverse Infinite Scrolling for 
 import Signin from './components/Signin/Signin';
 import MyTeamsLogin from './components/MyTeamsLogin/MyTeamsLogin';
 
-import Moda from './components/Moda';
+import ProfileModal from './components/ProfileModal/ProfileModal';
 import GetStarted from './components/GetStarted/GetStarted';
 import TeamName from './components/SetupNewTeam/Pages/TeamName';
 import SetupNewTeam from './components/SetupNewTeam/SetupNewTeam';
@@ -106,8 +106,14 @@ class App extends Component {
                             <Switch>
                                 <Route
                                     path="/setupTeam/name" exact
-                                    render={(props) => (
+                                    /* render={(props) => (
                                         <Header className="site-layout-background" style={{ padding: 0 }} />
+                                    )} */
+                                    render={(props) => (
+                                        <Header className="site-layout-background" style={{ padding: 0 }} >
+                                            {/* {this.state.authInfo.isAuthenticated === true ? <Moda /> : ''} */}
+                                            <ProfileModal {...props} authInfo={this.state.authInfo} onTeamChange={this.onTeamChange} />
+                                        </Header>
                                     )}
                                 />
 
@@ -117,7 +123,7 @@ class App extends Component {
                                     render={(props) => (
                                         <Header className="site-layout-background" style={{ padding: 0 }} >
                                             {/* {this.state.authInfo.isAuthenticated === true ? <Moda /> : ''} */}
-                                            <Moda {...props} onTeamChange={this.onTeamChange} />
+                                            <ProfileModal {...props} onTeamChange={this.onTeamChange} />
                                         </Header>
                                     )}
                                 />
