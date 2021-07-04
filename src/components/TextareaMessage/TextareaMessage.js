@@ -60,7 +60,8 @@ class TextareaMessage extends Component {
 
         textareaEl.style.transform = textareaEl.style.transform.replace(/(?<=translateY\()(?<yTranslateVal>[-]*\d+)(?=px\))/, yValues[rows]);
         // translate(-41%) translateY(calc(-30% - `yValues[rows]`px))    -> so that the clear icon will always move to stay at the top of the textarea
-        document.querySelector('div.ant-card.ant-card-bordered:last-child').style.marginBottom = lastCardMarginBottom[rows] + "%";
+        const lastMessage = document.querySelector('div.ant-card.ant-card-bordered:last-child');
+        if (lastMessage) lastMessage.style.marginBottom = lastCardMarginBottom[rows] + "%"; // maybe there will be no messages
     }
 
     componentDidMount() {
@@ -106,7 +107,8 @@ class TextareaMessage extends Component {
         const { isAuthenticated, ...authInfo } = this.props.authInfo;
 
         db
-            .collection(`teams/${this.props.team.name}/channels/${this.props.channel.name}/posts`)
+            // .collection(`teams/${this.props.team.name}/channels/${this.props.channel.name}/posts`)
+            .collection(`teams/${this.props.team.key}/channels/${this.props.channel.key}/posts`)
             .add({ createdAt: firestore.FieldValue.serverTimestamp(), text: message, createdBy: authInfo })
             .then((docRef) => {
                 // console.log("Document written with ID: ", docRef.id);

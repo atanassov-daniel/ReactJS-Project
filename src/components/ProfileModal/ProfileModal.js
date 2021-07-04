@@ -55,7 +55,7 @@ class ProfileModal extends Component {
             <>
                 <Tooltip
                     placement="bottomLeft"
-                    title={authInfo.displayName || authInfo.email.split(/@\w+.\w+/)[0]}
+                    title={authInfo?.displayName || authInfo?.email.split(/@\w+.\w+/)[0]}
                     // this regex was needed because the email could contain a @ before the actual provider @
                     color={'black'}
                     arrowPointAtCenter={true}
@@ -91,13 +91,13 @@ class ProfileModal extends Component {
                             style={{ cursor: 'default' }}
                             avatar={
                                 <Avatar
-                                    src={authInfo.photoURL || 'https://t4.ftcdn.net/jpg/02/51/95/53/240_F_251955356_FAQH0U1y1TZw3ZcdPGybwUkH90a3VAhb.jpg'}
+                                    src={authInfo?.photoURL || 'https://t4.ftcdn.net/jpg/02/51/95/53/240_F_251955356_FAQH0U1y1TZw3ZcdPGybwUkH90a3VAhb.jpg'}
                                     shape="square"
                                     size={52}
                                     alt="User's Profile Picture"
                                 />
                             }
-                            title={authInfo.displayName || authInfo.email.split(/@\w+.\w+/)[0]}
+                            title={authInfo?.displayName || authInfo?.email.split(/@\w+.\w+/)[0]}
                             description={<b><i style={{ color: 'red', fontSize: '2em', cursor: 'default' }}>Status - Active</i></b>}
                         />
                         <div>

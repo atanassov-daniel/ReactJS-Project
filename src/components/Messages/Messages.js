@@ -108,7 +108,9 @@ class Messages extends Component {
                         if (doc.createdAt !== null) {
                             const createdAt = doc.createdAt?.toDate();
                             const hours = createdAt.getHours().toString();
-                            const date = `${hours.length === 1 ? 0 + hours : hours}:${createdAt.getMinutes()}, ${createdAt.toDateString().split(' ').splice(1, 2).reverse().join(' ')} ${createdAt.getFullYear()}`;
+                            const minutes = createdAt.getMinutes().toString();
+
+                            const date = `${hours.length === 1 ? 0 + hours : hours}:${minutes.length === 1 ? 0 + minutes : minutes}, ${createdAt.toDateString().split(' ').splice(1, 2).reverse().join(' ')} ${createdAt.getFullYear()}`;
                             doc.createdAt = date;
                         }
 
@@ -129,6 +131,8 @@ class Messages extends Component {
 
         if (this.isFirstLoad) document.getElementById('first-column').scrollTop = document.getElementById('first-column').scrollHeight;
         // document.getElementById('first-column').scrollTop = 100000;
+
+        // if (this.isFirstLoad) 
     }
 
     componentWillUnmount() {
@@ -155,6 +159,8 @@ class Messages extends Component {
 
         return (
             <>
+                <div id="blue" style={{ borderRadius: '25%', background: 'blue', color: 'white', width: 'max-content', margin: 'auto' }}>9 new messages    X</div>
+
                 {this.state.messages.length === 0 && this.noPosts === false
                     ? Array(5).fill(skeletonInitialLoad)
                     : this.noPosts === true
@@ -172,9 +178,9 @@ class Messages extends Component {
                                 <Skeleton loading={loading} avatar active>
                                     <Meta
                                         avatar={
-                                            <Avatar src={message.createdBy?.profilePicture || 'https://t4.ftcdn.net/jpg/02/51/95/53/240_F_251955356_FAQH0U1y1TZw3ZcdPGybwUkH90a3VAhb.jpg'} shape="square" size={45} alt="user profile image" />
+                                            <Avatar src={message.createdBy?.photoURL || 'https://t4.ftcdn.net/jpg/02/51/95/53/240_F_251955356_FAQH0U1y1TZw3ZcdPGybwUkH90a3VAhb.jpg'} shape="square" size={45} alt="user profile image" />
                                         }
-                                        title={message?.createdBy?.name}
+                                        title={message?.createdBy?.displayName}
                                         description={message.createdAt}
                                     />
 

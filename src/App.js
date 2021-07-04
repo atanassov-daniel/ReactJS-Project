@@ -123,7 +123,7 @@ class App extends Component {
                                     render={(props) => (
                                         <Header className="site-layout-background" style={{ padding: 0 }} >
                                             {/* {this.state.authInfo.isAuthenticated === true ? <Moda /> : ''} */}
-                                            <ProfileModal {...props} onTeamChange={this.onTeamChange} />
+                                            <ProfileModal {...props} authInfo={this.state.authInfo} onTeamChange={this.onTeamChange} />
                                         </Header>
                                     )}
                                 />
