@@ -159,51 +159,64 @@ class Messages extends Component {
 
         return (
             <>
-                <div id="blue" style={{ borderRadius: '25%', background: 'blue', color: 'white', width: 'max-content', margin: 'auto' }}>9 new messages    X</div>
+                <div
+                    id="blue"
+                    style={{/* borderRadius: '25%',  */
+                        background: 'blue', color: 'white', width: 'max-content', margin: '5px auto',
+                        padding: '5px 16px', borderRadius: '38px / 33px', fontWeight: '630'
+                    }}
+                >
+                    {/* 🠕 ↑*/}
+                    <span style={{ backgroundColor: 'red' }}>⇧&nbsp; 9 new messages &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+                    <span style={{ backgroundColor: 'yellow' }}>X</span>
+                </div>
 
-                {this.state.messages.length === 0 && this.noPosts === false
-                    ? Array(5).fill(skeletonInitialLoad)
-                    : this.noPosts === true
-                        ? <div>WOW!!! Such empty :( :( :(</div>
-                        : this.state.messages.map(message => (
-                            <Card
-                                key={message.key}
-                                className={loading ? 'loading' : ''}
-                                actions={[
-                                    <SettingOutlined key="setting" />,
-                                    <EditOutlined key="edit" />,
-                                    <EllipsisOutlined key="ellipsis" />,
-                                ]}
-                            >
-                                <Skeleton loading={loading} avatar active>
-                                    <Meta
-                                        avatar={
-                                            <Avatar src={message.createdBy?.photoURL || 'https://t4.ftcdn.net/jpg/02/51/95/53/240_F_251955356_FAQH0U1y1TZw3ZcdPGybwUkH90a3VAhb.jpg'} shape="square" size={45} alt="user profile image" />
+                {
+                    this.state.messages.length === 0 && this.noPosts === false
+                        ? Array(5).fill(skeletonInitialLoad)
+                        : this.noPosts === true
+                            ? <div>WOW!!! Such empty :( :( :(</div>
+                            : this.state.messages.map(message => (
+                                <Card
+                                    /*  width: '14%', margin: 'auto', // border: '1px solid lightgrey' */
+                                    key={message.key}
+                                    className={loading ? 'loading' : ''}
+                                    actions={[
+                                        <SettingOutlined key="setting" />,
+                                        <EditOutlined key="edit" />,
+                                        <EllipsisOutlined key="ellipsis" />,
+                                    ]}
+                                >
+                                    <Skeleton loading={loading} avatar active>
+                                        <Meta
+                                            avatar={
+                                                <Avatar src={message.createdBy?.photoURL || 'https://t4.ftcdn.net/jpg/02/51/95/53/240_F_251955356_FAQH0U1y1TZw3ZcdPGybwUkH90a3VAhb.jpg'} shape="square" size={45} alt="user profile image" />
+                                            }
+                                            title={message?.createdBy?.displayName}
+                                            description={message.createdAt}
+                                        />
+
+                                        <p>{message.text}</p>
+
+                                        {
+                                            message.images ?
+                                                <Image.PreviewGroup>
+                                                    {message.images.map((img, index) => (
+                                                        <Image
+                                                            key={`${message.key}//${index}`}
+                                                            // width={200}
+                                                            src={img}
+                                                            alt="message image"
+                                                        // maxInlineSize: '-webkit-fill-available'
+                                                        />
+                                                    ))}
+                                                </Image.PreviewGroup>
+                                                : ''
                                         }
-                                        title={message?.createdBy?.displayName}
-                                        description={message.createdAt}
-                                    />
-
-                                    <p>{message.text}</p>
-
-                                    {
-                                        message.images ?
-                                            <Image.PreviewGroup>
-                                                {message.images.map((img, index) => (
-                                                    <Image
-                                                        key={`${message.key}//${index}`}
-                                                        // width={200}
-                                                        src={img}
-                                                        alt="message image"
-                                                    // maxInlineSize: '-webkit-fill-available'
-                                                    />
-                                                ))}
-                                            </Image.PreviewGroup>
-                                            : ''
-                                    }
-                                </Skeleton>
-                            </Card>
-                        ))}
+                                    </Skeleton>
+                                </Card>
+                            ))
+                }
 
                 {this.props.authInfo.isAuthenticated === false ? <strong style={{ fontSize: '5em', color: 'red' }}>UNAUTHORISED</strong> : ''}
 

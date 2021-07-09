@@ -6,3 +6,19 @@ div.ant-card.ant-card-bordered:last-child {
 div.ant-card-body {
     padding-bottom: initial;
 }
+
+ul.ant-card-actions {
+    width: 14%;
+    margin: auto;
+    border: 1px solid #f0f0f0;
+
+    /* move the actions at the top right -> it works perfectly well with this percentage at all zoom levels */
+    position: absolute;
+    top: 0;
+    left: 86%;
+}
+
+ul.ant-card-actions>li {
+    margin: 0;
+    border-right: 1px solid #f0f0f0;
+}

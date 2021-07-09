@@ -50,6 +50,7 @@ class ProfileModal extends Component {
 
     render() {
         const authInfo = this.props.authInfo;
+        console.log(this.props?.team?.name);
 
         return (
             <>
@@ -81,6 +82,7 @@ class ProfileModal extends Component {
                 <Modal
                     visible={this.state.visible}
                     style={{ top: 30, left: 0, marginRight: '2%' }}
+                    bodyStyle={{ padding: 0 }}
                     footer={null}
                     onCancel={this.handleCancel}
                 /* confirmLoading={this.state.confirmLoading}
@@ -88,7 +90,11 @@ class ProfileModal extends Component {
                 >
                     <Card bodyStyle={{ padding: 0 }} bordered={false}>
                         <Meta
-                            style={{ cursor: 'default' }}
+                            className={styles.profileInfoMeta}
+                            /* style={{
+                                cursor: 'default', padding: '4% 2%',
+                                maxWidth: 'fit-content', userSelect: 'none'
+                            }} */
                             avatar={
                                 <Avatar
                                     src={authInfo?.photoURL || 'https://t4.ftcdn.net/jpg/02/51/95/53/240_F_251955356_FAQH0U1y1TZw3ZcdPGybwUkH90a3VAhb.jpg'}
@@ -98,15 +104,21 @@ class ProfileModal extends Component {
                                 />
                             }
                             title={authInfo?.displayName || authInfo?.email.split(/@\w+.\w+/)[0]}
-                            description={<b><i style={{ color: 'red', fontSize: '2em', cursor: 'default' }}>Status - Active</i></b>}
+                            description={<div style={{ color: 'gray', fontSize: '1.25em', cursor: 'default' }}>{/* <i className={styles.icon}></i> */}<div style={{ borderRadius: '50%', background: 'green', width: '0.42em', height: '0.42em', display: 'inline-block' }}></div><i> Active</i></div>}
                         />
-                        <div>
-                            <hr />
+                        <hr />
+                        <div style={{ padding: '0.5% 5% 3.5%' }}/* style={{ padding: '5%' }} */>
+                            {/*  */}
+                            <div>Edit Profile</div>
+                            <div>View Profile</div>
+                            <div>Preferences</div>
+                            {/*  */}
                             <Button
                                 block type="primary" size="small"
                                 onClick={this.onLogout.bind(this)}
                             >
-                                Sign out of TEAM
+                                Sign out of <strong> {this.props?.team?.name}</strong>
+                                            <strong> {this.props?.team?.name}</strong>
                             </Button>
                         </div>
                     </Card>
