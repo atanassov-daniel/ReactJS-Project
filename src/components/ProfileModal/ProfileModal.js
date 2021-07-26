@@ -2,8 +2,11 @@ import { Component } from 'react';
 import { Modal, Button, Card, Avatar, Tooltip, Badge } from 'antd';
 import { ClockCircleOutlined } from '@ant-design/icons';
 
+// import editProfileIcon from './editProfileIcon.PNG';
+
 import { auth } from '../../utils/firebase';
 import styles from './ProfileModal.module.css';
+import EditProfileModal from '../EditProfileModal/EditProfileModal';
 const { Meta } = Card;
 
 class ProfileModal extends Component {
@@ -11,14 +14,14 @@ class ProfileModal extends Component {
         super(props);
 
         this.state = {
-            visible: false,
+            visibleProfileModal: false,
             confirmLoading: false,
             // modalText: 'Content of the modal',
         };
     }
 
-    showModal = () => {
-        this.setState(() => ({ visible: true }));
+    showProfileModal = () => {
+        this.setState(() => ({ visibleProfileModal: true }));
     };
 
     /* handleOk = () => {
@@ -26,14 +29,14 @@ class ProfileModal extends Component {
         this.setState(() => ({ confirmLoading: true }));
 
         setTimeout(() => {
-            this.setState(() => ({ visible: false }));
+            this.setState(() => ({ visibleProfileModal: false }));
             this.setState(() => ({ confirmLoading: false }));
         }, 2000);
     }; */
 
     handleCancel = () => {
         console.log('Clicked cancel button');
-        this.setState(() => ({ visible: false }));
+        this.setState(() => ({ visibleProfileModal: false }));
     }
 
     onLogout = (e) => {
@@ -48,12 +51,18 @@ class ProfileModal extends Component {
         });
     }
 
+    showEditModal() {
+        this.setState(() => ({ visibleProfileModal: false, visibleEditModal: true }));
+    }
+
     render() {
         const authInfo = this.props.authInfo;
         console.log(this.props?.team?.name);
 
         return (
             <>
+                <EditProfileModal authInfo={authInfo} visible={this.state.visibleEditModal} hideEditModal={() => { this.setState(() => ({ visibleEditModal: false })) }} ></EditProfileModal>
+
                 <Tooltip
                     placement="bottomLeft"
                     title={authInfo?.displayName || authInfo?.email.split(/@\w+.\w+/)[0]}
@@ -72,7 +81,7 @@ class ProfileModal extends Component {
                             src="https://ca.slack-edge.com/T01C79M7CDS-U01HFQUHTRV-g53fcecfb076-48"
                             alt="User's Profile Picture"
                             className={styles.profileImg}
-                            onClick={this.showModal}
+                            onClick={this.showProfileModal}
                         />
                     </Badge>
                 </Tooltip>
@@ -80,15 +89,17 @@ class ProfileModal extends Component {
                     Open Modal with async logic
                 </Button> */}
                 <Modal
-                    visible={this.state.visible}
-                    style={{ top: 30, left: 0, marginRight: '2%' }}
+                    visible={this.state.visibleProfileModal}
+                    style={{ top: 30, left: 0, marginRight: '3.5%' }}
+                    width={'45%'}
+                    // className={styles.hui}
                     bodyStyle={{ padding: 0 }}
                     footer={null}
                     onCancel={this.handleCancel}
                 /* confirmLoading={this.state.confirmLoading}
                 onOk={this.handleOk} */
                 >
-                    <Card bodyStyle={{ padding: 0 }} bordered={false}>
+                    <Card style={{ borderRadius: '7px' }} bodyStyle={{ padding: 0, fontSize: '15px', background: '#f8f8f8', border: '1.5px solid rgba(29, 28, 29, .13)', borderRadius: '5px' }} bordered={false}>
                         <Meta
                             className={styles.profileInfoMeta}
                             /* style={{
@@ -106,20 +117,35 @@ class ProfileModal extends Component {
                             title={authInfo?.displayName || authInfo?.email.split(/@\w+.\w+/)[0]}
                             description={<div style={{ color: 'gray', fontSize: '1.25em', cursor: 'default' }}>{/* <i className={styles.icon}></i> */}<div style={{ borderRadius: '50%', background: 'green', width: '0.42em', height: '0.42em', display: 'inline-block' }}></div><i> Active</i></div>}
                         />
-                        <hr />
-                        <div style={{ padding: '0.5% 5% 3.5%' }}/* style={{ padding: '5%' }} */>
+
+
+
+                        <div style={{ padding: '0.5% 0 3.5%' }}/* style={{ padding: '5%' }} */>
                             {/*  */}
-                            <div>Edit Profile</div>
-                            <div>View Profile</div>
-                            <div>Preferences</div>
-                            {/*  */}
-                            <Button
-                                block type="primary" size="small"
+                            <div className={styles.profileActions}>Set yourself as <strong>away</strong></div>
+                            <div className={styles.profileActions}>
+                                <span >Pause notifications</span>
+                                <span style={{ float: 'right', fontWeight: '900', color: 'gray' }}>&gt;</span>
+                            </div>
+
+                            <hr className={styles.graySeparator} />
+
+                            <div className={styles.profileActions} onClick={this.showEditModal.bind(this)}> {/* <img src={editProfileIcon} /> */} Edit Profile</div>
+                            <div className={styles.profileActions}>View Profile</div>
+                            <div className={styles.profileActions}>Preferences</div>
+
+                            <hr className={styles.graySeparator} />
+
+                            <div className={styles.profileActions} onClick={this.onLogout.bind(this)}>
+                                Sign out of <strong> {this.props?.team?.name}</strong>
+                            </div>
+                            {/* <Button
+                                type="primary" size="small"
+                                className={styles.signOutButton}
                                 onClick={this.onLogout.bind(this)}
                             >
                                 Sign out of <strong> {this.props?.team?.name}</strong>
-                                            <strong> {this.props?.team?.name}</strong>
-                            </Button>
+                            </Button> */}
                         </div>
                     </Card>
 

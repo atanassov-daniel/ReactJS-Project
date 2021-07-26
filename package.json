@@ -20,7 +20,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "npm run build && firebase hosting:channel:deploy 0207 --expires 30d"
+    "deploy": "npm run build && firebase hosting:channel:deploy 1407 --expires 30d"
   },
   "eslintConfig": {
     "extends": [

@@ -10,15 +10,31 @@ div.ant-card-body {
 ul.ant-card-actions {
     width: 14%;
     margin: auto;
-    border: 1px solid #f0f0f0;
+    /* border: 1px solid #f0f0f0; */
+    border: 1.5px solid lightgray;
+    border-radius: 5px;
 
     /* move the actions at the top right -> it works perfectly well with this percentage at all zoom levels */
     position: absolute;
     top: 0;
-    left: 86%;
+    right: 0;
+
+    /*  */
+    display: none;
+    width: max-content;
 }
 
 ul.ant-card-actions>li {
     margin: 0;
-    border-right: 1px solid #f0f0f0;
+    /* border-right: 1px solid #f0f0f0; */
+}
+
+ul.ant-card-actions>li:not(:last-child) {
+    /* otherwise the default ant design style would be shown */
+    border-right: 0px solid;
+}
+
+ul.ant-card-actions>li:hover {
+    background: #f0f0f0;
+    border-radius: 4px;
 }

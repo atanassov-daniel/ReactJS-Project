@@ -186,6 +186,8 @@ class Messages extends Component {
                                         <EditOutlined key="edit" />,
                                         <EllipsisOutlined key="ellipsis" />,
                                     ]}
+                                    onMouseOver={(e) => { e.currentTarget.querySelector('ul.ant-card-actions').style.display = 'block'; }}
+                                    onMouseOut={(e) => { e.currentTarget.querySelector('ul.ant-card-actions').style.display = 'none'; }}
                                 >
                                     <Skeleton loading={loading} avatar active>
                                         <Meta

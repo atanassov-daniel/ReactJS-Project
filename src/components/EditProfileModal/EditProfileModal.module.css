@@ -1,0 +1,13 @@
+/* :global .ant-modal-content {
+    border-radius: 7px !important;
+    background: #f8f8f8;
+} */
+
+:global .anticon.anticon-close.ant-modal-close-icon {
+    padding: 17%;
+}
+
+:global .anticon.anticon-close.ant-modal-close-icon:hover {
+    background: #f6f6f6;
+    border-radius: 3px;
+}

@@ -38,3 +38,42 @@
     max-width: fit-content;
     user-select: none;
 }
+
+
+.profileActionPadding {
+    padding: 0.5% 5%;
+}
+
+.blueHover {
+    color: black;
+}
+
+.blueHover:hover {
+    background: #1264a3;
+    color: white
+}
+
+
+/* .signOutButton {
+    margin: 0.5% 5%;
+
+    white-space: normal;
+    height: auto;
+} */
+
+.profileActions {
+    composes: profileActionPadding;
+    composes: blueHover;
+    cursor: pointer;
+}
+
+.graySeparator {
+    border-top: 1.5px solid rgba(29, 28, 29, .13);
+    border-bottom: none;
+    background: rgba(29, 28, 29, .13);
+}
+
+:global .ant-modal-content {
+    border-radius: 7px !important;
+    background: #f8f8f8;
+}
