@@ -61,7 +61,7 @@ class ProfileModal extends Component {
 
         return (
             <>
-                <EditProfileModal authInfo={authInfo} visible={this.state.visibleEditModal} hideEditModal={() => { this.setState(() => ({ visibleEditModal: false })) }} ></EditProfileModal>
+                <EditProfileModal team={this.props.team} authInfo={authInfo} visible={this.state.visibleEditModal} hideEditModal={() => { this.setState(() => ({ visibleEditModal: false })) }} ></EditProfileModal>
 
                 <Tooltip
                     placement="bottomLeft"

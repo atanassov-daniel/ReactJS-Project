@@ -4,10 +4,50 @@
 } */
 
 :global .anticon.anticon-close.ant-modal-close-icon {
+    /*! it is in effect globally for the other close modal buttons too, not just in this component */
     padding: 17%;
 }
 
 :global .anticon.anticon-close.ant-modal-close-icon:hover {
     background: #f6f6f6;
     border-radius: 3px;
+}
+
+.input {
+    margin-bottom: 0.3%;
+    /* height: fit-content; */
+    /** -> with this the email input on my mobile phone looked really small in height */
+    width: 100%;
+    border-color: darkgray;
+    border-radius: 4px;
+    font-size: 18px;
+    /* margin: auto; */
+}
+
+/*!! otherwise when it was just :focus the style wouldn't apply to the password input, just to the email one */
+.input:focus-within {
+    border-color: #096dd9;
+    border-width: 1.5px;
+    /* border-right-width: 1px!important; */
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 4px rgb(24 144 255 / 20%);
+    box-shadow: 0 0 0 4px rgb(24 144 255 / 20%);
+}
+
+.input::placeholder {
+    color: rgb(92, 88, 88);
+    font-size: 1.2em;
+}
+
+.graySmall {
+    color: #616061;
+    font-size: 13px;
+    margin-bottom: 0;
+}
+
+.fieldWrap {
+    /* margin-bottom: 5%; */
+    padding-bottom: 5%;
+    /* so that one can actually click on the empty space */
+    cursor: pointer;
 }
