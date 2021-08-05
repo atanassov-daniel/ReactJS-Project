@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { Modal, Card, Avatar, Row, Col, Input, Button, Image } from 'antd';
 
-import { auth } from '../../utils/firebase';
+// import { auth } from '../../utils/firebase';
 import styles from './EditProfileModal.module.css';
 const { Meta } = Card;
 
@@ -30,11 +30,13 @@ class EditProfileModal extends Component {
         const bottomLine = document.getElementById('epcw-bottom-line');
         const topLine = document.getElementById('epcw-top-line');
 
-        const isScrolledToBottom = Math.ceil(element.scrollHeight - element.scrollTop) === element.clientHeight; // (el.scrollHeight - el.scrollTop).toFixed(0) === el.clientHeight.toFixed(0)
-        /* console.log('isScrolledToBottom'); */
-        /* console.log(isScrolledToBottom); */
-        /* console.log('isScrolledToTop'); */
-        /* console.log(element.scrollTop === 0); */
+        const isScrolledToBottom = Math.ceil(element.scrollHeight - element.scrollTop) === element.clientHeight || Math.floor(element.scrollHeight - element.scrollTop) === element.clientHeight; // I added the second one because there was a case where 268.2 would be ceilet to 269 and wouldn't equal 268, and so the bottom line wouldn't hide even when it should have // (el.scrollHeight - el.scrollTop).toFixed(0) === el.clientHeight.toFixed(0)
+        /* console.log('isScrolledToBottom');
+        console.log(isScrolledToBottom);
+        console.log('isScrolledToTop');
+        console.log(element.scrollTop === 0);
+        console.log(`scrH - scrTop = ${element.scrollHeight - element.scrollTop}`);
+        console.log(`clHei = ${element.clientHeight}`); */
 
         if (isScrolledToBottom) bottomLine.style.display = 'none';
         else bottomLine.style.display = 'block';
@@ -82,62 +84,77 @@ class EditProfileModal extends Component {
                         <hr id="epcw-top-line" style={{ border: 'none', borderBottom: '1px solid rgba(29, 28, 29, .13)', padding: 0, margin: 0 }} />
                         {/* epcw = edit-profile-content-wrapper */}
                         <div id="edit-profile-content-wrapper" className="column-with-slider" style={{ height: '58vh'/* , borderTop: '1px solid rgba(29, 28, 29, .13)' , borderBottom: '1px solid rgba(29, 28, 29, .13)' */ }} onScroll={this.handleScroll.bind(this)}>
-                            <Row>
+                            <Row style={{ height: '58vh', width: '100%' }}>
                                 <Col span={15} style={{ padding: '0.5% 4.5% 1.75%' }}>
-                                    <div id="full-name-wrap" className={styles.fieldWrap} onClick={this.focusInput}>
-                                        <h4>Full name</h4>
-                                        <Input id="full-name-input" size="large" placeholder="Full name" bordered={true} type="email" className={styles.input} ></Input>
+                                    <div id="fullName-wrap" className={styles.fieldWrap} onClick={this.focusInput}>
+                                        <h4 className={styles.label}>Full name</h4>
+                                        <Input id="fullName-input" size="large" placeholder="Full name" bordered={true} type="email" className={styles.input} ></Input>
                                         {/* red information circle + Unfortunately, you can’t leave this blank. */}
                                     </div>
 
-                                    <div id="display-name-wrap" className={styles.fieldWrap} onClick={this.focusInput}>
-                                        <h4>Display name</h4>
-                                        <Input id="display-name-input" size="large" placeholder="Display name" bordered={true} type="email" className={styles.input} ></Input>
+                                    <div id="displayName-wrap" className={styles.fieldWrap} onClick={this.focusInput}>
+                                        <h4 className={styles.label}>Display name</h4>
+                                        <Input id="displayName-input" size="large" placeholder="Display name" bordered={true} type="email" className={styles.input} ></Input>
                                         <p className={styles.graySmall}>This could be your first name, or a nickname — however you’d like people to refer to you in Slack.</p>
                                     </div>
 
-                                    <div id="whatido-wrap" className={styles.fieldWrap} onClick={this.focusInput}>
-                                        <h4>What I do</h4>
-                                        <Input id="whatido-input" size="large" placeholder="What I do" bordered={true} type="email" className={styles.input} ></Input>
+                                    <div id="whatIDo-wrap" className={styles.fieldWrap} onClick={this.focusInput}>
+                                        <h4 className={styles.label}>What I do</h4>
+                                        <Input id="whatIDo-input" size="large" placeholder="What I do" bordered={true} type="email" className={styles.input} ></Input>
                                         <p className={styles.graySmall}>Let people know what you do at <span style={{ fontWeight: 'bold', textDecoration: 'underline' }}>{this.props?.team?.name}</span>.</p>
                                     </div>
 
-                                    <div id="phone-number-wrap" className={styles.fieldWrap} onClick={this.focusInput}>
-                                        <h4>Phone number</h4>
-                                        <Input id="phone-number-input" size="large" placeholder="(123) 555-5555" bordered={true} type="email" className={styles.input} ></Input>
+                                    <div id="phoneNumber-wrap" className={styles.fieldWrap} onClick={this.focusInput}>
+                                        <h4 className={styles.label}>Phone number</h4>
+                                        <Input id="phoneNumber-input" size="large" placeholder="(123) 555-5555" bordered={true} type="email" className={styles.input} ></Input>
                                         <p className={styles.graySmall}>Enter a phone number.</p>
                                     </div>
 
                                     <div id="timezone-wrap" className={styles.fieldWrap} onClick={this.focusInput}>
-                                        <h4>Time zone</h4>
+                                        <h4 className={styles.label}>Time zone</h4>
                                         <Input id="timezone-input" size="large" placeholder="name@work-email.com" bordered={true} type="email" className={styles.input} ></Input>
                                         <p className={styles.graySmall}>Your current time zone. Used to send summary and notification emails, for times in your activity feeds, and for reminders.</p>
                                     </div>
 
                                 </Col>
                                 <Col span={9} style={{ padding: '0.5% 2.75% 1.5% 0%' }}>
-                                    <h4 style={{ width: '192px' }}>Profile photo</h4>
+                                    <h4 className={styles.label} /* style={{ width: '192px' }} */>Profile photo</h4>
 
                                     <Image style={{ borderRadius: '4px', width: '192px' /* width: '99.75%' */ }} src="https://ca.slack-edge.com/T026XSX629X-U0278TW6J2U-gf2ee9ae04f2-192" srcSet="https://ca.slack-edge.com/T026XSX629X-U0278TW6J2U-gf2ee9ae04f2-192, https://ca.slack-edge.com/T026XSX629X-U0278TW6J2U-gf2ee9ae04f2-512 2x" />
 
-                                    <Button block style={{ borderRadius: '4px', width: '192px', marginTop: '3.75%' }}>Upload an Image</Button>
+                                    <Button block className={styles.uploadButton}>Upload an Image</Button>
                                 </Col>
                             </Row>
                         </div>
 
                         <hr id="epcw-bottom-line" style={{ border: 'none', borderBottom: '1px solid rgba(29, 28, 29, .13)', padding: 0, margin: 0 }} />
 
-                        <div style={{ padding: '0.5% 0 3.5%', height: '18vh' }}>{authInfo?.displayName || authInfo?.email.split(/@\w+.\w+/)[0]}</div>
+                        <div style={{ /* padding: '0.5% 0 0%',  */height: '18vh', position: 'relative' }}>
+                            <Row style={{ width: '100%', padding: '0 5%', position: 'absolute', top: '50%', transform: 'translate(0%, -50%)' }}>
+
+                                <Col flex="fit-content" /* style={{ maxWidth: 'fit-content' }} */>
+                                    <a href="" style={{ color: '#1264A3', fontSize: '15px' }}>Add, edit or reorder fields</a>
+                                </Col>
+                                <Col flex="auto" /* style={{ maxWidth: 'fit-content', width: 'fit-content', minWidth: 'fit-content' }} */>
+
+                                    {/* <Button type="primary" size="medium" className={styles.cancelButton} onClick={this.handleCancel}>Cancel</Button>
+                                    <Button type="primary" size="medium" className={styles.saveButton} onClick={this.saveChanges}>Save Changes</Button> */}
+
+                                    <Row >
+                                        <Col flex="auto"></Col>
+                                        <Col style={{ maxWidth: 'fit-content' }}>
+                                            <Button type="primary" size="medium" className={styles.cancelButton} onClick={this.handleCancel}>Cancel</Button>
+                                        </Col>
+                                        <Col style={{ maxWidth: 'fit-content', marginLeft: '3.5%' }}>
+                                            <Button type="primary" size="medium" className={styles.saveButton} onClick={this.saveChanges}>Save Changes</Button>
+                                        </Col>
+                                    </Row>
 
 
-                        <div style={{ padding: '0.5% 0 3.5%' }}/* style={{ padding: '5%' }} */>
-                            {/* <Button
-                                type="primary" size="small"
-                                className={styles.signOutButton}
-                                onClick={this.onLogout.bind(this)}
-                            >
-                                Sign out of <strong> {this.props?.team?.name}</strong>
-                            </Button> */}
+                                    {/* #0B4C8C */}
+                                </Col>
+
+                            </Row>
                         </div>
                     </Card>
 

@@ -107,7 +107,8 @@ export default class Password extends Component {
                         // name: this.state.name,
                         // photoURL: this.props.authInfo.photoURL,
                     })
-                    .then(() => {
+                    .then((docRef) => {
+                        // docRef.id
                         console.log('added .THEN');
                         this.props.history.push('/setupTeam/name');
                     })

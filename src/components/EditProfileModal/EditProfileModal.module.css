@@ -2,6 +2,7 @@
     border-radius: 7px !important;
     background: #f8f8f8;
 } */
+/*TODO responsiveness regulate sizes + it doesn't look exactly as in Slack when the Console is closed  */
 
 :global .anticon.anticon-close.ant-modal-close-icon {
     /*! it is in effect globally for the other close modal buttons too, not just in this component */
@@ -21,14 +22,12 @@
     border-color: darkgray;
     border-radius: 4px;
     font-size: 18px;
-    /* margin: auto; */
 }
 
 /*!! otherwise when it was just :focus the style wouldn't apply to the password input, just to the email one */
 .input:focus-within {
     border-color: #096dd9;
     border-width: 1.5px;
-    /* border-right-width: 1px!important; */
     outline: 0;
     -webkit-box-shadow: 0 0 0 4px rgb(24 144 255 / 20%);
     box-shadow: 0 0 0 4px rgb(24 144 255 / 20%);
@@ -50,4 +49,58 @@
     padding-bottom: 5%;
     /* so that one can actually click on the empty space */
     cursor: pointer;
+}
+
+.button {
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.whiteGrayButton {
+    composes: button;
+
+    color: black;
+    background: white;
+    border-color: rgb(192, 190, 190);
+    /* border-color: rgb(173, 171, 171); */
+}
+
+.whiteGrayButton:hover {
+    /* background: lightgray; */
+    color: black;
+    background: #F8F8F8;
+    border-color: rgb(192, 190, 190);
+}
+
+.uploadButton {
+    composes: button;
+    composes: whiteGrayButton;
+
+    width: 192px;
+    margin-top: 3.75%;
+}
+
+.cancelButton{
+    composes: whiteGrayButton;
+
+    margin-right: 3.5%;
+}
+
+.saveButton {
+    composes: button;
+    /* margin-left: 3.5%; */
+    color: white;
+    background: #007A5A;
+    border-color: #007A5A;
+}
+
+.saveButton:hover {
+    color: white;
+    background: #148567;
+    border-color: #007A5A;
+}
+
+.label{
+    font-weight: 600;
 }

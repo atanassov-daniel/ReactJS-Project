@@ -39,6 +39,8 @@ class App extends Component {
             isInvalidTeam: false,
             channel: null,
             isInvalidChannel: false,
+            profileId: null,
+            profileInfo: null,
         };
 
         //!!! without doing the following, in the function `this` was undefined and this lead to an error
@@ -52,18 +54,23 @@ class App extends Component {
         // probably put it here
 
         auth.onAuthStateChanged(
-            (user) =>
-                this.setState((prevState) => (
-                    {
-                        authInfo: {
-                            isAuthenticated: Boolean(user),
-                            email: user?.email,
-                            uid: user?.uid,
-                            displayName: user?.displayName,
-                            photoURL: user?.photoURL,
-                            // name: user?.name
+            (user) => {
+                this.setState(
+                    (prevState) => (
+                        {
+                            authInfo: {
+                                isAuthenticated: Boolean(user),
+                                email: user?.email,
+                                uid: user?.uid,
+                                /* displayName: user?.displayName,
+                                photoURL: user?.photoURL, */
+                                // name: user?.name
+                            }
                         }
-                    }))
+                    ),
+                    () => { }
+                )
+            }
         );
     }
 
@@ -87,6 +94,42 @@ class App extends Component {
 
     invalidChannel() {
         this.setState((prevState) => ({ isInvalidChannel: true, channel: null }));
+    }
+
+    //!!!!!!! could I put these 2 functions in the ProfileModal component instead
+    fetchProfileInfo() {
+        if (this.state.authInfo.isAuthenticated === false) this.updateProfileInfo(null, null);
+
+        db.collection('users').where('email', '==', this.state.authInfo.email)
+            .get()
+            .then((querySnapshot) => {
+                if (querySnapshot.empty === false) {
+                    querySnapshot.forEach(doc => {
+                        if (doc.exists) doc = doc.data();
+                        const userInfo = doc.userInfo;
+                        
+                    });
+                }
+            });
+        this.updateProfileInfo(/* new info object */); //TODO here I could implement the functionality for adding fields(I shoould probably use an array then, which I'll have to reorder and probably have to dynamically fill the content column on the EditProfileModal )
+    }
+
+    updateStateProfileInfo(profileId, updatedInfo) { //* updating the state's profile info object
+        this.setState(() => ({
+            profileId: profileId,
+            profileInfo: updatedInfo
+        }));
+       /*  if (this.state.authInfo.isAuthenticated === false) {
+            this.setState(() => ({
+                profileId: null,
+                profileInfo: null
+            }));
+        } else {
+            this.setState(() => ({
+                profileId: profileId,
+                profileInfo: updatedInfo
+            }));
+        } */
     }
 
     render() {
