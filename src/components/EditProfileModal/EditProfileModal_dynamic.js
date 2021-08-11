@@ -154,7 +154,7 @@ class EditProfileModal extends Component {
                                     })}
                                 </Col>
                                 <Col span={9} style={{ padding: '0.5% 2.75% 1.5% 0%' }}>
-                                    <h4 className={styles.label} style={{cursor: 'default'}} /* style={{ width: '192px' }} */>Profile photo</h4>
+                                    <h4 className={styles.label} /* style={{ width: '192px' }} */>Profile photo</h4>
 
                                     <Image style={{ borderRadius: '4px', width: '192px' /* width: '99.75%' */ }} src="https://ca.slack-edge.com/T026XSX629X-U0278TW6J2U-gf2ee9ae04f2-192" srcSet="https://ca.slack-edge.com/T026XSX629X-U0278TW6J2U-gf2ee9ae04f2-192, https://ca.slack-edge.com/T026XSX629X-U0278TW6J2U-gf2ee9ae04f2-512 2x" />
 

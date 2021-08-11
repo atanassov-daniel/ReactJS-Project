@@ -1,23 +1,18 @@
 import { Component } from 'react';
 import { Modal, Card, Avatar, Row, Col, Input, Button, Image } from 'antd';
-import CryptoJS from "crypto-js";
 
 // import { auth } from '../../utils/firebase';
 import styles from './EditProfileModal.module.css';
 const { Meta } = Card;
 
-//TODO try to use a Ref for the field wraps or their parent Col
-
 class EditProfileModal extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            // visible: this.props.visible,
-            disabled: false,
-        };
+        /* this.state = {
+            visible: this.props.visible,
+        }; */
         this.focusInput = this.focusInput.bind(this);
-        this.pairs = {};
     }
 
     handleCancel = () => {
@@ -54,58 +49,14 @@ class EditProfileModal extends Component {
         if (this.props.visible === true) this.handleScroll(); // so that on the initial load the topLine would be hidden and not show
     }
 
-    componentDidMount() {
-        this.props.fetchProfileInfo();
-    }
-
     focusInput(e) {
         if (e.target.id.includes('input') === false) { // if the input box was clicked, it would get focused by default, there's no need for me to repeat actions unnecessarily
             const wrapper = e.currentTarget.id;
             const fieldName = wrapper.replace('-wrap', '');
             const inputId = fieldName.concat('-input');
 
-            const el = document.getElementById(inputId);
-
-            if (el) el.focus();
-            else console.log('%cYou stupid little prick, you shall NOT mess with the Browser\'s Inspector if you want my fricking website to function correctly for you to be able to use it the way I intended it to be used!%c Now refresh the stupid page and stop trying to be cool, because you never will be :)', 'color: red; font-size: 7em; font-weight: 900', 'color: cyan; font-size: 5em; font-weight: 900');
+            document.getElementById(inputId).focus();
         }
-    }
-
-    encrypt(text) {
-        if (!this.secretKey) this.secretKey = CryptoJS.lib.WordArray.random(128 / 8).words[3].toString();
-        const secretKey = this.secretKey;
-
-        // Encrypt
-        const ciphertext = CryptoJS.AES.encrypt(text, secretKey).toString();
-        return ciphertext;
-
-        /* // Decrypt
-        const bytes = CryptoJS.AES.decrypt(ciphertext, secretKey);
-        const originalText = bytes.toString(CryptoJS.enc.Utf8);
-
-        console.log(ciphertext);
-        console.log(originalText); */
-    }
-
-    saveChanges(e) {
-        console.log(document.querySelectorAll('.edit-profile-field-wrap')); //!!!!!!!!!!!!!!!!!!!!!!!! what if someone changes the className
-
-        if (!this.pairs['Full name'] || !this.pairs['What I do'] || !this.pairs['Phone number'] || !this.pairs['Display name'] || !this.pairs['Time zone']) {
-            this.setState(()=>({disabled: true}))
-            alert('You stupid little prick, you shall NOT mess with the Browser\'s Inspector if you want my fricking website to function correctly for you to be able to use it the way I intended it to be used! Now refresh the stupid page and stop trying to be cool, because you never will be :)');}
-        // if the default ones can't be accessed or are not with valid values, one shouldn't be able to proceed with saving the changes => the save button should be disabled and with the corresponding style changes
-    }
-
-    /* saveNameHashPair(hash, name) {
-        if(!Object.values().includes(name)) this.pairs[hash] = name;
-    } */
-    saveNameHashPair(name) {
-        if (!this.pairs[name]) {
-            const hash = this.encrypt(name);
-            this.pairs[name] = hash;
-        }
-
-        console.log(this.pairs);
     }
 
     render() {
@@ -135,26 +86,39 @@ class EditProfileModal extends Component {
                         <div id="edit-profile-content-wrapper" className="column-with-slider" style={{ height: '58vh'/* , borderTop: '1px solid rgba(29, 28, 29, .13)' , borderBottom: '1px solid rgba(29, 28, 29, .13)' */ }} onScroll={this.handleScroll.bind(this)}>
                             <Row style={{ height: '58vh', width: '100%' }}>
                                 <Col span={15} style={{ padding: '0.5% 4.5% 1.75%' }}>
-                                    {this.props.profileInfo?.map(obj => {
-                                        const name = obj.name; //.replaceAll(' ', '-')
-                                        // if (name === 'Full name') => functions that validates it
+                                    <div id="fullName-wrap" className={styles.fieldWrap} onClick={this.focusInput}>
+                                        <h4 className={styles.label}>Full name</h4>
+                                        <Input id="fullName-input" size="large" placeholder="Full name" bordered={true} type="email" className={styles.input} ></Input>
+                                        {/* red information circle + Unfortunately, you can’t leave this blank. */}
+                                    </div>
 
-                                        // this.saveNameHashPair(this.encrypt(name), name);
-                                        this.saveNameHashPair(name);
+                                    <div id="displayName-wrap" className={styles.fieldWrap} onClick={this.focusInput}>
+                                        <h4 className={styles.label}>Display name</h4>
+                                        <Input id="displayName-input" size="large" placeholder="Display name" bordered={true} type="email" className={styles.input} ></Input>
+                                        <p className={styles.graySmall}>This could be your first name, or a nickname — however you’d like people to refer to you in Slack.</p>
+                                    </div>
 
-                                        return (
-                                            <div id={this.pairs[name].concat("-wrap")} className={styles.fieldWrap + ' edit-profile-field-wrap'} onClick={this.focusInput}>
-                                                <h4 className={styles.label}>{name}</h4>
-                                                <Input id={this.pairs[name].concat("-input")} size="large" placeholder={name} bordered={true} type="email" className={styles.input} value={obj.value}></Input>
-                                                {/* red information circle + Unfortunately, you can’t leave this blank. */}
-                                                <p className={styles.graySmall}>{obj.hint}</p>
-                                            </div>
+                                    <div id="whatIDo-wrap" className={styles.fieldWrap} onClick={this.focusInput}>
+                                        <h4 className={styles.label}>What I do</h4>
+                                        <Input id="whatIDo-input" size="large" placeholder="What I do" bordered={true} type="email" className={styles.input} ></Input>
+                                        <p className={styles.graySmall}>Let people know what you do at <span style={{ fontWeight: 'bold', textDecoration: 'underline' }}>{this.props?.team?.name}</span>.</p>
+                                    </div>
 
-                                        );
-                                    })}
+                                    <div id="phoneNumber-wrap" className={styles.fieldWrap} onClick={this.focusInput}>
+                                        <h4 className={styles.label}>Phone number</h4>
+                                        <Input id="phoneNumber-input" size="large" placeholder="(123) 555-5555" bordered={true} type="email" className={styles.input} ></Input>
+                                        <p className={styles.graySmall}>Enter a phone number.</p>
+                                    </div>
+
+                                    <div id="timezone-wrap" className={styles.fieldWrap} onClick={this.focusInput}>
+                                        <h4 className={styles.label}>Time zone</h4>
+                                        <Input id="timezone-input" size="large" placeholder="name@work-email.com" bordered={true} type="email" className={styles.input} ></Input>
+                                        <p className={styles.graySmall}>Your current time zone. Used to send summary and notification emails, for times in your activity feeds, and for reminders.</p>
+                                    </div>
+
                                 </Col>
                                 <Col span={9} style={{ padding: '0.5% 2.75% 1.5% 0%' }}>
-                                    <h4 className={styles.label} style={{cursor: 'default'}} /* style={{ width: '192px' }} */>Profile photo</h4>
+                                    <h4 className={styles.label} /* style={{ width: '192px' }} */>Profile photo</h4>
 
                                     <Image style={{ borderRadius: '4px', width: '192px' /* width: '99.75%' */ }} src="https://ca.slack-edge.com/T026XSX629X-U0278TW6J2U-gf2ee9ae04f2-192" srcSet="https://ca.slack-edge.com/T026XSX629X-U0278TW6J2U-gf2ee9ae04f2-192, https://ca.slack-edge.com/T026XSX629X-U0278TW6J2U-gf2ee9ae04f2-512 2x" />
 
@@ -182,7 +146,7 @@ class EditProfileModal extends Component {
                                             <Button type="primary" size="medium" className={styles.cancelButton} onClick={this.handleCancel}>Cancel</Button>
                                         </Col>
                                         <Col style={{ maxWidth: 'fit-content', marginLeft: '3.5%' }}>
-                                            <Button disabled={this.state.disabled} type="primary" size="medium" className={`${styles.saveButton} ${this.state.disabled === true ? styles.disabledSaveButton : styles.activeSaveButton}`} onClick={this.saveChanges.bind(this)}>Save Changes</Button>
+                                            <Button type="primary" size="medium" className={styles.saveButton} onClick={this.saveChanges}>Save Changes</Button>
                                         </Col>
                                     </Row>
 

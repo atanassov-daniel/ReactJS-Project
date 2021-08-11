@@ -77,3 +77,7 @@
     border-radius: 7px !important;
     background: #f8f8f8;
 }
+
+/* :global .profileInfoMeta>.ant-card-meta-detail>.ant-card-meta-title {
+    font-weight: 600;
+} */

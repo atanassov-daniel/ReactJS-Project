@@ -4,7 +4,7 @@ import { ClockCircleOutlined } from '@ant-design/icons';
 
 // import editProfileIcon from './editProfileIcon.PNG';
 
-import { auth } from '../../utils/firebase';
+import { auth, db } from '../../utils/firebase';
 import styles from './ProfileModal.module.css';
 import EditProfileModal from '../EditProfileModal/EditProfileModal';
 const { Meta } = Card;
@@ -17,6 +17,8 @@ class ProfileModal extends Component {
             visibleProfileModal: false,
             confirmLoading: false,
             // modalText: 'Content of the modal',
+            profileId: null,
+            profileInfo: null,
         };
     }
 
@@ -55,13 +57,53 @@ class ProfileModal extends Component {
         this.setState(() => ({ visibleProfileModal: false, visibleEditModal: true }));
     }
 
+
+    fetchProfileInfo() {
+        if (this.props.authInfo.isAuthenticated === false) this.updateStateProfileInfo(null, null);
+
+        db.collection('users').where('email', '==', this.props.authInfo.email)
+            .get()
+            .then((querySnapshot) => {
+                if (querySnapshot.empty === false) {
+                    querySnapshot.forEach(doc => {
+                        let id;
+                        if (doc.exists) { id = doc.id; doc = doc.data(); }
+                        const userInfo = doc.userInfo;
+
+                        console.log(userInfo);
+
+                        if (userInfo) this.updateStateProfileInfo(id, userInfo);
+                        else this.updateStateProfileInfo(null, null); //TODO here I could implement the functionality for adding fields(I shoould probably use an array then, which I'll have to reorder and probably have to dynamically fill the content column on the EditProfileModal )
+                    });
+                }
+            });
+    }
+
+    updateStateProfileInfo(profileId, updatedInfo) { //* updating the state's profile info object
+        this.setState(() => ({
+            profileId: profileId,
+            profileInfo: updatedInfo
+        }));
+        /*  if (this.state.authInfo.isAuthenticated === false) {
+             this.setState(() => ({
+                 profileId: null,
+                 profileInfo: null
+             }));
+         } else {
+             this.setState(() => ({
+                 profileId: profileId,
+                 profileInfo: updatedInfo
+             }));
+         } */
+    }
+
     render() {
         const authInfo = this.props.authInfo;
         console.log(this.props?.team?.name);
 
         return (
             <>
-                <EditProfileModal team={this.props.team} authInfo={authInfo} visible={this.state.visibleEditModal} hideEditModal={() => { this.setState(() => ({ visibleEditModal: false })) }} ></EditProfileModal>
+                <EditProfileModal team={this.props.team} authInfo={authInfo} visible={this.state.visibleEditModal} profileInfo={this.state.profileInfo} fetchProfileInfo={this.fetchProfileInfo.bind(this)} updateStateProfileInfo={this.updateStateProfileInfo.bind(this)} hideEditModal={() => { this.setState(() => ({ visibleEditModal: false })) }} ></EditProfileModal>
 
                 <Tooltip
                     placement="bottomLeft"
@@ -101,7 +143,7 @@ class ProfileModal extends Component {
                 >
                     <Card style={{ borderRadius: '7px' }} bodyStyle={{ padding: 0, fontSize: '15px', background: '#f8f8f8', border: '1.5px solid rgba(29, 28, 29, .13)', borderRadius: '5px' }} bordered={false}>
                         <Meta
-                            className={styles.profileInfoMeta}
+                            className={styles.profileInfoMeta + ' profileInfoMeta'}
                             /* style={{
                                 cursor: 'default', padding: '4% 2%',
                                 maxWidth: 'fit-content', userSelect: 'none'
@@ -114,8 +156,9 @@ class ProfileModal extends Component {
                                     alt="User's Profile Picture"
                                 />
                             }
-                            title={authInfo?.displayName || authInfo?.email.split(/@\w+.\w+/)[0]}
-                            description={<div style={{ color: 'gray', fontSize: '1.25em', cursor: 'default' }}>{/* <i className={styles.icon}></i> */}<div style={{ borderRadius: '50%', background: 'green', width: '0.42em', height: '0.42em', display: 'inline-block' }}></div><i> Active</i></div>}
+                            title={<span style={{ fontWeight: 600 }}>{authInfo?.displayName || authInfo?.email.split(/@\w+.\w+/)[0]}</span>} //!!!!TODO this should be done at the user's registration, not here
+                            description={<div style={{ color: 'gray', fontSize: '13px', cursor: 'default' }}>{/* <i className={styles.icon}></i> */}<div style={{ borderRadius: '50%', background: 'green', width: '0.42em', height: '0.42em', display: 'inline-block' }}></div><span> Active</span></div>}
+                            //* the underline comes from the ant-meta-description
                         />
 
 
