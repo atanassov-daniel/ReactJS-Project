@@ -19,6 +19,10 @@ class ProfileModal extends Component {
             // modalText: 'Content of the modal',
             profileId: null,
             profileInfo: null,
+            //!!!!!!!!!!!! the updated info should also be shown for the messages written by the user => 
+            //! Firestore Cloud Functions or just saving the reference and having to fetch for every single message
+            //TODO
+            //*   
         };
     }
 
@@ -68,11 +72,12 @@ class ProfileModal extends Component {
                     querySnapshot.forEach(doc => {
                         let id;
                         if (doc.exists) { id = doc.id; doc = doc.data(); }
-                        const userInfo = doc.userInfo;
+                        // const userInfo = doc.userInfo;
+                        const profileInfo = doc.profileInfo;
 
-                        console.log(userInfo);
+                        console.log(profileInfo);
 
-                        if (userInfo) this.updateStateProfileInfo(id, userInfo);
+                        if (profileInfo) this.updateStateProfileInfo(id, profileInfo);
                         else this.updateStateProfileInfo(null, null); //TODO here I could implement the functionality for adding fields(I shoould probably use an array then, which I'll have to reorder and probably have to dynamically fill the content column on the EditProfileModal )
                     });
                 }
@@ -103,7 +108,11 @@ class ProfileModal extends Component {
 
         return (
             <>
-                <EditProfileModal team={this.props.team} authInfo={authInfo} visible={this.state.visibleEditModal} profileInfo={this.state.profileInfo} fetchProfileInfo={this.fetchProfileInfo.bind(this)} updateStateProfileInfo={this.updateStateProfileInfo.bind(this)} hideEditModal={() => { this.setState(() => ({ visibleEditModal: false })) }} ></EditProfileModal>
+                {this.state.visibleEditModal === true ?
+                    <EditProfileModal team={this.props.team} authInfo={authInfo} visible={this.state.visibleEditModal} profileInfo={this.state.profileInfo} fetchProfileInfo={this.fetchProfileInfo.bind(this)} updateStateProfileInfo={this.updateStateProfileInfo.bind(this)} hideEditModal={() => { this.setState(() => ({ visibleEditModal: false })) }} ></EditProfileModal>
+                    : <></>
+                }
+                {/* <EditProfileModal team={this.props.team} authInfo={authInfo} visible={this.state.visibleEditModal} profileInfo={this.state.profileInfo} fetchProfileInfo={this.fetchProfileInfo.bind(this)} updateStateProfileInfo={this.updateStateProfileInfo.bind(this)} hideEditModal={() => { this.setState(() => ({ visibleEditModal: false })) }} ></EditProfileModal> */}
 
                 <Tooltip
                     placement="bottomLeft"

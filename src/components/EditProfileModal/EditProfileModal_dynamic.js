@@ -141,11 +141,12 @@ class EditProfileModal extends Component {
 
                                         // this.saveNameHashPair(this.encrypt(name), name);
                                         this.saveNameHashPair(name);
-
+                            //TODO in this case, in the DB I should add placeholders for the Inputs 
                                         return (
                                             <div id={this.pairs[name].concat("-wrap")} className={styles.fieldWrap + ' edit-profile-field-wrap'} onClick={this.focusInput}>
                                                 <h4 className={styles.label}>{name}</h4>
                                                 <Input id={this.pairs[name].concat("-input")} size="large" placeholder={name} bordered={true} type="email" className={styles.input} value={obj.value}></Input>
+                                                {/*//TODO change type="email" to something else */}
                                                 {/* red information circle + Unfortunately, you can’t leave this blank. */}
                                                 <p className={styles.graySmall}>{obj.hint}</p>
                                             </div>

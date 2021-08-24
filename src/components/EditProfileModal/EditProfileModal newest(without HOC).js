@@ -3,7 +3,6 @@ import { Modal, Card, Avatar, Row, Col, Input, Button, Image } from 'antd';
 import CryptoJS from "crypto-js";
 
 // import { auth } from '../../utils/firebase';
-import EditProfileDataField from './EditProfileDataField';
 import styles from './EditProfileModal.module.css';
 const { Meta } = Card;
 
@@ -17,7 +16,7 @@ class EditProfileModal extends Component {
             // visible: this.props.visible,
             disabled: false,
         };
-        // this.focusInput = this.focusInput.bind(this);
+        this.focusInput = this.focusInput.bind(this);
         this.pairs = {};
     }
 
@@ -63,40 +62,63 @@ class EditProfileModal extends Component {
         Object.keys(profileInfo).forEach(key => { this.saveNameHashPair(key); }) */
     }
 
-    validateFullName(e, value) {
-        let mess;
-        let regex = /[' .]{0,}(\p{L}+|\d+)/gu;
+    focusInput(e) {
+        //* if the input box was clicked, it would get focused by default, there's no need for me to repeat actions unnecessarily
+        if (e.target.id.includes('input') === false) {
+            const wrapper = e.currentTarget.id;
+            const fieldName = wrapper.replace('-wrap', '');
+            const inputId = fieldName.concat('-input');
 
-        if (value.trim().length === 0) mess = 'Unfortunately, you can’t leave this blank.';
-        else if (value.test(regex) === false && value.test(/\P{L}[^\d]/gu)) mess = 'Names can’t consist solely of punctuation. Please elaborate!';
-        else if (value.test(regex) === false && value.test(/[ .']/g)) mess = 'Mostly, names can’t contain punctuation. (Apostrophes, spaces, and periods are fine.)';
-        else mess = '';
+            const el = document.getElementById(inputId);
 
-        this.setState(() => ({ fullNameMessage: mess }));
-        // ' dfgbo', ' 1', ' ok2uy1', ' абвг', ' .', ' .\'', ' ._', ' =-)(*&^%$#@!'
+            if (el) el.focus();
+            else console.log('%cYou stupid little prick, you shall NOT mess with the Browser\'s Inspector if you want my fricking website to function correctly for you to be able to use it the way I intended it to be used!%c Now refresh the stupid page and stop trying to be cool, because you never will be :)', 'color: red; font-size: 7em; font-weight: 900', 'color: cyan; font-size: 5em; font-weight: 900');
+        }
+    }
+
+    encrypt(text) {
+        if (!this.secretKey) this.secretKey = CryptoJS.lib.WordArray.random(128 / 8).words[3].toString();
+        const secretKey = this.secretKey;
+
+        // Encrypt
+        const ciphertext = CryptoJS.AES.encrypt(text, secretKey).toString();
+        return ciphertext;
+
+        /* // Decrypt
+        const bytes = CryptoJS.AES.decrypt(ciphertext, secretKey);
+        const originalText = bytes.toString(CryptoJS.enc.Utf8);
+
+        console.log(ciphertext);
+        console.log(originalText); */
     }
 
     saveChanges(e) {
+        console.log(document.querySelectorAll('.edit-profile-field-wrap')); //!!!!!!!!!!!!!!!!!!!!!!!! what if someone changes the className
+
         const keys = Object.keys(this.props.profileInfo);
-        const inputs = [];
 
         // if (Object.keys(this.props.profileInfo).every(key => !!this.pairs[key])) {
-        if (!keys.every(key => { let el = this[key].current; console.log(key); console.log(el !== null); inputs.push(el); return el !== null })) { // if one of the inputs has somehow disappeared the user shouldn't be able to save any changes
-            this.setState(() => ({ disabled: true }));
+        if (!keys.every(key => { console.log(this[key].current !== null); return this[key].current !== null })) { // if one of the inputs has somehow disappeared the user shouldn't be able to save any changes
+            this.setState(() => ({ disabled: true }))
             alert('Some of the inputs isn\'t accessible');
             return;
         }
-        //! if I delete the element from the Inspector in the Browser, no error will be thrown and the user will still be able to saveChanges, even though that shouldn't be the case
 
-        inputs.forEach(input => {
-            const value = input.state.value;
-
-            if (input.props.placeholder === 'Full name') {
-                this.validateFullName(e, value);
-            }
-        });
+        // keys.forEach(key => { this[key].current.state.value })
 
         // if the default ones can't be accessed or are not with valid values, one shouldn't be able to proceed with saving the changes => the save button should be disabled and with the corresponding style changes
+    }
+
+    /* saveNameHashPair(hash, name) {
+        if(!Object.values().includes(name)) this.pairs[hash] = name;
+    } */
+    saveNameHashPair(name) {
+        if (!this.pairs[name]) {
+            const hash = this.encrypt(name);
+            this.pairs[name] = hash;
+        }
+
+        console.log(this.pairs);
     }
 
     render() {
@@ -104,8 +126,9 @@ class EditProfileModal extends Component {
         const profileInfo = this.props.profileInfo;
         if (!profileInfo) return (<h1>"It's of course shit" - Erling Haaland</h1>); // if there is no profile info, there will be nothing in this.pairs and there will be an error in all field wrapper divs
         // only save them on the first render and not on any subsequent ones //! what if the info changes - that shouldn't be a problem(except for in a dynamic fields case, because the actual value of the field doesn't get saved in the hashPair; but if dynamic, a new field may hyve to be added or an old one may have to be deleted)
-        if (!this.fullName) {
+        if (!this.pairs.fullName) {
             Object.keys(profileInfo).forEach(key => {
+                this.saveNameHashPair(key);
                 this[key] = createRef();
             });
         }
@@ -135,26 +158,38 @@ class EditProfileModal extends Component {
                             <Row style={{ height: '58vh', width: '100%' }}>
                                 <Col span={15} style={{ padding: '0.5% 4.5% 1.75%' }}>
                                     {/* //TODO somehow make a HOC that gets the name of the field(fullName) and puts it everywhere it needed + an optional argument that is the hint */}
-
-                                    {EditProfileDataField('Full name', profileInfo.fullName,
-                                        this.fullName, null, null, null, this.state.fullNameMessage)}
+                                    <div id={this.pairs.fullName.concat("-wrap")} className={styles.fieldWrap + ' edit-profile-field-wrap'} onClick={this.focusInput}>
+                                        <h4 className={styles.label}>Full name</h4>
+                                        <Input id={this.pairs.fullName.concat("-input")} size="large" placeholder="Full name" bordered={true} type="text" className={styles.input} defaultValue={profileInfo.fullName} ref={this.fullName} />
+                                        {/*//TODO red information circle + Unfortunately, you can’t leave this blank. */}
+                                    </div>
 
                                     {/* //TODO try to do the focusInput using refs instead of direct DOM manipulation */}
 
-                                    {EditProfileDataField('Display name', profileInfo.displayName,
-                                        this.displayName, null, 'This could be your first name, or a nickname — however you’d like people to refer to you in Slack.')
-                                    }
+                                    <div id={this.pairs.displayName.concat("-wrap")} className={styles.fieldWrap + ' edit-profile-field-wrap'} onClick={this.focusInput}>
+                                        <h4 className={styles.label}>Display name</h4>
+                                        <Input id={this.pairs.displayName.concat("-input")} size="large" placeholder="Display name" bordered={true} type="text" className={styles.input} value={profileInfo.displayName} ref={this.displayName} />
+                                        <p className={styles.graySmall}>This could be your first name, or a nickname — however you’d like people to refer to you in Slack.</p>
+                                    </div>
 
-                                    {EditProfileDataField('What I do', profileInfo.whatIdo,
-                                        this.whatIdo, null, "Let people know what you do at <span style={{ fontWeight: 'bold', textDecoration: 'underline' }}>{this.props?.team?.name}</span>.")
-                                    }
+                                    <div id={this.pairs.whatIdo.concat("-wrap")} className={styles.fieldWrap + ' edit-profile-field-wrap'} onClick={this.focusInput}>
+                                        <h4 className={styles.label}>What I do</h4>
+                                        <Input id={this.pairs.whatIdo.concat("-input")} size="large" placeholder="What I do" bordered={true} type="text" className={styles.input} value={profileInfo.whatIdo} ref={this.whatIdo} />
+                                        <p className={styles.graySmall}>Let people know what you do at <span style={{ fontWeight: 'bold', textDecoration: 'underline' }}>{this.props?.team?.name}</span>.</p>
+                                    </div>
 
-                                    {EditProfileDataField('Phone number', profileInfo.phoneNumber,
-                                        this.phoneNumber, null, 'Enter a phone number.', 'number')}
+                                    <div id={this.pairs.phoneNumber.concat("-wrap")} className={styles.fieldWrap + ' edit-profile-field-wrap'} onClick={this.focusInput}>
+                                        <h4 className={styles.label}>Phone number</h4>
+                                        <Input id={this.pairs.phoneNumber.concat("-input")} size="large" placeholder="(123) 555-5555" bordered={true} type="number" className={styles.input} value={profileInfo.phoneNumber} ref={this.phoneNumber} />
+                                        <p className={styles.graySmall}>Enter a phone number.</p>
+                                    </div>
 
-                                    {EditProfileDataField('Time zone', profileInfo.timeZone,
-                                        this.timeZone, null, 'Your current time zone. Used to send summary and notification emails, for times in your activity feeds, and for reminders.')
-                                    }
+                                    <div id={this.pairs.timeZone.concat("-wrap")} className={styles.fieldWrap + ' edit-profile-field-wrap'} onClick={this.focusInput}>
+                                        <h4 className={styles.label}>Time zone</h4>
+                                        <Input id={this.pairs.timeZone.concat("-input")} size="large" bordered={true} type="email" className={styles.input} value={profileInfo.timeZone} ref={this.timeZone} />
+                                        <p className={styles.graySmall}>Your current time zone. Used to send summary and notification emails, for times in your activity feeds, and for reminders.</p>
+                                    </div>
+
                                     {/* <Input value={obj.value}></Input>*/}
                                 </Col>
                                 <Col span={9} style={{ padding: '0.5% 2.75% 1.5% 0%' }}>

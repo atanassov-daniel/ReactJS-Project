@@ -1,0 +1,28 @@
+[
+    {
+        hint: "",
+        name: "Full Name",
+        value: "Daniel4ou"
+        // value: "Daniel4ou"
+    },
+    {
+        hint: "This could be your first name, or a nickname — however you’d like people to refer to you in Slack.",
+        name: "Display name",
+        value: ""
+    },
+    {
+        hint: "Enter a phone number.",
+        name: "Phone number",
+        value: ""
+    },
+    {
+        hint: "Let people know what you do at ``hello``.", //!
+        name: "What I do",
+        value: ""
+    },
+    {
+        hint: "Your current time zone. Used to send summary and notification emails, for times in your activity feeds, and for reminders.",
+        name: "Time zone",
+        value: "(UTC+02:00) Athens, Bucharest"
+    }
+]
