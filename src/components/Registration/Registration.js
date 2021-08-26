@@ -1,14 +1,12 @@
 import { Component } from 'react';
 
-import { Input, Image, Typography, Row, Col, Button } from 'antd';
+import { Typography} from 'antd';
 import { Route } from 'react-router-dom';
 
 // import { db, firestore, auth } from '../../utils/firebase';
 
 import Email from './Pages/Email';
 import Password from './Pages/Password';
-
-const { Paragraph, Link, Title } = Typography;
 
 class Registration extends Component {
     constructor(props) {

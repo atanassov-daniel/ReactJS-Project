@@ -1,11 +1,10 @@
 import { Component, createRef } from 'react';
-import { Modal, Card, Avatar, Row, Col, Input, Button, Image } from 'antd';
-import CryptoJS from "crypto-js";
+import { Modal, Card, Row, Col, Button, Image } from 'antd';
 
 // import { auth } from '../../utils/firebase';
+import { db } from '../../utils/firebase';
 import EditProfileDataField from './EditProfileDataField';
 import styles from './EditProfileModal.module.css';
-const { Meta } = Card;
 
 //TODO try to use a Ref for the field wraps or their parent Col
 
@@ -65,12 +64,17 @@ class EditProfileModal extends Component {
 
     validateFullName(e, value) {
         let mess;
-        let regex = /[' .]{0,}(\p{L}+|\d+)/gu;
+        let regex = /[' .]{0,}(\p{L}+|\d+)/u;
+
+        console.log(/\P{L}+[^\d]+/u.test(value));
+
+        //!!! when using the `g` flag the test function returned different results on alternating occasions - the reason for that can be found at https://stackoverflow.com/questions/58022525/javascript-regex-test-same-string-but-got-different-result
+        // console.log(value); console.log(regex.test(value)); // true console.log(regex.test(value)); // false console.log(regex.test(value)); // true console.log(regex.test(value)); // false
 
         if (value.trim().length === 0) mess = 'Unfortunately, you can’t leave this blank.';
-        else if (value.test(regex) === false && value.test(/\P{L}[^\d]/gu)) mess = 'Names can’t consist solely of punctuation. Please elaborate!';
-        else if (value.test(regex) === false && value.test(/[ .']/g)) mess = 'Mostly, names can’t contain punctuation. (Apostrophes, spaces, and periods are fine.)';
-        else mess = '';
+        else if (regex.test(value) === false && (/\P{L}+/u.test(value) === true && /\d+/.test(value) === false)) mess = 'Names can’t consist solely of punctuation. Please elaborate!';
+        else if (regex.test(value) === false && /[ .']+/.test(value) === true) mess = 'Mostly, names can’t contain punctuation. (Apostrophes, spaces, and periods are fine.)';
+        else mess = null;
 
         this.setState(() => ({ fullNameMessage: mess }));
         // ' dfgbo', ' 1', ' ok2uy1', ' абвг', ' .', ' .\'', ' ._', ' =-)(*&^%$#@!'
@@ -81,20 +85,43 @@ class EditProfileModal extends Component {
         const inputs = [];
 
         // if (Object.keys(this.props.profileInfo).every(key => !!this.pairs[key])) {
-        if (!keys.every(key => { let el = this[key].current; console.log(key); console.log(el !== null); inputs.push(el); return el !== null })) { // if one of the inputs has somehow disappeared the user shouldn't be able to save any changes
+        if (!keys.every(key => { let el = this[key].current; console.log(key); console.log(el !== null); inputs.push({ key: key, input: el }); return el !== null })) { // if one of the inputs has somehow disappeared the user shouldn't be able to save any changes
             this.setState(() => ({ disabled: true }));
             alert('Some of the inputs isn\'t accessible');
             return;
         }
         //! if I delete the element from the Inspector in the Browser, no error will be thrown and the user will still be able to saveChanges, even though that shouldn't be the case
 
-        inputs.forEach(input => {
+        /* inputs.forEach(input => {
             const value = input.state.value;
 
             if (input.props.placeholder === 'Full name') {
                 this.validateFullName(e, value);
             }
+        }); */
+        const obj = {};
+        inputs.forEach(({ key, input }) => {
+            const value = input.state.value;
+
+            if (input.props.placeholder === 'Full name') {
+                this.validateFullName(e, value);
+            }
+            obj[key] = value;
         });
+
+        db
+            .collection(`users`)
+            .where('email', '==', this.props.authInfo.email)
+            .get()
+            .then(querySnapshot => {
+                if (querySnapshot.empty === false) {
+                    querySnapshot.forEach(doc => {
+                        if (doc.exists) doc.ref.update({
+                            profileInfo: obj
+                        });
+                    });
+                }
+            });
 
         // if the default ones can't be accessed or are not with valid values, one shouldn't be able to proceed with saving the changes => the save button should be disabled and with the corresponding style changes
     }

@@ -22,7 +22,6 @@ import MyTeamsLogin from './components/MyTeamsLogin/MyTeamsLogin';
 
 import ProfileModal from './components/ProfileModal/ProfileModal';
 import GetStarted from './components/GetStarted/GetStarted';
-import TeamName from './components/SetupNewTeam/Pages/TeamName';
 import SetupNewTeam from './components/SetupNewTeam/SetupNewTeam';
 import Registration from './components/Registration/Registration';
 
@@ -39,6 +38,7 @@ class App extends Component {
             isInvalidTeam: false,
             channel: null,
             isInvalidChannel: false,
+            profileInfo: null,
         };
 
         //!!! without doing the following, in the function `this` was undefined and this lead to an error
@@ -46,6 +46,7 @@ class App extends Component {
         this.invalidTeam = this.invalidTeam.bind(this);
         this.onChannelChange = this.onChannelChange.bind(this);
         this.invalidChannel = this.invalidChannel.bind(this);
+        this.updateProfileInfo = this.updateProfileInfo.bind(this);
     }
 
     componentDidMount() {
@@ -58,8 +59,8 @@ class App extends Component {
                         {
                             authInfo: {
                                 isAuthenticated: Boolean(user),
-                                email: user?.email,
-                                uid: user?.uid,
+                                email: user?.email || null,
+                                uid: user?.uid || null,
                                 /* displayName: user?.displayName,
                                 photoURL: user?.photoURL, */
                                 // name: user?.name
@@ -93,6 +94,11 @@ class App extends Component {
     invalidChannel() {
         this.setState((prevState) => ({ isInvalidChannel: true, channel: null }));
     }
+
+    updateProfileInfo(info) {
+        console.log(info);
+        this.setState((prevState) => ({ profileInfo: info }));
+    }
     //!!!!!!! could I put these 2 functions in the ProfileModal component instead
 
     render() {
@@ -118,7 +124,7 @@ class App extends Component {
                                     render={(props) => (
                                         <Header className="site-layout-background" style={{ padding: 0 }} >
                                             {/* {this.state.authInfo.isAuthenticated === true ? <Moda /> : ''} */}
-                                            <ProfileModal {...props} authInfo={this.state.authInfo} team={this.state.team} onTeamChange={this.onTeamChange} />
+                                            <ProfileModal {...props} team={this.state.team} authInfo={this.state.authInfo} onTeamChange={this.onTeamChange} updateProfileInfo={this.updateProfileInfo} />
                                         </Header>
                                     )}
                                 />
@@ -129,7 +135,7 @@ class App extends Component {
                                     render={(props) => (
                                         <Header className="site-layout-background" style={{ padding: 0 }} >
                                             {/* {this.state.authInfo.isAuthenticated === true ? <Moda /> : ''} */}
-                                            <ProfileModal {...props} team={this.state.team} authInfo={this.state.authInfo} onTeamChange={this.onTeamChange} />
+                                            <ProfileModal {...props} team={this.state.team} authInfo={this.state.authInfo} onTeamChange={this.onTeamChange} updateProfileInfo={this.updateProfileInfo} />
                                         </Header>
                                     )}
                                 />
@@ -245,7 +251,7 @@ class App extends Component {
                                             /> */}
                                                     <Route path="/setupTeam/name" exact
                                                         render={(props) => (
-                                                            <SetupNewTeam authInfo={this.state.authInfo} />
+                                                            <SetupNewTeam authInfo={this.state.authInfo} profileInfo={this.state.profileInfo} />
                                                         )}
                                                     />
                                                     {/* <Route path="/register" exact

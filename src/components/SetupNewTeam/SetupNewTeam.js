@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import { Typography, Row, Col, Button, Input } from 'antd';
 import { Route } from 'react-router-dom';
 
 import TeamName from './Pages/TeamName';
@@ -66,7 +65,8 @@ class SetupNewTeam extends Component {
                                     setChannel={this.setChannel.bind(this)}
                                     authInfo={this.props.authInfo}
                                     team={this.state.team}
-                                    channel={this.state.channel}
+                                    channel={this.state.echannel}
+                                    profileInfo={this.props.profileInfo}
                                     {...props}
                                 />
                             }

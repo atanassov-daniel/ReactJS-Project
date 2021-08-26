@@ -31,6 +31,9 @@ export default class TeamName extends Component {
             return;
         }
 
+        const {email, uid} = this.props.authInfo;
+        console.log(this.props.profileInfo);
+
         db
             // teams/${this.props.team.name}/channels/${this.props.channel.name}/posts
             .collection(`teams`)
@@ -38,13 +41,15 @@ export default class TeamName extends Component {
                 createdAt: firestore.FieldValue.serverTimestamp(),
                 name: this.state.name,
                 createdBy: {
-                    email: this.props.authInfo.email,
-                    uid: this.props.authInfo.uid,
-                    name: this.props.authInfo.displayName,
-                    photoURL: this.props.authInfo.photoURL
+                    email: email,
+                    uid: uid,
+                    name: this.props.profileInfo.displayName,
+                    photoURL: this.props.profileInfo.photoURL,
+                    // name: authInfo.displayName,
+                    // photoURL: authInfo.photoURL
                 },
-                members: [this.props.authInfo.email]
-            }) //name: this.props.authInfo.name
+                members: [email]
+            }) //name: authInfo.name
             .then((docRef) => {
                 console.log("Document written with ID: ", docRef.id);
 
@@ -68,7 +73,7 @@ export default class TeamName extends Component {
                     db
                         .collection(`users`)
                         // .where('email', '==', 'arrUpdate@gmail.com')
-                        .where('email', '==', this.props.authInfo.email)
+                        .where('email', '==', email)
                         .get()
                         .then(querySnapshot => {
                             const obj = {

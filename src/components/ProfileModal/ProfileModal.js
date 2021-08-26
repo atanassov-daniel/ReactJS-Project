@@ -26,6 +26,10 @@ class ProfileModal extends Component {
         };
     }
 
+    componentDidMount() {
+        this.fetchProfileInfo();
+    }
+
     showProfileModal = () => {
         this.setState(() => ({ visibleProfileModal: true }));
     };
@@ -79,6 +83,8 @@ class ProfileModal extends Component {
 
                         if (profileInfo) this.updateStateProfileInfo(id, profileInfo);
                         else this.updateStateProfileInfo(null, null); //TODO here I could implement the functionality for adding fields(I shoould probably use an array then, which I'll have to reorder and probably have to dynamically fill the content column on the EditProfileModal )
+
+                        this.props.updateProfileInfo(profileInfo);
                     });
                 }
             });
@@ -167,7 +173,7 @@ class ProfileModal extends Component {
                             }
                             title={<span style={{ fontWeight: 600 }}>{authInfo?.displayName || authInfo?.email.split(/@\w+.\w+/)[0]}</span>} //!!!!TODO this should be done at the user's registration, not here
                             description={<div style={{ color: 'gray', fontSize: '13px', cursor: 'default' }}>{/* <i className={styles.icon}></i> */}<div style={{ borderRadius: '50%', background: 'green', width: '0.42em', height: '0.42em', display: 'inline-block' }}></div><span> Active</span></div>}
-                            //* the underline comes from the ant-meta-description
+                        //* the underline comes from the ant-meta-description
                         />
 
 
@@ -186,11 +192,16 @@ class ProfileModal extends Component {
                             <div className={styles.profileActions}>View Profile</div>
                             <div className={styles.profileActions}>Preferences</div>
 
-                            <hr className={styles.graySeparator} />
+                            {!this.props.team?.name
+                                ? ''
+                                : <>
+                                    <hr className={styles.graySeparator} />
 
-                            <div className={styles.profileActions} onClick={this.onLogout.bind(this)}>
-                                Sign out of <strong> {this.props?.team?.name}</strong>
-                            </div>
+                                    <div className={styles.profileActions} onClick={this.onLogout.bind(this)}>
+                                        Sign out of <strong> {this.props?.team?.name}</strong>
+                                    </div>
+                                </>
+                            }
                             {/* <Button
                                 type="primary" size="small"
                                 className={styles.signOutButton}

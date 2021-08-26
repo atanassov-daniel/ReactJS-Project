@@ -97,13 +97,23 @@ export default class Password extends Component {
                 console.log(userCredential);
                 console.log(this.props);
 
+                console.log(email.match(/(?<username>\S+)@(?<domain>\S+\.\S+)/));
+
                 db
                     .collection(`users`)
                     .add({
                         createdAt: firestore.FieldValue.serverTimestamp(),
                         email: this.props.email,
                         uid: userCredential.user.uid,
-                        teams: []
+                        teams: [],
+                        profileInfo: {
+                            fullName: email.match(/(?<username>\S+)@(?<domain>\S+\.\S+)/).groups.username,
+                            displayName: '',
+                            whatIdo: '',
+                            phoneNumber: '',
+                            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                            //!!! photoURL: ''
+                        }
                         // name: this.state.name,
                         // photoURL: this.props.authInfo.photoURL,
                     })
