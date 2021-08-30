@@ -76,7 +76,8 @@ export default class Sidebar extends Component {
             >
                 <div className="logo" />
                 <Menu theme="dark" mode="inline" className="children" >{/* defaultSelectedKeys={['1']} */}
-                    {this.props.match.params.team ?
+                    {/* {this.props.match.params.team ? */}
+                    {this.props.team ?
                         // <SubMenu key="sub0" title={this.props.match.params.team}>
                         <SubMenu key="sub0" title={this.props.team?.name}>
                             {/* <SubMenu key="sub0" title={this.props.team}> */}

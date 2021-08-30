@@ -34,18 +34,21 @@ class TeamChannels extends Component {
             return;
         }
 
+        const { email, uid } = this.props.authInfo;
+        const { displayName, fullName, photoURL } = this.props.profileInfo;
+
         db
             // teams/${this.props.team.name}/channels/${this.props.channel.name}/posts
             .collection(`teams/${this.props.team.key}/channels`)
             .add({
                 createdAt: firestore.FieldValue.serverTimestamp(), name: this.state.channel,
                 createdBy: {
-                    email: this.props.authInfo.email,
-                    uid: this.props.authInfo.uid,
-                    name: this.props.authInfo.displayName,
-                    photoURL: this.props.authInfo.photoURL
+                    email: email,
+                    uid: uid,
+                    name: displayName || fullName,
+                    // photoURL: photoURL
                 },
-                members: [this.props.authInfo.email]
+                members: [email]
             }) //name: this.props.authInfo.name
             .then((docRef) => {
                 console.log("Channel written with ID: ", docRef.id);
@@ -56,12 +59,12 @@ class TeamChannels extends Component {
                     .add({
                         createdAt: firestore.FieldValue.serverTimestamp(), name: 'general',
                         createdBy: {
-                            email: this.props.authInfo.email,
-                            uid: this.props.authInfo.uid,
-                            name: this.props.authInfo.displayName,
-                            photoURL: this.props.authInfo.photoURL
+                            email: email,
+                            uid: uid,
+                            name: displayName,
+                            // photoURL: photoURL
                         },
-                        members: [this.props.authInfo.email]
+                        members: [email]
                     }) //name: this.props.authInfo.name
                     .then((docRef) => {
                         console.log("'GENERAL' channel written with ID: ", docRef.id);

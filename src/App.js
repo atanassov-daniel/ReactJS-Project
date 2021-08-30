@@ -171,16 +171,15 @@ class App extends Component {
                                     {/* <Route path="/messages" component={Channel} /> */}
                                     <Route path="/:team/:channel" render={(props) => {
                                         // if (!props.location.pathname.includes('/login') && this.state.channel !== null) return (
-                                        if (!props.location.pathname.includes('/login') && !props.location.pathname.includes('/get-started') && !this.props.location.pathname.includes('/register') && this.state.channel !== null) return (
+                                        if (!props.location.pathname.includes('/login') && !props.location.pathname.includes('/get-started') && !this.props.location.pathname.includes('/register') && !props.location.pathname.includes('/setupTeam/name') && this.state.channel !== null) return (
                                             <Channel {...props} channel={this.state.channel} />
                                         );
                                     }} />
                                     {/* //!!!!!! actually it should be path="/:channel" */}
 
-                                    {this.state.isInvalidChannel === true ?
-                                        <Route render={() => (<div style={{ justify: 'center', textAlign: 'center', fontWeight: 'bolder', fontSize: '5em' }}>Invalid Channel 404</div>)} />
-                                        :
-                                        <>
+                                    {this.state.isInvalidChannel === true
+                                        ? <Route render={() => (<div style={{ justify: 'center', textAlign: 'center', fontWeight: 'bolder', fontSize: '5em' }}>Invalid Channel 404</div>)} />
+                                        : <>
                                             <Row style={{ height: '100%', width: '100%' }}>
                                                 <Switch>
                                                     {/* <Route path="/messages">
@@ -251,7 +250,7 @@ class App extends Component {
                                             /> */}
                                                     <Route path="/setupTeam/name" exact
                                                         render={(props) => (
-                                                            <SetupNewTeam authInfo={this.state.authInfo} profileInfo={this.state.profileInfo} />
+                                                            <SetupNewTeam authInfo={this.state.authInfo} profileInfo={this.state.profileInfo} onTeamChange={this.onTeamChange} onChannelChange={this.onChannelChange} />
                                                         )}
                                                     />
                                                     {/* <Route path="/register" exact
@@ -341,6 +340,7 @@ class App extends Component {
                                                             team={this.state.team}
                                                             channel={this.state.channel}
                                                             authInfo={this.state.authInfo}
+                                                            profileInfo={this.state.profileInfo}
                                                         />
                                                     );
                                                 }} />

@@ -30,9 +30,16 @@ class TeamInvites extends Component {
         ReactDOM.render(<Input type="email" placeholder="Ex. 4th el!?" style={{ marginBottom: '3.5%' }} />, document.getElementById('email-inputs'));
     }
 
-    skipStep(e) {
-        //!! if some of the inputs has been filled, warn the user they'll lose the data if the proceed
+    redirectToTeam() {
+        this.props.onTeamChange(this.props.team);
+        this.props.onChannelChange(this.props.channel);
         this.props.history.push(`/${this.props.team.key}/${this.props.channel.key}`);
+    }
+
+    skipStep(e) {
+        console.log(this.props);
+        //!! if some of the inputs has been filled, warn the user they'll lose the data if the proceed
+        this.redirectToTeam();
     }
 
     render() {

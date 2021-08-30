@@ -31,7 +31,7 @@ class SetupNewTeam extends Component {
 
     setTeam(teamId) {
         console.log('teamId');
-        this.setState(() => ({ team: teamId }))
+        this.setState(() => ({ team: teamId }));
     }
 
     setChannel(channel) {
@@ -65,9 +65,12 @@ class SetupNewTeam extends Component {
                                     setChannel={this.setChannel.bind(this)}
                                     authInfo={this.props.authInfo}
                                     team={this.state.team}
-                                    channel={this.state.echannel}
+                                    channel={this.state.channel}
                                     profileInfo={this.props.profileInfo}
                                     {...props}
+                                    
+                                    onTeamChange={this.props.onTeamChange}
+                                    onChannelChange={this.props.onChannelChange}
                                 />
                             }
                         />

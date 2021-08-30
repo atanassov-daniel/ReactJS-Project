@@ -104,12 +104,18 @@ class TextareaMessage extends Component {
         }
 
         // // the path in the URl should've already been checked for validity of the team and channel, so I should be fine using the pathname directly
-        const { isAuthenticated, ...authInfo } = this.props.authInfo;
+        const { email, uid } = this.props.authInfo;
+        const { fullName, displayName, photoURL } = this.props.profileInfo;
+        const userInfo = { email, uid, name: displayName || fullName, photoURL };
 
         db
             // .collection(`teams/${this.props.team.name}/channels/${this.props.channel.name}/posts`)
             .collection(`teams/${this.props.team.key}/channels/${this.props.channel.key}/posts`)
-            .add({ createdAt: firestore.FieldValue.serverTimestamp(), text: message, createdBy: authInfo })
+            .add({
+                createdAt: firestore.FieldValue.serverTimestamp(),
+                text: message,
+                createdBy: userInfo
+            })
             .then((docRef) => {
                 // console.log("Document written with ID: ", docRef.id);
                 this.setState(() => ({ value: '' }));

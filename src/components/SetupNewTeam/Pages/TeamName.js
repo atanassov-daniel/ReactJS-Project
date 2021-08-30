@@ -31,8 +31,8 @@ export default class TeamName extends Component {
             return;
         }
 
-        const {email, uid} = this.props.authInfo;
-        console.log(this.props.profileInfo);
+        const { email, uid } = this.props.authInfo;
+        const { displayName, fullName, photoURL } = this.props.profileInfo;
 
         db
             // teams/${this.props.team.name}/channels/${this.props.channel.name}/posts
@@ -43,8 +43,8 @@ export default class TeamName extends Component {
                 createdBy: {
                     email: email,
                     uid: uid,
-                    name: this.props.profileInfo.displayName,
-                    photoURL: this.props.profileInfo.photoURL,
+                    name: displayName || fullName,
+                    photoURL: photoURL,
                     // name: authInfo.displayName,
                     // photoURL: authInfo.photoURL
                 },

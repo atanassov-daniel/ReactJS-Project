@@ -33,13 +33,15 @@ class Messages extends Component {
         this.state = {
             loading: true,
             messages: [],
+            noPosts: false
         };
 
-        this.noPosts = false;
+        // this.noPosts = false;
     }
 
 
     componentDidMount() {
+        this.forceUpdate(); //* this solved the bug where after creating a team the Skeletons loading would simply stay there forever
         /* if (this.props.channel === null && this.props.team !== null) {
             const channel = this.props.match.params.channel;
             console.log(channel);
@@ -122,8 +124,14 @@ class Messages extends Component {
                     this.setState(
                         () => ({ messages: messages }),
                         () => {
-                            if (this.state.messages.length === 0) this.noPosts = true;
-                            this.setState({ loading: false }); // if (this.isFirstLoad) document.getElementById('first-column').scrollTop = document.getElementById('first-column').scrollHeight; // so that only on the first fetch of the messages the messages container will get automatically scrolled to its very bottom     // console.log(this.state.messages);
+                            /* if (this.state.messages.length === 0) this.setState(() => ({ noPosts: true }));
+                            this.setState({ loading: false, noPosts: false }); // if (this.isFirstLoad) document.getElementById('first-column').scrollTop = document.getElementById('first-column').scrollHeight; // so that only on the first fetch of the messages the messages container will get automatically scrolled to its very bottom     // console.log(this.state.messages);
+                         */
+                            if (this.state.messages.length === 0) this.setState(() => ({ noPosts: true }));
+                            else this.setState(() => ({ loading: false, noPosts: false }));
+                            // if (this.isFirstLoad) document.getElementById('first-column').scrollTop = document.getElementById('first-column').scrollHeight; // so that only on the first fetch of the messages the messages container will get automatically scrolled to its very bottom     // console.log(this.state.messages);
+
+                            // this.setState(() => ({ loading: false }));
                         });
                 });
         }
@@ -142,20 +150,27 @@ class Messages extends Component {
     }
 
     render() {
-        console.log('messages props');
-        console.log(this.props);
-
+        // console.log('messages props');
+        // console.log(this.props);
         /* if (this.props.authInfo.isAuthenticated === false) {
             this.props.history.push('/');
         } */
+        const { loading } = this.state;
 
         const skeletonInitialLoad = (
             // <Card className="loading">
             <Skeleton loading={true} avatar active className="loading" />
+            //!!!!!!
+            //* when I put a key={Math.round(Math.random())} here, the two Loading Cards would never disappeared in any case
             // </Card>
         );
 
-        const { loading } = this.state;
+        console.log(' \n\n\n\n ');
+        console.log('this.state.messages');
+        console.log(this.state.messages);
+        console.log('this.state.noPosts');
+        console.log(this.state.noPosts);
+        console.log(' \n\n\n\n ');
 
         return (
             <>
@@ -172,9 +187,9 @@ class Messages extends Component {
                 </div>
 
                 {
-                    this.state.messages.length === 0 && this.noPosts === false
-                        ? Array(5).fill(skeletonInitialLoad)
-                        : this.noPosts === true
+                    this.state.messages.length === 0 && this.state.noPosts === false
+                        ? Array(2).fill(skeletonInitialLoad)
+                        : this.state.noPosts === true
                             ? <div>WOW!!! Such empty :( :( :(</div>
                             : this.state.messages.map(message => (
                                 <Card
@@ -194,7 +209,7 @@ class Messages extends Component {
                                             avatar={
                                                 <Avatar src={message.createdBy?.photoURL || 'https://t4.ftcdn.net/jpg/02/51/95/53/240_F_251955356_FAQH0U1y1TZw3ZcdPGybwUkH90a3VAhb.jpg'} shape="square" size={45} alt="user profile image" />
                                             }
-                                            title={message?.createdBy?.displayName}
+                                            title={message?.createdBy?.name}
                                             description={message.createdAt}
                                         />
 

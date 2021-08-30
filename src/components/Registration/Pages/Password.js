@@ -112,7 +112,7 @@ export default class Password extends Component {
                             whatIdo: '',
                             phoneNumber: '',
                             timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                            //!!! photoURL: ''
+                            photoURL: ''
                         }
                         // name: this.state.name,
                         // photoURL: this.props.authInfo.photoURL,
