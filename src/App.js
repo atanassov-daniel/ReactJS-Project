@@ -285,7 +285,8 @@ class App extends Component {
                                                         render={(props) => (
                                                             <Col
                                                                 span={24}
-                                                                style={{ border: '2.5px solid orange', height: '60vh' }} //!! the height: '100%' broke the scrollbar's css and it wouldn't scroll
+                                                                // style={{ border: '2.5px solid orange', height: '60vh' }} //!! the height: '100%' broke the scrollbar's css and it wouldn't scroll
+                                                                style={{ border: '2.5px solid orange', height: '69vh' }}
                                                                 className="column-with-slider"
                                                                 // id="messages-container"
                                                                 id="first-column"

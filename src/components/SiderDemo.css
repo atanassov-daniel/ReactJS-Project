@@ -196,12 +196,16 @@ span.pins:hover {
 }
 
 
-.ant-page-header-heading {
+/* .ant-page-header-heading {
     float: left;
 }
 
 .ant-page-header-content {
     float: right;
+} */
+.ant-page-header-heading, .ant-page-header-heading-left, .ant-page-header-content {
+    /* so that the title and content are on the same row */
+    display: inline;
 }
 
 .ant-page-header {

@@ -83,12 +83,14 @@ class TextareaMessage extends Component {
         if (affixTextarea.style.display === 'none') {
             affixTextarea.style.display = 'block';
 
-            firstColumn.style.height = '60vh';
+            // firstColumn.style.height = '60vh';
+            firstColumn.style.height = '69vh';
             if (secondColumn !== null) secondColumn.style.height = '60vh';
         } else {
             affixTextarea.style.display = 'none';
 
-            firstColumn.style.height = '76vh';
+            // firstColumn.style.height = '76vh';
+            firstColumn.style.height = '81.75vh';
             if (secondColumn !== null) secondColumn.style.height = '76vh';
         }
     }

@@ -1,0 +1,70 @@
+/* there is a SiderDemo.css file with styles for here, though I don't know what all of them are */
+
+/* .membersWrap {
+    border: 1.5px solid lightgray;
+    border-radius: 5px;
+    color: #1d1c1db3;
+    padding: 0 .5em;
+}
+
+.membersWrap:hover {
+    color: #1D1C1D;
+}
+
+.membersCount {
+    margin-block: 5px;
+    margin-left: .25em;
+    align-self: center;
+    font-weight: bold;
+    color: #1d1c1db3;
+    font-size: 13px;
+}
+
+.membersCount:hover {
+    color: #1D1C1D;
+} */
+
+.membersWrap {
+    color: #1d1c1db3;
+    cursor: pointer;
+    border: 1.5px solid lightgray;
+    border-radius: 5px;
+    padding: 0 .5em;
+}
+
+.membersWrap:hover {
+    color: #1D1C1D;
+    background: #1D1C1D0A;
+}
+
+.membersCount {
+    /* composes: blackCol; */
+    /* color: #1d1c1db3; */
+    margin-block: 5px;
+    margin-left: .25em;
+    align-self: center;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.channelNameWrap {
+    border-radius: 7px;
+    box-sizing: content-box;
+    padding: 0 .5em;
+    cursor: pointer;
+    line-height: normal;
+    align-self: center;
+}
+
+.channelNameWrap:hover {
+    background: #1D1C1D0A;
+    /* border: 1.5px solid #1D1C1D0A; */
+}
+
+/* :global #tooltip-members {
+    color: green;
+}
+
+:global #tooltip-members:hover {
+    color: red;
+} */
