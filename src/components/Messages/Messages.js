@@ -205,7 +205,7 @@ class Messages extends Component {
                                     onMouseOut={(e) => { e.currentTarget.querySelector('ul.ant-card-actions').style.display = 'none'; }}
                                 >
                                     <Skeleton loading={loading} avatar active>
-                                        <Meta
+                                        <Meta className="message-meta"
                                             avatar={
                                                 <Avatar src={message.createdBy?.photoURL || 'https://t4.ftcdn.net/jpg/02/51/95/53/240_F_251955356_FAQH0U1y1TZw3ZcdPGybwUkH90a3VAhb.jpg'} shape="square" size={45} alt="user profile image" />
                                             }

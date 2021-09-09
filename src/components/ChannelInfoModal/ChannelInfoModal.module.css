@@ -1,0 +1,21 @@
+:global #channel-info-tabs .ant-tabs-ink-bar {
+    background: #007a5a;
+}
+
+:global #channel-info-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: black;
+}
+
+:global #channel-info-tabs .ant-tabs-tab:hover {
+    color: black;
+}
+
+:global #channel-info-tabs .ant-tabs-tab {
+    font-size: 13px;
+    color: gray;
+    font-weight: bold;
+}
+
+:global #channel-info-tabs .ant-tabs-nav-wrap {
+    padding: 0% 6%;
+}

@@ -30,6 +30,10 @@ class ProfileModal extends Component {
         this.fetchProfileInfo();
     }
 
+    componentDidUpdate() {
+        if (this.props.authInfo.isAuthenticated === true && this.state.profileInfo === null) this.fetchProfileInfo();
+    }
+
     showProfileModal = () => {
         this.setState(() => ({ visibleProfileModal: true }));
     };
@@ -67,6 +71,7 @@ class ProfileModal extends Component {
 
 
     fetchProfileInfo() {
+        console.log(this.props.authInfo);
         if (this.props.authInfo.isAuthenticated === false) this.updateStateProfileInfo(null, null);
 
         db.collection('users').where('email', '==', this.props.authInfo.email)

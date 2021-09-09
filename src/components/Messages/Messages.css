@@ -7,6 +7,10 @@ div.ant-card-body {
     padding-bottom: initial;
 }
 
+div.ant-card-body:hover {
+    background: #f8f8f8;
+}
+
 ul.ant-card-actions {
     width: 14%;
     margin: auto;
@@ -37,4 +41,29 @@ ul.ant-card-actions>li:not(:last-child) {
 ul.ant-card-actions>li:hover {
     background: #f0f0f0;
     border-radius: 4px;
+}
+
+.ant-card-meta.message-meta .ant-card-meta-detail .ant-card-meta-description {
+    display: inline;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.ant-card-meta.message-meta .ant-card-meta-detail .ant-card-meta-description:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.ant-card-meta.message-meta .ant-card-meta-detail .ant-card-meta-title {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.ant-card-meta.message-meta .ant-card-meta-detail .ant-card-meta-title:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.ant-card-meta.message-meta .ant-card-meta-avatar {
+    padding-right: .2%;
 }

@@ -1,0 +1,60 @@
+.membersWrap {
+    /* height: 44.3vh; */
+    height: 100%;
+    width: 100%;
+    font-size: 15px;
+}
+
+:global .ant-tabs-content-holder {
+    height: 100%;
+}
+
+:global .ant-tabs-content.ant-tabs-content-top {
+    height: -webkit-fill-available;
+}
+
+.member {
+    height: 33%;
+    padding: 0% 6%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.member:hover {
+    /* background: lightgray; */
+    background: #1D1C1D0A;
+}
+
+/** using this flex trick fixed the problem where otherwise the height of the members wrap would never be what I wanted it(except for random guessing vh measures which wouldn't work on a different zoom level) */
+.flex {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100%;
+}
+
+.statusIcon {
+    padding: 0 1.5%;
+    user-select: none;
+    color: gray;
+}
+
+.displayName {
+    font-weight: bold;
+}
+
+.avatar {
+    /* margin-right: 3%; */
+    border-radius: 4px;
+}
+
+.addPeopleAvatar {
+    composes: avatar;
+    
+    font-size: 20px;
+    padding: 8px;
+    color: rgba(var(--sk_highlight, 18, 100, 163), 1);
+    background: #1D9BD11A;
+    margin-right: 3%;
+}

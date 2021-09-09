@@ -35,20 +35,22 @@ class TeamChannels extends Component {
         }
 
         const { email, uid } = this.props.authInfo;
-        const { displayName, fullName, photoURL } = this.props.profileInfo;
+        const { displayName, fullName, photoURL, whatIdo } = this.props.profileInfo;
+        const creatorObj = {
+            uid: uid,
+            email: email,
+            photoURL: photoURL,
+            // name: authInfo.displayName,
+            // photoURL: authInfo.photoURL
+        };
 
         db
             // teams/${this.props.team.name}/channels/${this.props.channel.name}/posts
             .collection(`teams/${this.props.team.key}/channels`)
             .add({
                 createdAt: firestore.FieldValue.serverTimestamp(), name: this.state.channel,
-                createdBy: {
-                    email: email,
-                    uid: uid,
-                    name: displayName || fullName,
-                    // photoURL: photoURL
-                },
-                members: [email]
+                createdBy: { ...creatorObj, name: displayName || fullName },
+                members: [{ ...creatorObj, displayName, fullName, whatIdo }]
             }) //name: this.props.authInfo.name
             .then((docRef) => {
                 console.log("Channel written with ID: ", docRef.id);
@@ -58,13 +60,8 @@ class TeamChannels extends Component {
                     .collection(`teams/${this.props.team.key}/channels`)
                     .add({
                         createdAt: firestore.FieldValue.serverTimestamp(), name: 'general',
-                        createdBy: {
-                            email: email,
-                            uid: uid,
-                            name: displayName,
-                            // photoURL: photoURL
-                        },
-                        members: [email]
+                        createdBy: { ...creatorObj, name: displayName || fullName },
+                        members: [{ ...creatorObj, displayName, fullName }]
                     }) //name: this.props.authInfo.name
                     .then((docRef) => {
                         console.log("'GENERAL' channel written with ID: ", docRef.id);

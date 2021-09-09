@@ -172,7 +172,7 @@ class App extends Component {
                                     <Route path="/:team/:channel" render={(props) => {
                                         // if (!props.location.pathname.includes('/login') && this.state.channel !== null) return (
                                         if (!props.location.pathname.includes('/login') && !props.location.pathname.includes('/get-started') && !this.props.location.pathname.includes('/register') && !props.location.pathname.includes('/setupTeam/name') && this.state.channel !== null) return (
-                                            <Channel {...props} channel={this.state.channel} />
+                                            <Channel {...props} channel={this.state.channel} team={this.state.team} />
                                         );
                                     }} />
                                     {/* //!!!!!! actually it should be path="/:channel" */}

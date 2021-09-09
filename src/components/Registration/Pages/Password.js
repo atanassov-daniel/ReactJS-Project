@@ -103,7 +103,7 @@ export default class Password extends Component {
                     .collection(`users`)
                     .add({
                         createdAt: firestore.FieldValue.serverTimestamp(),
-                        email: this.props.email,
+                        email: this.props.email.toLocaleLowerCase(),
                         uid: userCredential.user.uid,
                         teams: [],
                         profileInfo: {

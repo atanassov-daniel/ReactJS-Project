@@ -32,7 +32,16 @@ export default class TeamName extends Component {
         }
 
         const { email, uid } = this.props.authInfo;
-        const { displayName, fullName, photoURL } = this.props.profileInfo;
+        console.log(this.props.profileInfo);
+        const { displayName, fullName, photoURL, whatIdo } = this.props.profileInfo;
+
+        const creatorObj = {
+            uid: uid,
+            email: email,
+            photoURL: photoURL,
+            // name: authInfo.displayName,
+            // photoURL: authInfo.photoURL
+        };
 
         db
             // teams/${this.props.team.name}/channels/${this.props.channel.name}/posts
@@ -40,15 +49,8 @@ export default class TeamName extends Component {
             .add({
                 createdAt: firestore.FieldValue.serverTimestamp(),
                 name: this.state.name,
-                createdBy: {
-                    email: email,
-                    uid: uid,
-                    name: displayName || fullName,
-                    photoURL: photoURL,
-                    // name: authInfo.displayName,
-                    // photoURL: authInfo.photoURL
-                },
-                members: [email]
+                createdBy: { ...creatorObj, name: displayName || fullName },
+                members: [{ ...creatorObj, displayName, fullName, whatIdo }]
             }) //name: authInfo.name
             .then((docRef) => {
                 console.log("Document written with ID: ", docRef.id);
@@ -67,17 +69,18 @@ export default class TeamName extends Component {
                         alert(`This action couldn't be performed: ${error}. Please try again!`);
                     }); */
                 docRef.get().then(doc => {
-                    const { createdAt, name } = doc.data();
+                    const { createdAt, name: teamName } = doc.data();
                     const id = docRef.id;
 
                     db
                         .collection(`users`)
                         // .where('email', '==', 'arrUpdate@gmail.com')
-                        .where('email', '==', email)
+                        .where('uid', '==', uid)
+                        // .where('email', '==', email)
                         .get()
                         .then(querySnapshot => {
                             const obj = {
-                                joinedAt: createdAt, name: name,
+                                joinedAt: createdAt, name: teamName,
                                 key: id, role: 'creator'
                             };
 
@@ -107,6 +110,7 @@ export default class TeamName extends Component {
 
                     this.props.setTeam({ key: docRef.id, name: this.state.name });
                     this.props.changePage();
+                    //!!! what if the users collection adding is unsuccessful, the team will still be set and the user will get redirected to a team he isn't a member of according to the suers collection 
 
                     /* db
                         .collection(`users`)
